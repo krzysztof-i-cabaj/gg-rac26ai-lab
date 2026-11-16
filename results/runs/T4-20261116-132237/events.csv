@@ -1,0 +1,13 @@
+ts_utc,t_rel_s,test_id,run_no,resource,node,state_from,state_to,source,raw
+2026-11-16T13:22:45.120Z,-58.339,T4,3,vip,ggrac1,,ONLINE,crsctl,RES vip ggrac1 ONLINE
+2026-11-16T13:22:45.125Z,-58.334,T4,3,inst:ggcdb1,ggrac1,,ONLINE,crsctl,INST ggcdb1 ggrac1 ONLINE
+2026-11-16T13:22:45.131Z,-58.328,T4,3,inst:ggcdb2,ggrac2,,ONLINE,crsctl,INST ggcdb2 ggrac2 ONLINE
+2026-11-16T13:22:45.132Z,-58.327,T4,3,svc,ggrac1,,ONLINE,crsctl,RES svc ggrac1 ONLINE
+2026-11-16T13:22:45.134Z,-58.325,T4,3,sm,ggrac1,,ONLINE,crsctl,RES sm ggrac1 ONLINE
+2026-11-16T13:22:45.135Z,-58.324,T4,3,acfs,ggrac1,,ONLINE,crsctl,RES acfs ggrac1 ONLINE
+2026-11-16T13:22:45.208Z,-58.251,T4,3,node:ggrac1,ggrac1,,Active,olsnodes,NODE ggrac1 Active
+2026-11-16T13:22:45.212Z,-58.247,T4,3,node:ggrac2,ggrac2,,Active,olsnodes,NODE ggrac2 Active
+2026-11-16T13:22:45.607Z,-57.852,T4,3,REP1,ggtgt,,RUNNING,adminclient,PROC REP1 ggtgt RUNNING
+2026-11-16T13:22:45.801Z,-57.658,T4,3,EXT1,ggrac1,,RUNNING,adminclient,PROC EXT1 ggrac1 RUNNING
+2026-11-16T13:22:45.806Z,-57.653,T4,3,DP1,ggrac1,,RUNNING,adminclient,PROC DP1 ggrac1 RUNNING
+2026-11-16T13:23:43.458Z,0.000,T4,3,fault,ggrac1,,injected,host,srvctl stop instance -db ggcdb -instance ggcdb1 -stopoption abort

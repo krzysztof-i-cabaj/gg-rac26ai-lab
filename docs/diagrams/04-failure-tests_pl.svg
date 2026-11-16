@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-label="Gdzie uderza każdy test: T1 przeniesienie, T2 i T3 wyłączenie, T4 i T4b awaria instancji, T5 zabicie Service Managera, T6 proces krytyczny, T7 przerwanie interconnectu, T8 lag, T9 porównanie danych, T10 DDL i typy 26ai" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<title>Gdzie uderza każdy test: T1 przeniesienie, T2 i T3 wyłączenie, T4 i T4b awaria instancji, T5 zabicie Service Managera, T6 proces krytyczny, T7 przerwanie interconnectu, T8 lag, T9 porównanie danych, T10 DDL i typy 26ai</title>
+<defs><marker id="ar-grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7d8a98"/></marker><marker id="ar-navy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f3a5f"/></marker><marker id="ar-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c74634"/></marker><marker id="ar-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2f6db5"/></marker><marker id="ar-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#22756a"/></marker><marker id="ar-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#a8661a"/></marker></defs>
+<rect x="0" y="0" width="1200" height="560" fill="#ffffff"/>
+<text x="560" y="52" font-size="13.5" fill="#2f6db5" font-weight="600" text-anchor="middle">trail: EXT1 → DP1 → Receiver → REP1</text>
+<rect x="30" y="84" width="370" height="210" rx="10" fill="#edf2f8" stroke="#1f3a5f" stroke-width="1.5"/>
+<text x="48" y="108" font-size="16" fill="#1b2733" font-weight="700">ggrac1</text>
+<rect x="54" y="124" width="150" height="50" rx="10" fill="#fcefed" stroke="#c74634" stroke-width="1.5"/>
+<text x="129.0" y="154" font-size="13" fill="#1b2733" font-weight="700" text-anchor="middle">Service Manager</text>
+<rect x="222" y="124" width="150" height="50" rx="10" fill="#eaf2fb" stroke="#2f6db5" stroke-width="1.5"/>
+<text x="297.0" y="154" font-size="13" fill="#1b2733" font-weight="700" text-anchor="middle">EXT1</text>
+<rect x="54" y="214" width="150" height="50" rx="10" fill="#ffffff" stroke="#7d8a98" stroke-width="1.5"/>
+<text x="129.0" y="244" font-size="13" fill="#1b2733" font-weight="700" text-anchor="middle">instancja ggcdb1</text>
+<rect x="500" y="84" width="300" height="210" rx="10" fill="#edf2f8" stroke="#1f3a5f" stroke-width="1.5"/>
+<text x="518" y="108" font-size="16" fill="#1b2733" font-weight="700">ggrac2</text>
+<rect x="524" y="214" width="150" height="50" rx="10" fill="#ffffff" stroke="#7d8a98" stroke-width="1.5"/>
+<text x="599.0" y="244" font-size="13" fill="#1b2733" font-weight="700" text-anchor="middle">instancja ggcdb2</text>
+<line x1="400" y1="270" x2="500" y2="270" stroke="#1f3a5f" stroke-width="2.5" stroke-dasharray="8 5"/>
+<polyline points="297,124 297,62 1050,62 1050,122" fill="none" stroke="#2f6db5" stroke-width="2" stroke-linejoin="round" marker-end="url(#ar-blue)"/>
+<rect x="940" y="84" width="240" height="210" rx="10" fill="#e9f5f2" stroke="#22756a" stroke-width="1.5"/>
+<text x="958" y="108" font-size="16" fill="#1b2733" font-weight="700">ggtgt</text>
+<rect x="970" y="124" width="160" height="50" rx="10" fill="#eaf2fb" stroke="#2f6db5" stroke-width="1.5"/>
+<text x="1050.0" y="154" font-size="13" fill="#1b2733" font-weight="700" text-anchor="middle">REP1</text>
+<rect x="970" y="214" width="160" height="50" rx="10" fill="#ffffff" stroke="#7d8a98" stroke-width="1.5"/>
+<text x="1050.0" y="244" font-size="13" fill="#1b2733" font-weight="700" text-anchor="middle">TGTPDB</text>
+<polyline points="204,294 204,330 640,330 640,296" fill="none" stroke="#c74634" stroke-width="1.8" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#ar-red)"/>
+<text x="422" y="350" font-size="13.5" fill="#c74634" text-anchor="middle">łańcuch GoldenGate się przenosi: T1 (planowo), T2 (utrata węzła), T4b (ręcznie)</text>
+<circle cx="204" cy="330" r="15" fill="#c74634"/>
+<text x="204" y="334.5" font-size="13" fill="#ffffff" font-weight="700" text-anchor="middle">T1</text>
+<circle cx="386" cy="84" r="15" fill="#c74634"/>
+<text x="386" y="88.5" font-size="13" fill="#ffffff" font-weight="700" text-anchor="middle">T2</text>
+<circle cx="786" cy="84" r="15" fill="#c74634"/>
+<text x="786" y="88.5" font-size="13" fill="#ffffff" font-weight="700" text-anchor="middle">T3</text>
+<circle cx="204" cy="214" r="15" fill="#c74634"/>
+<text x="204" y="218.5" font-size="13" fill="#ffffff" font-weight="700" text-anchor="middle">T4</text>
+<circle cx="204" cy="124" r="15" fill="#c74634"/>
+<text x="204" y="128.5" font-size="13" fill="#ffffff" font-weight="700" text-anchor="middle">T5</text>
+<circle cx="372" cy="124" r="15" fill="#c74634"/>
+<text x="372" y="128.5" font-size="13" fill="#ffffff" font-weight="700" text-anchor="middle">T6</text>
+<circle cx="450" cy="270" r="15" fill="#c74634"/>
+<text x="450" y="274.5" font-size="13" fill="#ffffff" font-weight="700" text-anchor="middle">T7</text>
+<circle cx="1130" cy="124" r="15" fill="#c74634"/>
+<text x="1130" y="128.5" font-size="13" fill="#ffffff" font-weight="700" text-anchor="middle">T8</text>
+<circle cx="1130" cy="214" r="15" fill="#c74634"/>
+<text x="1130" y="218.5" font-size="13" fill="#ffffff" font-weight="700" text-anchor="middle">T9</text>
+<circle cx="836" cy="62" r="15" fill="#c74634"/>
+<text x="836" y="66.5" font-size="11.5" fill="#ffffff" font-weight="700" text-anchor="middle">T10</text>
+<text x="368" y="76" font-size="13" fill="#c74634" text-anchor="end">wyłączenie</text>
+<text x="768" y="76" font-size="13" fill="#c74634" text-anchor="end">wyłączenie</text>
+<text x="54" y="286" font-size="13" fill="#c74634">kill -9 PMON</text>
+<text x="54" y="196" font-size="13" fill="#c74634">kill -9</text>
+<text x="222" y="196" font-size="13" fill="#c74634">kill -9, krytyczny</text>
+<text x="450" y="300" font-size="13" fill="#c74634" text-anchor="middle">łącze w dół</text>
+<text x="970" y="196" font-size="13" fill="#c74634">lag (heartbeat)</text>
+<text x="970" y="286" font-size="13" fill="#c74634">porównanie</text>
+<text x="858" y="52" font-size="13" fill="#c74634">DDL + VECTOR, BOOLEAN, JSON</text>
+<text x="40" y="404" font-size="14" fill="#c74634" font-weight="700">T1</text>
+<text x="106" y="404" font-size="14" fill="#1b2733">Planowe przeniesienie: agctl relocate goldengate</text>
+<text x="40" y="434" font-size="14" fill="#c74634" font-weight="700">T2</text>
+<text x="106" y="434" font-size="14" fill="#1b2733">Twarde wyłączenie węzła GoldenGate ggrac1</text>
+<text x="40" y="464" font-size="14" fill="#c74634" font-weight="700">T3</text>
+<text x="106" y="464" font-size="14" fill="#1b2733">Wyłączenie drugiego węzła ggrac2</text>
+<text x="40" y="494" font-size="14" fill="#c74634" font-weight="700">T4</text>
+<text x="106" y="494" font-size="14" fill="#1b2733">Awaria instancji: kill -9 procesu PMON ggcdb1</text>
+<text x="40" y="524" font-size="14" fill="#c74634" font-weight="700">T4b</text>
+<text x="106" y="524" font-size="14" fill="#1b2733">Jak T4, potem ręczne przeniesienie GoldenGate</text>
+<text x="620" y="404" font-size="14" fill="#c74634" font-weight="700">T5</text>
+<text x="686" y="404" font-size="14" fill="#1b2733">Zabicie Service Managera (kill -9)</text>
+<text x="620" y="434" font-size="14" fill="#c74634" font-weight="700">T6</text>
+<text x="686" y="434" font-size="14" fill="#1b2733">Zabicie EXT1 oznaczonego jako „critical”</text>
+<text x="620" y="464" font-size="14" fill="#c74634" font-weight="700">T7</text>
+<text x="686" y="464" font-size="14" fill="#1b2733">Przerwanie interconnectu: setlinkstate3 off na ggrac2</text>
+<text x="620" y="494" font-size="14" fill="#c74634" font-weight="700">T8 · T9</text>
+<text x="686" y="494" font-size="14" fill="#1b2733">Lag pod obciążeniem (10 min) · porównanie danych</text>
+<text x="620" y="524" font-size="14" fill="#c74634" font-weight="700">T10</text>
+<text x="686" y="524" font-size="14" fill="#1b2733">DDL i typy danych 26ai przez replikację</text>
+</svg>

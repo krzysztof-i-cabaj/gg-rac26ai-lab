@@ -1,0 +1,137 @@
+{
+  "test_id": "T10",
+  "run_no": 1,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": null,
+    "t_service_online": null,
+    "t_acfs_online": null,
+    "t_vip_online": null,
+    "t_sm_running": null,
+    "t_ext_running": null,
+    "t_dp_running": null,
+    "t_rep_running": null,
+    "t_lag_ok": null
+  },
+  "segments": [],
+  "segments_out_of_order": [],
+  "segments_measured": [],
+  "rto_s": null,
+  "rto_basis": null,
+  "lag_max_s": 16.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": false,
+  "lag_relapses": 0,
+  "lag_relapse_first_s": null,
+  "pass": true,
+  "clock_offsets_ms": {
+    "gginfra": 0.492,
+    "ggrac1": 0.018,
+    "ggrac2": 0.021,
+    "ggtgt": 0.015
+  },
+  "harness_error": false,
+  "intervention_node": null,
+  "attempt": 2,
+  "test_variant": null,
+  "intervention_invoked_by": null,
+  "notes": [
+    "DDL steps of TESTS.md T10 by hand during PostSec (LAB: automate after the first run)."
+  ],
+  "expected_gg_node": null,
+  "refused": false,
+  "data_checked": true,
+  "xag_restarts": 0,
+  "config_rev": "maa-singleton-local-svc",
+  "synthetic": false,
+  "disturbed": true,
+  "approval_wait_s": null,
+  "final_node": "ggrac1",
+  "intervention_steps": null,
+  "intervention_command": null,
+  "service_moved": false,
+  "stage": "A",
+  "invoked_by": "agent",
+  "fault_command": "(no fault)",
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {
+      "raw_crs": {
+        "samples": 106,
+        "median_s": 1.263,
+        "max_s": 1.68
+      },
+      "raw_gg_src": {
+        "samples": 53,
+        "median_s": 2.569,
+        "max_s": 3.127
+      },
+      "raw_gg_tgt": {
+        "samples": 56,
+        "median_s": 2.412,
+        "max_s": 2.799
+      },
+      "raw_lag": {
+        "samples": 123,
+        "median_s": 1.091,
+        "max_s": 1.183
+      }
+    }
+  },
+  "intervention_rc": null,
+  "xag_action": "none",
+  "fault_kind": "none",
+  "recovered": true,
+  "measurement_error": null,
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "evicted_node": "",
+  "approved_by": "",
+  "data_ok": true,
+  "observe_s": 123.1,
+  "title": "DDL and 26ai data types",
+  "intervention_approved_by": null,
+  "expected": {
+    "RtoS": "nie dotyczy",
+    "Source": "GG 26ai Release Notes (types since 23.4); DDL INCLUDE MAPPED unchecked in Reference 26ai",
+    "Hypothesis": "rows and DDL replicated, values equal on both sides (VECTOR, BOOLEAN, JSON)",
+    "DataLoss": 0,
+    "Recovers": "nie dotyczy",
+    "FinalNode": "ggrac1"
+  },
+  "expected_written_utc": "2026-11-16T17:07:44.993Z",
+  "expected_match": true,
+  "expected_check": [
+    {
+      "field": "final_node",
+      "expected": "ggrac1",
+      "actual": "ggrac1",
+      "match": true
+    },
+    {
+      "field": "data_loss",
+      "expected": 0,
+      "actual": 0,
+      "match": true
+    }
+  ],
+  "back_to_base_s": 50.7,
+  "back_to_base_ok": true
+}

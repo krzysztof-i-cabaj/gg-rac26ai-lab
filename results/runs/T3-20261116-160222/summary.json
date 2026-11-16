@@ -1,0 +1,166 @@
+{
+  "test_id": "T3",
+  "run_no": 1,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": 31.529,
+    "t_service_online": null,
+    "t_acfs_online": null,
+    "t_vip_online": null,
+    "t_sm_running": null,
+    "t_ext_running": null,
+    "t_dp_running": null,
+    "t_rep_running": null,
+    "t_lag_ok": 40.337
+  },
+  "lag_max_s": 48.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": true,
+  "title": "Power-off of the second node",
+  "intervention_steps": null,
+  "evicted_node": "ggrac2",
+  "clock_offsets_ms": {
+    "gginfra": 0.183,
+    "ggrac1": -0.023,
+    "ggrac2": 0.002,
+    "ggtgt": -0.0
+  },
+  "fault_kind": "poweroff",
+  "invoked_by": "agent",
+  "config_rev": "maa-singleton-local-svc",
+  "intervention_node": null,
+  "service_moved": false,
+  "test_variant": null,
+  "refused": false,
+  "final_node": "ggrac1",
+  "data_ok": true,
+  "fault_command": "VBoxManage controlvm ggrac2 poweroff",
+  "attempt": 1,
+  "disturbed": true,
+  "measurement_error": null,
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {
+      "raw_crs": {
+        "samples": 344,
+        "median_s": 1.279,
+        "max_s": 9.998
+      },
+      "raw_gg_src": {
+        "samples": 171,
+        "median_s": 2.583,
+        "max_s": 10.122
+      },
+      "raw_gg_tgt": {
+        "samples": 194,
+        "median_s": 2.432,
+        "max_s": 2.887
+      },
+      "raw_lag": {
+        "samples": 430,
+        "median_s": 1.096,
+        "max_s": 1.295
+      }
+    }
+  },
+  "approval_wait_s": null,
+  "synthetic": false,
+  "expected_gg_node": null,
+  "xag_restarts": 0,
+  "harness_error": false,
+  "intervention_approved_by": null,
+  "intervention_command": null,
+  "notes": [
+    "GoldenGate should stay on ggrac1; record lag_jump."
+  ],
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "approved_by": "operator",
+  "recovered": true,
+  "intervention_rc": null,
+  "observe_s": 340.4,
+  "stage": "A",
+  "data_checked": true,
+  "xag_action": "none",
+  "pass": true,
+  "intervention_invoked_by": null,
+  "expected": {
+    "Source": "lab verification report",
+    "DataLoss": 0,
+    "RtoS": "nie wiemy",
+    "Hypothesis": "GoldenGate stays on ggrac1; at most a short lag jump until thread 2 is closed; every INST=2 row committed before the fault reaches the target",
+    "FinalNode": "ggrac1",
+    "Recovers": true
+  },
+  "expected_written_utc": "2026-11-16T16:02:27.248Z",
+  "expected_match": true,
+  "expected_check": [
+    {
+      "field": "final_node",
+      "expected": "ggrac1",
+      "actual": "ggrac1",
+      "match": true
+    },
+    {
+      "field": "recovers",
+      "expected": true,
+      "actual": true,
+      "match": true
+    },
+    {
+      "field": "data_loss",
+      "expected": 0,
+      "actual": 0,
+      "match": true
+    }
+  ],
+  "back_to_base_s": 192.4,
+  "back_to_base_ok": true,
+  "segments": [
+    {
+      "name": "fault_to_detect",
+      "seconds": 31.529
+    }
+  ],
+  "segments_out_of_order": [],
+  "segments_measured": [
+    {
+      "name": "fault_to_crs_detect",
+      "from": "t_fault",
+      "to": "t_crs_detect",
+      "from_t_rel_s": 0.0,
+      "to_t_rel_s": 31.529,
+      "seconds": 31.529
+    },
+    {
+      "name": "crs_detect_to_lag_ok",
+      "from": "t_crs_detect",
+      "to": "t_lag_ok",
+      "from_t_rel_s": 31.529,
+      "to_t_rel_s": 40.337,
+      "seconds": 8.808
+    }
+  ],
+  "rto_s": 40.337,
+  "rto_basis": "lag_ok",
+  "lag_relapses": 1,
+  "lag_relapse_first_s": 343.485,
+  "t_lag_ok_rule": "first stable return (Evidence 1.7), recomputed 16.11"
+}

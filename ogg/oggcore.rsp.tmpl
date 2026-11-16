@@ -1,0 +1,25 @@
+# ==============================================================================
+# Tytul:        oggcore.rsp.tmpl
+# Opis:         Plik odpowiedzi instalatora GoldenGate 26ai (23.26) Microservices dla Oracle:
+#               oprogramowanie lokalnie w OGG_HOME na kazdym wezle RAC i na ggtgt (MAA: binaria
+#               nie na ACFS). INSTALL_OPTION sprawdzany ze wzorcem z paczki (ostrzezenie przy roznicy).
+# Description [EN]: GoldenGate 26ai (23.26) Microservices installer response file for Oracle:
+#               software local in OGG_HOME on each RAC node and on ggtgt (MAA: binaries not on
+#               ACFS). INSTALL_OPTION is compared with the sample shipped in the ZIP (warning).
+#
+# Autor:        KCB Kris
+# Data:         2026-11-14
+# Wersja:       1.0
+# Konwencje:    <repo>/SETTINGS.md
+#
+# Wymagania [PL]:    - GoldenGate 23.26.4 for Oracle, Linux x86-64; wzorzec .../Disk1/response/oggcore.rsp
+# Requirements [EN]: - GoldenGate 23.26.4 for Oracle, Linux x86-64; sample .../Disk1/response/oggcore.rsp
+#
+# Uzycie [PL]:       automatycznie: lab.cmd ogg (80_install_ogg.sh)
+# Usage [EN]:        automatic: lab.cmd ogg (80_install_ogg.sh)
+# ==============================================================================
+oracle.install.responseFileVersion=/oracle/install/rspfmt_ogginstall_response_schema_v23_1_0
+INSTALL_OPTION=ORA23ai
+SOFTWARE_LOCATION={{OGG_HOME}}
+INVENTORY_LOCATION={{INVENTORY}}
+UNIX_GROUP_NAME=oinstall

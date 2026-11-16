@@ -1,0 +1,22 @@
+ts_utc,t_rel_s,test_id,run_no,resource,node,state_from,state_to,source,raw
+2026-11-16T16:57:31.400Z,-59.099,T5,3,vip,ggrac1,,ONLINE,crsctl,RES vip ggrac1 ONLINE
+2026-11-16T16:57:31.404Z,-59.095,T5,3,inst:ggcdb1,ggrac1,,ONLINE,crsctl,INST ggcdb1 ggrac1 ONLINE
+2026-11-16T16:57:31.408Z,-59.091,T5,3,inst:ggcdb2,ggrac2,,ONLINE,crsctl,INST ggcdb2 ggrac2 ONLINE
+2026-11-16T16:57:31.409Z,-59.090,T5,3,svc,ggrac1,,ONLINE,crsctl,RES svc ggrac1 ONLINE
+2026-11-16T16:57:31.411Z,-59.088,T5,3,sm,ggrac1,,ONLINE,crsctl,RES sm ggrac1 ONLINE
+2026-11-16T16:57:31.412Z,-59.087,T5,3,acfs,ggrac1,,ONLINE,crsctl,RES acfs ggrac1 ONLINE
+2026-11-16T16:57:31.461Z,-59.038,T5,3,node:ggrac1,ggrac1,,Active,olsnodes,NODE ggrac1 Active
+2026-11-16T16:57:31.464Z,-59.035,T5,3,node:ggrac2,ggrac2,,Active,olsnodes,NODE ggrac2 Active
+2026-11-16T16:57:31.887Z,-58.612,T5,3,REP1,ggtgt,,RUNNING,adminclient,PROC REP1 ggtgt RUNNING
+2026-11-16T16:57:32.007Z,-58.492,T5,3,EXT1,ggrac1,,RUNNING,adminclient,PROC EXT1 ggrac1 RUNNING
+2026-11-16T16:57:32.010Z,-58.489,T5,3,DP1,ggrac1,,RUNNING,adminclient,PROC DP1 ggrac1 RUNNING
+2026-11-16T16:58:30.499Z,0.000,T5,3,fault,ggrac1,,injected,host,"p=$(pgrep -f '/u01/app/ogg/ogg26ai_ma/bin/[S]erviceManager'); [ -n ""$p"" ] || { echo 'no ServiceManager process'; exit 3; }; kill -9 $p"
+2026-11-16T16:58:32.655Z,2.156,T5,3,DP1,ggrac1,RUNNING,STOPPED,adminclient,PROC DP1 ggrac1 STOPPED
+2026-11-16T16:58:44.542Z,14.043,T5,3,sm,-,ONLINE,OFFLINE,crsctl,RES sm - OFFLINE
+2026-11-16T16:58:46.725Z,16.226,T5,3,DP1,-,STOPPED,STOPPED,adminclient,PROC DP1 - STOPPED
+2026-11-16T16:58:51.827Z,21.328,T5,3,EXT1,-,RUNNING,ABENDED,adminclient,PROC EXT1 - ABENDED
+2026-11-16T16:58:51.830Z,21.331,T5,3,DP1,-,STOPPED,RUNNING,adminclient,PROC DP1 - RUNNING
+2026-11-16T16:58:54.321Z,23.822,T5,3,EXT1,ggrac1,ABENDED,ABENDED,adminclient,PROC EXT1 ggrac1 ABENDED
+2026-11-16T16:58:54.324Z,23.825,T5,3,DP1,ggrac1,RUNNING,RUNNING,adminclient,PROC DP1 ggrac1 RUNNING
+2026-11-16T16:58:54.795Z,24.296,T5,3,sm,ggrac1,OFFLINE,ONLINE,crsctl,RES sm ggrac1 ONLINE
+2026-11-16T16:59:22.127Z,51.628,T5,3,EXT1,ggrac1,ABENDED,RUNNING,adminclient,PROC EXT1 ggrac1 RUNNING

@@ -1,0 +1,147 @@
+{
+  "test_id": "T1",
+  "run_no": 1,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": 12.434,
+    "t_service_online": null,
+    "t_acfs_online": null,
+    "t_vip_online": 26.592,
+    "t_sm_running": 35.867,
+    "t_ext_running": 43.374,
+    "t_dp_running": 32.47,
+    "t_rep_running": null,
+    "t_lag_ok": null
+  },
+  "segments": [
+    {
+      "name": "fault_to_detect",
+      "seconds": 12.434
+    },
+    {
+      "name": "vip_to_sm",
+      "seconds": 9.275
+    },
+    {
+      "name": "sm_to_ext",
+      "seconds": 7.507
+    },
+    {
+      "name": "ext_to_dp",
+      "seconds": -10.904
+    }
+  ],
+  "rto_s": 43.374,
+  "rto_basis": "ext_running",
+  "lag_max_s": 730.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": true,
+  "fault_command": "/u01/app/xag/bin/agctl relocate goldengate oggsource --node ggrac2",
+  "refused": false,
+  "pass": false,
+  "xag_restarts": 1,
+  "attempt": 1,
+  "data_ok": true,
+  "invoked_by": "agent",
+  "expected_gg_node": "ggrac2",
+  "evicted_node": "",
+  "clock_offsets_ms": {
+    "gginfra": -0.997,
+    "ggrac1": -0.044,
+    "ggrac2": -0.047,
+    "ggtgt": -0.027
+  },
+  "approved_by": "operator",
+  "final_node": "ggrac2",
+  "synthetic": false,
+  "disturbed": true,
+  "stage": "A",
+  "recovered": false,
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "harness_error": false,
+  "notes": [
+    "Check whether agctl relocate moved gg_srcpdb (notes).",
+    "no recovery within 600 s"
+  ],
+  "service_moved": true,
+  "data_checked": true,
+  "title": "Planned relocation",
+  "fault_kind": "relocate",
+  "xag_action": "relocate",
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {
+      "raw_crs": {
+        "samples": 600,
+        "median_s": 1.295,
+        "max_s": 2.034
+      },
+      "raw_gg_src": {
+        "samples": 295,
+        "median_s": 2.632,
+        "max_s": 4.247
+      },
+      "raw_gg_tgt": {
+        "samples": 315,
+        "median_s": 2.471,
+        "max_s": 3.764
+      },
+      "raw_lag": {
+        "samples": 706,
+        "median_s": 1.105,
+        "max_s": 1.897
+      }
+    }
+  },
+  "expected": {
+    "RtoS": "nie wiemy",
+    "Recovers": true,
+    "Source": "MAA 26ai (agctl relocate), lab verification report",
+    "DataLoss": 0,
+    "FinalNode": "ggrac2",
+    "Hypothesis": "XAG chain in order (SM stop, ACFS off node 1, mount on ggrac2, VIP, start, processes from checkpoints); does agctl relocate move gg_srcpdb?"
+  },
+  "expected_written_utc": "2026-11-16T11:25:31.420Z",
+  "expected_match": false,
+  "expected_check": [
+    {
+      "field": "final_node",
+      "expected": "ggrac2",
+      "actual": "ggrac2",
+      "match": true
+    },
+    {
+      "field": "recovers",
+      "expected": true,
+      "actual": false,
+      "match": false
+    },
+    {
+      "field": "data_loss",
+      "expected": 0,
+      "actual": 0,
+      "match": true
+    }
+  ],
+  "back_to_base_s": 118.3,
+  "back_to_base_ok": true,
+  "measurement_error": "lag"
+}

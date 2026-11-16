@@ -1,0 +1,25 @@
+-- ==============================================================================
+-- Tytul:        setup_source.oby
+-- Opis:         Polecenia adminclient dla deploymentu oggsource (blok 7 raportu), po CONNECT
+--               i aliasach credential store, ktore 88_oggconf_source.sh podaje przez potok:
+--               supplemental logging schematow, heartbeat, rejestracja per-PDB Extract (bez
+--               CONTAINER), Extract z trailem, profil MAA, start. Powtorka: "already exists" = OK.
+-- Description [EN]: adminclient commands for deployment oggsource (report block 7), after CONNECT
+--               and the credential store aliases that 88_oggconf_source.sh sends through the pipe:
+--               schema supplemental logging, heartbeat, per-PDB Extract registration (no
+--               CONTAINER), Extract with trail, MAA profile, start. Re-run: "already exists" = fine.
+-- Autor: KCB Kris | Data: 2026-11-15 | Wersja: 1.1 | Konwencje: <repo>/SETTINGS.md
+-- ==============================================================================
+DBLOGIN USERIDALIAS ggsource DOMAIN OracleGoldenGate
+ADD SCHEMATRANDATA HR
+ADD SCHEMATRANDATA SALES
+-- LAB: syntax not checked in the 26ai Reference. FREQUENCY 5: the default 60 s makes the lag curve a staircase (film L1)
+ADD HEARTBEATTABLE, FREQUENCY 5
+REGISTER EXTRACT ext1 DATABASE
+ADD EXTRACT ext1, INTEGRATED TRANLOG, BEGIN NOW
+ADD EXTTRAIL et, EXTRACT ext1
+-- MAA Task 11 managed process profile (LAB: adminclient syntax; else Web UI, see README)
+ADD PROFILE MAA AUTOSTART YES DELAY 60 AUTORESTART YES RETRIES 5 WAITSECONDS 30 RESETSECONDS 1800 DISABLEONFAILURE YES
+ALTER EXTRACT ext1, PROFILE MAA
+START EXTRACT ext1
+INFO EXTRACT ext1

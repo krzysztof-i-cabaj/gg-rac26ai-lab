@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="496" viewBox="0 0 960 496" role="img" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+<title>T1: resource states over time (run 20261116-121125)</title>
+<rect x="0.5" y="0.5" width="959" height="495" rx="10" fill="#fcfcfb" stroke="#c3c2b7"/>
+<text x="20.0" y="32.0" font-size="18" fill="#0b0b0b" text-anchor="start" font-weight="600">T1: resource states over time (run 20261116-121125)</text>
+<text x="20.0" y="54.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">One bar per resource; text in the bar = node; lines = markers from summary.json. EXT1/DP1 are not observable while the XAG resource is down.</text>
+<rect x="20" y="68" width="14" height="12" rx="3" fill="#0ca30c"/>
+<text x="40.0" y="79.0" font-size="11" fill="#0b0b0b" text-anchor="start" font-weight="normal">up (ONLINE / RUNNING / Active)</text>
+<rect x="242.0" y="68" width="14" height="12" rx="3" fill="#fab219"/>
+<text x="262.0" y="79.0" font-size="11" fill="#0b0b0b" text-anchor="start" font-weight="normal">in between (INTERMEDIATE / ABENDED)</text>
+<rect x="494.0" y="68" width="14" height="12" rx="3" fill="#d03b3b"/>
+<text x="514.0" y="79.0" font-size="11" fill="#0b0b0b" text-anchor="start" font-weight="normal">down (OFFLINE / STOPPED / Inactive)</text>
+<rect x="746.0" y="68" width="14" height="12" rx="3" fill="#b4b2a9"/>
+<text x="766.0" y="79.0" font-size="11" fill="#0b0b0b" text-anchor="start" font-weight="normal">unknown / not observable</text>
+<line x1="170.0" y1="118" x2="170.0" y2="404" stroke="#e1e0d9"/>
+<text x="170.0" y="420.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">-20</text>
+<line x1="278.6" y1="118" x2="278.6" y2="404" stroke="#e1e0d9"/>
+<text x="278.6" y="420.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">0</text>
+<line x1="387.1" y1="118" x2="387.1" y2="404" stroke="#e1e0d9"/>
+<text x="387.1" y="420.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">20</text>
+<line x1="495.7" y1="118" x2="495.7" y2="404" stroke="#e1e0d9"/>
+<text x="495.7" y="420.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">40</text>
+<line x1="604.3" y1="118" x2="604.3" y2="404" stroke="#e1e0d9"/>
+<text x="604.3" y="420.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">60</text>
+<line x1="712.9" y1="118" x2="712.9" y2="404" stroke="#e1e0d9"/>
+<text x="712.9" y="420.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">80</text>
+<line x1="821.4" y1="118" x2="821.4" y2="404" stroke="#e1e0d9"/>
+<text x="821.4" y="420.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">100</text>
+<line x1="930.0" y1="118" x2="930.0" y2="404" stroke="#e1e0d9"/>
+<text x="930.0" y="420.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">120</text>
+<text x="550.0" y="438.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">seconds relative to the fault (t_fault = 0)</text>
+<text x="160.0" y="135.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">node ggrac1</text>
+<rect x="171.0" y="123" width="758.0" height="16" rx="4" fill="#0ca30c"><title>node ggrac1: Active @ ggrac1 [-20.0 .. 120.0 s]</title></rect>
+<text x="160.0" y="161.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">node ggrac2</text>
+<rect x="171.0" y="149" width="758.0" height="16" rx="4" fill="#0ca30c"><title>node ggrac2: Active @ ggrac2 [-20.0 .. 120.0 s]</title></rect>
+<text x="160.0" y="187.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">instance ggcdb1</text>
+<rect x="171.0" y="175" width="758.0" height="16" rx="4" fill="#0ca30c"><title>instance ggcdb1: ONLINE @ ggrac1 [-20.0 .. 120.0 s]</title></rect>
+<text x="160.0" y="213.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">instance ggcdb2</text>
+<rect x="171.0" y="201" width="758.0" height="16" rx="4" fill="#0ca30c"><title>instance ggcdb2: ONLINE @ ggrac2 [-20.0 .. 120.0 s]</title></rect>
+<text x="160.0" y="239.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">service gg_srcpdb</text>
+<rect x="171.0" y="227" width="114.5" height="16" rx="4" fill="#0ca30c"><title>service gg_srcpdb: ONLINE @ ggrac1 [-20.0 .. 1.5 s]</title></rect>
+<text x="228.3" y="239.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac1</text>
+<rect x="287.5" y="227" width="641.5" height="16" rx="4" fill="#0ca30c"><title>service gg_srcpdb: ONLINE @ ggrac2 [1.5 .. 120.0 s]</title></rect>
+<text x="608.3" y="239.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac2</text>
+<text x="160.0" y="265.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">ACFS OGGVOL</text>
+<rect x="171.0" y="253" width="244.9" height="16" rx="4" fill="#0ca30c"><title>ACFS OGGVOL: ONLINE @ ggrac1 [-20.0 .. 25.5 s]</title></rect>
+<text x="293.4" y="265.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac1</text>
+<rect x="417.9" y="253" width="511.1" height="16" rx="4" fill="#0ca30c"><title>ACFS OGGVOL: ONLINE @ ggrac2 [25.5 .. 120.0 s]</title></rect>
+<text x="673.4" y="265.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac2</text>
+<text x="160.0" y="291.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">VIP oggvip</text>
+<rect x="171.0" y="279" width="238.0" height="16" rx="4" fill="#0ca30c"><title>VIP oggvip: ONLINE @ ggrac1 [-20.0 .. 24.2 s]</title></rect>
+<text x="290.0" y="291.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac1</text>
+<rect x="411.0" y="279" width="4.8" height="16" rx="4" fill="#d03b3b"><title>VIP oggvip: OFFLINE [24.2 .. 25.5 s]</title></rect>
+<rect x="417.8" y="279" width="511.2" height="16" rx="4" fill="#0ca30c"><title>VIP oggvip: ONLINE @ ggrac2 [25.5 .. 120.0 s]</title></rect>
+<text x="673.4" y="291.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac2</text>
+<text x="160.0" y="317.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">XAG resource (SM)</text>
+<rect x="171.0" y="305" width="238.1" height="16" rx="4" fill="#0ca30c"><title>XAG resource (SM): ONLINE @ ggrac1 [-20.0 .. 24.2 s]</title></rect>
+<text x="290.0" y="317.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac1</text>
+<rect x="411.1" y="305" width="46.0" height="16" rx="4" fill="#d03b3b"><title>XAG resource (SM): OFFLINE [24.2 .. 33.1 s]</title></rect>
+<rect x="459.1" y="305" width="469.9" height="16" rx="4" fill="#0ca30c"><title>XAG resource (SM): ONLINE @ ggrac2 [33.1 .. 120.0 s]</title></rect>
+<text x="694.0" y="317.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac2</text>
+<text x="160.0" y="343.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">Extract EXT1</text>
+<rect x="171.0" y="331" width="238.1" height="16" rx="4" fill="#0ca30c"><title>Extract EXT1: RUNNING @ ggrac1 [-20.0 .. 24.2 s]</title></rect>
+<text x="290.0" y="343.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac1</text>
+<rect x="411.1" y="331" width="29.5" height="16" rx="4" fill="#b4b2a9"><title>Extract EXT1: unknown / not observable [24.2 .. 30.0 s]</title></rect>
+<rect x="442.6" y="331" width="14.5" height="16" rx="4" fill="#b4b2a9"><title>Extract EXT1: unknown / not observable [30.0 .. 33.1 s]</title></rect>
+<rect x="459.1" y="331" width="9.3" height="16" rx="4" fill="#d03b3b"><title>Extract EXT1: STOPPED [33.1 .. 35.2 s]</title></rect>
+<rect x="470.4" y="331" width="137.3" height="16" rx="4" fill="#d03b3b"><title>Extract EXT1: STOPPED @ ggrac2 [35.2 .. 60.8 s]</title></rect>
+<text x="539.1" y="343.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac2</text>
+<rect x="609.7" y="331" width="319.3" height="16" rx="4" fill="#0ca30c"><title>Extract EXT1: RUNNING @ ggrac2 [60.8 .. 120.0 s]</title></rect>
+<text x="769.4" y="343.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac2</text>
+<text x="160.0" y="369.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">Path DP1</text>
+<rect x="171.0" y="357" width="174.0" height="16" rx="4" fill="#0ca30c"><title>Path DP1: RUNNING @ ggrac1 [-20.0 .. 12.4 s]</title></rect>
+<text x="258.0" y="369.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac1</text>
+<rect x="347.0" y="357" width="62.0" height="16" rx="4" fill="#d03b3b"><title>Path DP1: STOPPED @ ggrac1 [12.4 .. 24.2 s]</title></rect>
+<text x="378.1" y="369.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac1</text>
+<rect x="411.1" y="357" width="1.5" height="16" rx="4" fill="#b4b2a9"><title>Path DP1: unknown / not observable [24.2 .. 24.9 s]</title></rect>
+<rect x="414.6" y="357" width="26.0" height="16" rx="4" fill="#b4b2a9"><title>Path DP1: unknown / not observable [24.9 .. 30.0 s]</title></rect>
+<rect x="442.6" y="357" width="14.5" height="16" rx="4" fill="#b4b2a9"><title>Path DP1: unknown / not observable [30.0 .. 33.1 s]</title></rect>
+<rect x="459.1" y="357" width="9.3" height="16" rx="4" fill="#0ca30c"><title>Path DP1: RUNNING [33.1 .. 35.2 s]</title></rect>
+<rect x="470.4" y="357" width="458.6" height="16" rx="4" fill="#0ca30c"><title>Path DP1: RUNNING @ ggrac2 [35.2 .. 120.0 s]</title></rect>
+<text x="699.7" y="369.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggrac2</text>
+<text x="160.0" y="395.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">Replicat REP1</text>
+<rect x="171.0" y="383" width="758.0" height="16" rx="4" fill="#0ca30c"><title>Replicat REP1: RUNNING @ ggtgt [-20.0 .. 120.0 s]</title></rect>
+<text x="550.0" y="395.0" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">ggtgt</text>
+<line x1="278.6" y1="113.0" x2="278.6" y2="404" stroke="#0b0b0b" stroke-width="1.2" stroke-dasharray="none"/>
+<text x="278.6" y="110.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">fault 0.0 s</text>
+<line x1="346.0" y1="100.0" x2="346.0" y2="404" stroke="#0b0b0b" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="346.0" y="97.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">detect 12.4 s</text>
+<line x1="629.0" y1="113.0" x2="629.0" y2="404" stroke="#0b0b0b" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="629.0" y="110.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">lag OK 64.5 s</text>
+<text x="20.0" y="482.0" font-size="11" fill="#898781" text-anchor="start" font-weight="normal">Measured 16.11.2026 on VirtualBox (laptop), 3 vCPU per RAC node, load 10 rows/s per instance.</text>
+</svg>

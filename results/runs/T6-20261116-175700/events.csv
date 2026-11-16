@@ -1,0 +1,17 @@
+ts_utc,t_rel_s,test_id,run_no,resource,node,state_from,state_to,source,raw
+2026-11-16T17:57:05.688Z,-59.220,T6,2,vip,ggrac1,,ONLINE,crsctl,RES vip ggrac1 ONLINE
+2026-11-16T17:57:05.695Z,-59.213,T6,2,inst:ggcdb1,ggrac1,,ONLINE,crsctl,INST ggcdb1 ggrac1 ONLINE
+2026-11-16T17:57:05.705Z,-59.203,T6,2,inst:ggcdb2,ggrac2,,ONLINE,crsctl,INST ggcdb2 ggrac2 ONLINE
+2026-11-16T17:57:05.707Z,-59.201,T6,2,svc,ggrac1,,ONLINE,crsctl,RES svc ggrac1 ONLINE
+2026-11-16T17:57:05.709Z,-59.199,T6,2,sm,ggrac1,,ONLINE,crsctl,RES sm ggrac1 ONLINE
+2026-11-16T17:57:05.710Z,-59.198,T6,2,acfs,ggrac1,,ONLINE,crsctl,RES acfs ggrac1 ONLINE
+2026-11-16T17:57:05.770Z,-59.138,T6,2,node:ggrac1,ggrac1,,Active,olsnodes,NODE ggrac1 Active
+2026-11-16T17:57:05.774Z,-59.134,T6,2,node:ggrac2,ggrac2,,Active,olsnodes,NODE ggrac2 Active
+2026-11-16T17:57:06.196Z,-58.712,T6,2,REP1,ggtgt,,RUNNING,adminclient,PROC REP1 ggtgt RUNNING
+2026-11-16T17:57:06.354Z,-58.554,T6,2,EXT1,ggrac1,,RUNNING,adminclient,PROC EXT1 ggrac1 RUNNING
+2026-11-16T17:57:06.357Z,-58.551,T6,2,DP1,ggrac1,,RUNNING,adminclient,PROC DP1 ggrac1 RUNNING
+2026-11-16T17:58:04.907Z,0.000,T6,2,fault,ggrac1,,injected,host,"p=$(pgrep -f '[e]xtract.*EXT1'); [ -n ""$p"" ] || { echo 'no extract process'; exit 3; }; kill -9 $p"
+2026-11-16T17:58:07.507Z,2.599,T6,2,EXT1,ggrac1,RUNNING,ABENDED,adminclient,PROC EXT1 ggrac1 ABENDED
+2026-11-16T17:58:26.795Z,21.887,T6,2,sm,ggrac1,ONLINE,INTERMEDIATE,crsctl,RES sm ggrac1 INTERMEDIATE
+2026-11-16T17:58:38.314Z,33.406,T6,2,EXT1,ggrac1,ABENDED,RUNNING,adminclient,PROC EXT1 ggrac1 RUNNING
+2026-11-16T17:58:56.305Z,51.397,T6,2,sm,ggrac1,INTERMEDIATE,ONLINE,crsctl,RES sm ggrac1 ONLINE

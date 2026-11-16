@@ -1,0 +1,10 @@
+I:2026-11-16 14:36:29.613515 :   CRSPE:140345811138112: [     INFO] {0:7:24} ICE has queued an operation. Details: Operation [START of [ora.ggcdb.db 1 1] on [ggrac1] : Op:0x7fa5108a2ce0, Cmd:0x7fa5105
+I:2026-11-16 14:58:59.961474 :   CRSPE:140345811138112: [     INFO] {0:10:23} ICE has queued an operation. Details: Operation [START of [ora.ggcdb.db 1 1] on [ggrac1] : Op:0x7fa5108db930, Cmd:0x7fa4e0
+I:2026-11-16 15:45:06.864384 :    CRSD:140345811138112: [     INFO] {0:13:26} {0:13:26} No Local Restart of [ora.ggcdb.db 1 1], restart attempt exhausted
+I:2026-11-16 15:45:06.865196 :    CRSD:140345811138112: [    ERROR] {0:13:26} {0:13:26} Created alert : (:CRSPE00198:) :  Failover cannot be completed for [ora.ggcdb.db 1 1]. Stopping it and the resou
+I:2026-11-16 15:45:32.538639 :    CRSD:140345811138112: [    ERROR] {0:13:26} {0:13:26} Created alert : (:CRSPE00198:) :  Failover cannot be completed for [ora.ggcdb.db 1 1]. Stopping it and the resou
+I:2026-11-16 16:23:50.695672 :   CRSPE:140345811138112: [     INFO] {0:16:16} ICE has queued an operation. Details: Operation [START of [ora.ggcdb.db 1 1] on [ggrac1] : Op:0x7fa5108a2ce0, Cmd:0x7fa4e0
+I:2026-11-16 16:35:59.372804 :   CRSPE:140345811138112: [     INFO] {0:19:21} ICE has queued an operation. Details: Operation [START of [ora.ggcdb.db 1 1] on [ggrac1] : Op:0x7fa51081d240, Cmd:0x7fa510
+I:2026-11-16 16:44:09.567031 :    CRSD:140345811138112: [     INFO] {0:22:27} {0:22:27} No Local Restart of [ora.ggcdb.db 1 1], restart attempt exhausted
+I:2026-11-16 16:44:09.576647 :    CRSD:140345811138112: [    ERROR] {0:22:27} {0:22:27} Created alert : (:CRSPE00198:) :  Failover cannot be completed for [ora.ggcdb.db 1 1]. Stopping it and the resou
+I:2026-11-16 16:44:35.370573 :    CRSD:140345811138112: [    ERROR] {0:22:27} {0:22:27} Created alert : (:CRSPE00198:) :  Failover cannot be completed for [ora.ggcdb.db 1 1]. Stopping it and the resou

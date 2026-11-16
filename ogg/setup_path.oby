@@ -1,0 +1,14 @@
+-- ==============================================================================
+-- Tytul:        setup_path.oby
+-- Opis:         Distribution Path dp1 (blok 8 raportu) z deploymentu oggsource do Receivera na ggtgt.
+--               Zrodlo zawsze localhost (sciezka startuje na kazdym wezle RAC). Etap A: ws://,
+--               etap B: wss://. {{...}} wstawia host (szablon renderowany do guest/out).
+-- Description [EN]: Distribution Path dp1 (report block 8) from deployment oggsource to the ggtgt
+--               Receiver. The source is always localhost (the path starts on any RAC node). Stage A:
+--               ws://, stage B: wss://. {{...}} filled by the host (rendered into guest/out).
+-- Autor: KCB Kris | Data: 2026-11-14 | Wersja: 1.0 | Konwencje: <repo>/SETTINGS.md
+-- ==============================================================================
+ADD DISTPATH dp1 SOURCE trail://localhost:{{OGG_PORT_DIST}}/services/v2/sources?trail=et TARGET {{OGG_PATH_PROTO}}://{{TGT_NAME}}.{{LAB_DOMAIN}}:{{OGG_PORT_RECV}}/services/v2/targets?trail=et AUTHENTICATION USERIDALIAS ggtgt_dp DOMAIN OracleGoldenGate
+-- MAA Task 10: restart after a Distribution Service start (LAB: adminclient syntax for Retries 10, Delay 1 min)
+START DISTPATH dp1
+INFO DISTPATH dp1

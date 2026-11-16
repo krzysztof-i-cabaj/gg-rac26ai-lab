@@ -1,0 +1,122 @@
+{
+  "test_id": "T8",
+  "run_no": 1,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": null,
+    "t_service_online": null,
+    "t_acfs_online": null,
+    "t_vip_online": null,
+    "t_sm_running": null,
+    "t_ext_running": null,
+    "t_dp_running": null,
+    "t_rep_running": null,
+    "t_lag_ok": null
+  },
+  "segments": [],
+  "rto_s": null,
+  "rto_basis": null,
+  "lag_max_s": 15.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": false,
+  "fault_kind": "none",
+  "service_moved": false,
+  "expected_gg_node": null,
+  "pass": true,
+  "title": "Lag through heartbeat",
+  "synthetic": false,
+  "disturbed": true,
+  "approved_by": "",
+  "invoked_by": "agent",
+  "data_checked": true,
+  "refused": false,
+  "clock_offsets_ms": {
+    "gginfra": -0.441,
+    "ggrac1": 0.002,
+    "ggrac2": -0.0,
+    "ggtgt": -0.001
+  },
+  "recovered": true,
+  "xag_restarts": 0,
+  "attempt": 3,
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "evicted_node": "",
+  "data_ok": true,
+  "stage": "A",
+  "final_node": "ggrac1",
+  "xag_action": "none",
+  "notes": [
+    "Baseline under load, 10 minutes."
+  ],
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {
+      "raw_crs": {
+        "samples": 536,
+        "median_s": 1.251,
+        "max_s": 2.114
+      },
+      "raw_gg_src": {
+        "samples": 266,
+        "median_s": 2.516,
+        "max_s": 3.991
+      },
+      "raw_gg_tgt": {
+        "samples": 282,
+        "median_s": 2.39,
+        "max_s": 3.439
+      },
+      "raw_lag": {
+        "samples": 620,
+        "median_s": 1.086,
+        "max_s": 1.444
+      }
+    }
+  },
+  "fault_command": "(no fault)",
+  "harness_error": false,
+  "expected": {
+    "FinalNode": "ggrac1",
+    "Source": "lab verification report, film concept note; no THREADS option in ADD EXTRACT (GG 26 docs)",
+    "RtoS": "nie dotyczy",
+    "Hypothesis": "lag under load a few seconds, always below 30 s; rows of INST 1 and 2 reach the target (Extract reads both threads)",
+    "Recovers": "nie dotyczy",
+    "DataLoss": 0
+  },
+  "expected_written_utc": "2026-11-16T11:09:21.669Z",
+  "expected_match": true,
+  "expected_check": [
+    {
+      "field": "final_node",
+      "expected": "ggrac1",
+      "actual": "ggrac1",
+      "match": true
+    },
+    {
+      "field": "data_loss",
+      "expected": 0,
+      "actual": 0,
+      "match": true
+    }
+  ],
+  "back_to_base_s": 51.8,
+  "back_to_base_ok": true
+}

@@ -1,0 +1,22 @@
+ts_utc,t_rel_s,test_id,run_no,resource,node,state_from,state_to,source,raw
+2026-11-16T16:52:23.773Z,-59.138,T5,2,vip,ggrac1,,ONLINE,crsctl,RES vip ggrac1 ONLINE
+2026-11-16T16:52:23.778Z,-59.133,T5,2,inst:ggcdb1,ggrac1,,ONLINE,crsctl,INST ggcdb1 ggrac1 ONLINE
+2026-11-16T16:52:23.783Z,-59.128,T5,2,inst:ggcdb2,ggrac2,,ONLINE,crsctl,INST ggcdb2 ggrac2 ONLINE
+2026-11-16T16:52:23.785Z,-59.126,T5,2,svc,ggrac1,,ONLINE,crsctl,RES svc ggrac1 ONLINE
+2026-11-16T16:52:23.786Z,-59.125,T5,2,sm,ggrac1,,ONLINE,crsctl,RES sm ggrac1 ONLINE
+2026-11-16T16:52:23.787Z,-59.124,T5,2,acfs,ggrac1,,ONLINE,crsctl,RES acfs ggrac1 ONLINE
+2026-11-16T16:52:23.835Z,-59.076,T5,2,node:ggrac1,ggrac1,,Active,olsnodes,NODE ggrac1 Active
+2026-11-16T16:52:23.838Z,-59.073,T5,2,node:ggrac2,ggrac2,,Active,olsnodes,NODE ggrac2 Active
+2026-11-16T16:52:24.249Z,-58.662,T5,2,REP1,ggtgt,,RUNNING,adminclient,PROC REP1 ggtgt RUNNING
+2026-11-16T16:52:24.431Z,-58.480,T5,2,EXT1,ggrac1,,RUNNING,adminclient,PROC EXT1 ggrac1 RUNNING
+2026-11-16T16:52:24.434Z,-58.477,T5,2,DP1,ggrac1,,RUNNING,adminclient,PROC DP1 ggrac1 RUNNING
+2026-11-16T16:53:22.910Z,0.000,T5,2,fault,ggrac1,,injected,host,"p=$(pgrep -f '/u01/app/ogg/ogg26ai_ma/bin/[S]erviceManager'); [ -n ""$p"" ] || { echo 'no ServiceManager process'; exit 3; }; kill -9 $p"
+2026-11-16T16:53:23.764Z,0.853,T5,2,DP1,ggrac1,RUNNING,STOPPED,adminclient,PROC DP1 ggrac1 STOPPED
+2026-11-16T16:53:35.596Z,12.685,T5,2,DP1,-,STOPPED,STOPPED,adminclient,PROC DP1 - STOPPED
+2026-11-16T16:53:35.745Z,12.834,T5,2,sm,-,ONLINE,OFFLINE,crsctl,RES sm - OFFLINE
+2026-11-16T16:53:40.859Z,17.948,T5,2,EXT1,-,RUNNING,ABENDED,adminclient,PROC EXT1 - ABENDED
+2026-11-16T16:53:40.863Z,17.952,T5,2,DP1,-,STOPPED,RUNNING,adminclient,PROC DP1 - RUNNING
+2026-11-16T16:53:44.762Z,21.851,T5,2,sm,ggrac1,OFFLINE,ONLINE,crsctl,RES sm ggrac1 ONLINE
+2026-11-16T16:53:46.043Z,23.132,T5,2,EXT1,ggrac1,ABENDED,ABENDED,adminclient,PROC EXT1 ggrac1 ABENDED
+2026-11-16T16:53:46.046Z,23.135,T5,2,DP1,ggrac1,RUNNING,RUNNING,adminclient,PROC DP1 ggrac1 RUNNING
+2026-11-16T16:54:11.999Z,49.088,T5,2,EXT1,ggrac1,ABENDED,RUNNING,adminclient,PROC EXT1 ggrac1 RUNNING

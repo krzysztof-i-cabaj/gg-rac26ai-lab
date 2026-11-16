@@ -1,0 +1,19 @@
+-- ==============================================================================
+-- Tytul:        ext1.prm
+-- Opis:         Parametry per-PDB Integrated Extract ext1 (blok 7 raportu): logowanie aliasem
+--               z credential store, trail et, DDL tabel mapowanych, schematy HR i SALES.
+-- Description [EN]: Parameters of the per-PDB Integrated Extract ext1 (report block 7): login by
+--               credential store alias, trail et, DDL of mapped tables, schemas HR and SALES.
+-- Autor: KCB Kris | Data: 2026-11-14 | Wersja: 1.0 | Konwencje: <repo>/SETTINGS.md
+-- Uzycie / Usage: 88_oggconf_source.sh kopiuje do <deployment>/etc/conf/ogg/ext1.prm
+-- ==============================================================================
+EXTRACT ext1
+USERIDALIAS ggsource DOMAIN OracleGoldenGate
+TRANLOGOPTIONS INTEGRATEDPARAMS (max_sga_size 512, parallelism 2)
+-- LOGALLSUPCOLS and UPDATERECORDFORMAT COMPACT are defaults in 26: not repeated here
+WARNLONGTRANS 2H, CHECKINTERVAL 30M
+EXTTRAIL et
+-- LAB: DDL parameter not checked in the 26ai Reference (test T10)
+DDL INCLUDE MAPPED
+TABLE HR.*;
+TABLE SALES.*;

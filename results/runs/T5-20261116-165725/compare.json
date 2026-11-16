@@ -1,0 +1,97 @@
+{
+  "ts_utc": "2026-11-16T17:01:40.611Z",
+  "data_ok": true,
+  "reason": "",
+  "tables": [
+    {
+      "Table": "HR.DEPARTMENTS",
+      "SourceRows": 4,
+      "TargetRows": 4,
+      "Missing": 0,
+      "SourceHash": "8684312551",
+      "TargetHash": "8684312551",
+      "Match": true
+    },
+    {
+      "Table": "HR.EMPLOYEES",
+      "SourceRows": 20,
+      "TargetRows": 20,
+      "Missing": 0,
+      "SourceHash": "44420337760",
+      "TargetHash": "44420337760",
+      "Match": true
+    },
+    {
+      "Table": "SALES.CUSTOMERS",
+      "SourceRows": 10,
+      "TargetRows": 10,
+      "Missing": 0,
+      "SourceHash": "21258183646",
+      "TargetHash": "21258183646",
+      "Match": true
+    },
+    {
+      "Table": "SALES.ORDERS",
+      "SourceRows": 50,
+      "TargetRows": 50,
+      "Missing": 0,
+      "SourceHash": "119269681483",
+      "TargetHash": "119269681483",
+      "Match": true
+    },
+    {
+      "Table": "SALES.LOAD_EVENTS",
+      "SourceRows": 4684,
+      "TargetRows": 4684,
+      "Missing": 0,
+      "SourceHash": "10104188378179",
+      "TargetHash": "10104188378179",
+      "Match": true
+    },
+    {
+      "Table": "SALES.TYPES26",
+      "SourceRows": 3,
+      "TargetRows": 3,
+      "Missing": 0,
+      "SourceHash": "4441312419",
+      "TargetHash": "4441312419",
+      "Match": true
+    }
+  ],
+  "seq_check": [
+    {
+      "inst": "1",
+      "source_rows": 2348,
+      "target_rows": 2348,
+      "missing": 0,
+      "extra_target": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "source_min": 135152,
+      "source_max": 139499,
+      "target_min": 135152,
+      "target_max": 139499
+    },
+    {
+      "inst": "2",
+      "source_rows": 2336,
+      "target_rows": 2336,
+      "missing": 0,
+      "extra_target": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "source_min": 134556,
+      "source_max": 138891,
+      "target_min": 134556,
+      "target_max": 138891
+    }
+  ],
+  "seq_source": [
+    "SEQ 1 2348 2348 135152 139499",
+    "SEQ 2 2336 2336 134556 138891"
+  ],
+  "seq_target": [
+    "SEQ 2 2336 2336 134556 138891",
+    "SEQ 1 2348 2348 135152 139499"
+  ]
+}

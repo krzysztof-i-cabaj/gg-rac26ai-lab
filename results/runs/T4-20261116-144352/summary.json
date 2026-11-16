@@ -1,0 +1,165 @@
+{
+  "test_id": "T4",
+  "run_no": 1,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": 8.769,
+    "t_service_online": 8.783,
+    "t_acfs_online": null,
+    "t_vip_online": null,
+    "t_sm_running": null,
+    "t_ext_running": null,
+    "t_dp_running": null,
+    "t_rep_running": null,
+    "t_lag_ok": null
+  },
+  "segments": [
+    {
+      "name": "fault_to_detect",
+      "seconds": 8.769
+    },
+    {
+      "name": "detect_to_service",
+      "seconds": 0.014
+    }
+  ],
+  "segments_out_of_order": [],
+  "segments_measured": [
+    {
+      "name": "fault_to_crs_detect",
+      "from": "t_fault",
+      "to": "t_crs_detect",
+      "from_t_rel_s": 0.0,
+      "to_t_rel_s": 8.769,
+      "seconds": 8.769
+    },
+    {
+      "name": "crs_detect_to_service_online",
+      "from": "t_crs_detect",
+      "to": "t_service_online",
+      "from_t_rel_s": 8.769,
+      "to_t_rel_s": 8.783,
+      "seconds": 0.014
+    }
+  ],
+  "rto_s": null,
+  "rto_basis": null,
+  "lag_max_s": 1213.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": true,
+  "title": "Instance abort",
+  "recovered": false,
+  "test_variant": null,
+  "evicted_node": "",
+  "data_ok": false,
+  "notes": [
+    "Same segment list as T2.",
+    "no recovery within 900 s",
+    "data: tables differ: HR.DEPARTMENTS, HR.EMPLOYEES, SALES.CUSTOMERS, SALES.ORDERS, SALES.LOAD_EVENTS, SALES.TYPES26; no load rows on the source (loadgen did not write); SEQ check: inst 2: missing 0, extra 637, duplicates 0; inst 1: missing 0, extra 639, duplicates 0"
+  ],
+  "fault_command": "p=$(pgrep -f '[o]ra_pmon_ggcdb1'); [ -n \"$p\" ] || { echo 'no pmon process'; exit 3; }; kill -9 $p",
+  "observe_s": 1021.6,
+  "service_moved": true,
+  "pass": false,
+  "synthetic": false,
+  "intervention_rc": null,
+  "xag_restarts": 0,
+  "measurement_error": "data_compare",
+  "final_node": "-",
+  "intervention_command": null,
+  "data_checked": false,
+  "harness_error": false,
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {
+      "raw_crs": {
+        "samples": 1021,
+        "median_s": 1.237,
+        "max_s": 2.113
+      },
+      "raw_gg_src": {
+        "samples": 540,
+        "median_s": 2.337,
+        "max_s": 3.789
+      },
+      "raw_gg_tgt": {
+        "samples": 526,
+        "median_s": 2.408,
+        "max_s": 3.793
+      },
+      "raw_lag": {
+        "samples": 1162,
+        "median_s": 1.09,
+        "max_s": 1.492
+      }
+    }
+  },
+  "refused": false,
+  "config_rev": "maa-singleton-local-svc",
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "approved_by": "operator",
+  "stage": "A",
+  "xag_action": "none",
+  "expected_gg_node": null,
+  "disturbed": true,
+  "attempt": 6,
+  "invoked_by": "agent",
+  "clock_offsets_ms": {
+    "gginfra": 0.269,
+    "ggrac1": 0.026,
+    "ggrac2": -0.001,
+    "ggtgt": 0.004
+  },
+  "fault_kind": "abort",
+  "expected": {
+    "Source": "MAA 26ai (--use_local_services, Task 3 and 7), lab verification report",
+    "FinalNode": "ggrac2",
+    "DataLoss": 0,
+    "RtoS": "nie wiemy",
+    "Hypothesis": "GoldenGate follows the service to ggrac2 although node 1 and its ACFS stay up (risk: XAG stays on ggrac1 without a database)",
+    "Recovers": true
+  },
+  "expected_written_utc": "2026-11-16T14:43:56.956Z",
+  "expected_match": false,
+  "expected_check": [
+    {
+      "field": "final_node",
+      "expected": "ggrac2",
+      "actual": "-",
+      "match": false
+    },
+    {
+      "field": "recovers",
+      "expected": true,
+      "actual": false,
+      "match": false
+    },
+    {
+      "field": "data_loss",
+      "expected": 0,
+      "actual": "rows differ",
+      "match": false
+    }
+  ],
+  "back_to_base_s": 409.8,
+  "back_to_base_ok": true,
+  "measurement_note": "compare.sh ran on ggrac1 where ggcdb1 was down (ORA-01034): source not compared; data_ok=false is not a data loss"
+}

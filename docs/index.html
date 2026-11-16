@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GoldenGate 23.26 on RAC 26ai with XAG: a lab that measures failover</title>
+<meta name="description" content="A VirtualBox lab built with one command: Oracle AI Database 26ai two-node RAC, GoldenGate 23.26 Microservices under XAG with ACFS, and ten failure tests with measured recovery times.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="alternate" hreflang="pl" href="pl/">
+<link rel="alternate" hreflang="en" href="./">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="dot" aria-hidden="true"></span>gg-rac26ai-lab</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#why">Why</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#data-path">Data path</a>
+      <a href="#install">Install</a>
+      <a href="#tests">Tests</a>
+      <a href="#timeline">Failover</a>
+      <a href="#results">Results</a>
+      <a href="#requirements">Requirements</a>
+      <a href="#film">Film</a>
+    </nav>
+    <div class="lang" aria-label="Language"><span>EN</span><a href="pl/" hreflang="pl" lang="pl" data-lang-switch>PL</a></div>
+    <a class="gh" data-gh="" href="#requirements">GitHub ↗</a>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap hero" id="top">
+  <div class="hero-grid">
+  <div>
+  <div class="eyebrow">Open lab · VirtualBox · PowerShell 7</div>
+  <h1>GoldenGate on a two-node RAC, built with one command, then <em>broken on purpose</em>.</h1>
+  <p class="lede">Oracle AI Database 26ai (23.26) RAC as the source, GoldenGate 23.26 Microservices kept highly available by XAG on ACFS,
+    a single-instance target. Tests T1–T10 cut power, kill processes and split the interconnect, then record how long
+    replication needs to come back and whether any row is lost.</p>
+  <div class="cmd" aria-label="Command"><span class="ps">PS&gt;</span>.\lab.cmd all</div>
+  <div class="btns">
+    <a class="btn primary" href="#tests">See the test results</a>
+    <a class="btn" data-gh="" href="#requirements">Source on GitHub</a>
+    <a class="btn" href="#install">Three ways to install</a>
+  </div>
+  </div>
+  <aside class="split" aria-label="T2 recovery time by phase">
+    <h3>GoldenGate node powered off (T2)</h3>
+    <div class="total">131.4 s <small>until lag &lt; 30 s</small></div>
+    <div class="bar" aria-hidden="true"><i class="s1" style="flex:32.7"></i><i class="s2" style="flex:12.1"></i><i class="s3" style="flex:28.6"></i><i class="s4" style="flex:58.0"></i></div>
+    <ol>
+      <li><i class="s1" style="background:#b8c2cc"></i><b>32.7 s</b><span>cluster detects the loss, evicts ggrac1</span></li>
+      <li><i style="background:var(--red)"></i><b>12.1 s</b><span>XAG brings service, VIP, ACFS, Service Manager up on ggrac2</span></li>
+      <li><i style="background:var(--amber)"></i><b>28.6 s</b><span>Extract restarted by its MAA profile</span></li>
+      <li><i style="background:var(--blue)"></i><b>58.0 s</b><span>Extract catches up</span></li>
+    </ol>
+    <p class="src">Median of three runs, measured 16.11.2026. <a href="#timeline">Full timeline</a></p>
+  </aside>
+  </div>
+
+  <div class="stats" role="list">
+    <div class="stat" role="listitem"><b>131.4 s</b><span>GoldenGate node powered off: until lag &lt; 30 s again (T2, median of 3)</span></div>
+    <div class="stat" role="listitem"><b>53.0 s</b><span>Service Manager killed: XAG restarts it in place (T5, median of 3)</span></div>
+    <div class="stat warn" role="listitem"><b>no restart</b><span>Instance crash only (T4): XAG stops GoldenGate and waits for a human</span></div>
+    <div class="stat" role="listitem"><b>0 rows</b><span>lost in every passed run, checked per table and per instance sequence</span></div>
+  </div>
+</div>
+
+<section id="why">
+  <div class="wrap">
+    <div class="kicker">Why this lab</div>
+    <h2>The MAA layout, tested with unplanned failures</h2>
+    <p class="intro">Oracle Maximum Availability Architecture (MAA) describes GoldenGate Microservices on RAC with XAG and a
+      shared file system. Most public material shows the planned move, <code>agctl relocate</code>. This lab builds the same layout
+      on a laptop and then measures what happens when something fails without warning.</p>
+    <div class="grid g3">
+      <div class="card">
+        <h3>Reproducible</h3>
+        <p>One configuration file, <code>lab.config.psd1</code>. Every step can be run again; a half-finished step stops with
+          instructions and deletes nothing.</p>
+      </div>
+      <div class="card">
+        <h3>Measured from outside</h3>
+        <p>The test automation runs on the host, samples cluster, GoldenGate and lag over SSH about every second, and writes
+          one set of result files per run: events, lag, load, data comparison, summary.</p>
+      </div>
+      <div class="card">
+        <h3>Honest results</h3>
+        <p>Expectations are written down before each fault. Runs that did not match, and runs spoiled by the automation, stay in
+          the record with the reason.</p>
+      </div>
+    </div>
+    <h3 style="margin-top:34px">What every failure test records</h3>
+    <ul class="list-check">
+      <li>Recovery time: fault until the lag is below 30 s again (RTO)</li>
+      <li>Highest lag during the run, from the target heartbeat view</li>
+      <li>Rows lost: counts, hashes and the sequence of each RAC instance</li>
+      <li>Node that runs GoldenGate at the end, and which node was evicted</li>
+      <li>What XAG did: restart in place, relocate, or nothing</li>
+      <li>Time to bring the lab back to its base state, manual steps if any</li>
+    </ul>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="wrap">
+    <div class="kicker">Architecture</div>
+    <h2>Four VMs, one host-only network</h2>
+    <p class="intro"><code>gginfra</code> serves DNS (with the SCAN round-robin) and NTP. <code>ggrac1</code> and <code>ggrac2</code> form the
+      cluster with Grid Infrastructure 23.26.4, the RAC database <code>ggcdb</code> with PDB <code>SRCPDB</code>, and the GoldenGate
+      software on both nodes. <code>ggtgt</code> holds the target database <code>tgtcdb</code> / <code>TGTPDB</code> and its own GoldenGate deployment.</p>
+    <figure class="wide">
+      <a href="diagrams/01-topology.svg" target="_blank"><img src="diagrams/01-topology.svg" alt="Lab topology: host, four VMs, host-only network with SCAN and oggvip, RAC interconnect, shared disks" loading="lazy" width="1200" height="730"></a>
+      <figcaption>Addresses, vCPU, RAM and disks as set in <code>lab.config.psd1</code>. The two shared disks are fixed-size VDI files attached to both RAC nodes.</figcaption>
+    </figure>
+    <h3 style="margin-top:40px">How XAG keeps GoldenGate on one node</h3>
+    <p class="intro">The source deployment lives on ACFS and answers on its own address, <code>oggvip</code>. One XAG resource has a hard
+      start dependency on the singleton PDB service <code>gg_srcpdb</code>, the ACFS file system and the VIP. It starts the Service Manager
+      only on the node where all three are online, so the whole chain moves together.</p>
+    <figure class="wide">
+      <a href="diagrams/02-ha-chain-and-data.svg" target="_blank"><img src="diagrams/02-ha-chain-and-data.svg" alt="XAG resource depending on the service, ACFS and VIP; Service Manager and deployment oggsource on ggrac1; target deployment on ggtgt" loading="lazy" width="1200" height="670"></a>
+      <figcaption>Stage A of the lab: Service Manager bound to <code>oggvip</code>, <code>ws://</code> path without TLS. Stage B (NGINX in front, as in MAA) is a configuration switch and not yet measured.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="data-path">
+  <div class="wrap">
+    <div class="kicker">Data path</div>
+    <h2>From two redo threads to one target PDB</h2>
+    <p class="intro">A load generator commits one row at a time on both RAC instances. A single per-PDB Integrated Extract reads the redo
+      of both threads, writes the trail to ACFS, and a Distribution Path sends it to the Receiver on <code>ggtgt</code>, where a
+      Parallel Replicat applies it. Heartbeat rows travel the same way and give the lag.</p>
+    <figure class="wide">
+      <a href="diagrams/06-data-path.svg" target="_blank"><img src="diagrams/06-data-path.svg" alt="Data path from load generator through redo, EXT1, trail, DP1, Receiver and REP1 into TGTPDB, with the heartbeat lane" loading="lazy" width="1200" height="690"></a>
+      <figcaption>Under steady load for 10 minutes (T8) the lag stayed between 5 and 15 s: median 11 s, 95th percentile 14 s.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <div class="kicker">Install</div>
+    <h2>Three ways to the same lab</h2>
+    <p class="intro">All three use the same values and the same commands. The scripts run what the manual describes.
+      Oracle software is not in the repository: you download it yourself (list under <a href="#requirements">Requirements</a>).</p>
+    <figure class="wide">
+      <a href="diagrams/05-install-paths.svg" target="_blank"><img src="diagrams/05-install-paths.svg" alt="Three installation paths: automatic, step by step, by hand" loading="lazy" width="1200" height="600"></a>
+    </figure>
+    <div class="grid g3" style="margin-top:22px">
+      <div class="card path p1">
+        <div class="num">Path 1</div>
+        <h3>Automatic</h3>
+        <pre>.\lab.cmd plan
+.\lab.cmd all</pre>
+        <p>Builds the four VMs and everything on them, then validates. After an error you fix the cause and run it again.</p>
+        <a data-gh="docs/INSTALL_AUTO.md" href="#install">docs/INSTALL_AUTO.md</a>
+      </div>
+      <div class="card path p2">
+        <div class="num">Path 2</div>
+        <h3>Step by step</h3>
+        <pre>.\lab.cmd build
+.\lab.cmd infra   # … then the next step</pre>
+        <p>The same scripts one step at a time, with a check at the end of each and a note on what to look at.</p>
+        <a data-gh="docs/INSTALL_STEPWISE.md" href="#install">docs/INSTALL_STEPWISE.md</a>
+      </div>
+      <div class="card path p3">
+        <div class="num">Path 3</div>
+        <h3>By hand</h3>
+        <pre>gridSetup.sh -silent …
+agctl add goldengate …</pre>
+        <p>Plain commands for your own servers, physical or in another hypervisor: no <code>lab.cmd</code>, no VirtualBox.</p>
+        <a data-gh="docs/MANUAL.md" href="#install">docs/MANUAL.md</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tests">
+  <div class="wrap">
+    <div class="kicker">Failure tests</div>
+    <h2>What we break, what we measure, what happened</h2>
+    <p class="intro">Measured on 16.11.2026 on VirtualBox, three runs for most tests. RTO = seconds from the fault until the lag is
+      below 30 s again. Ranges are min–max of the passed runs. Full procedure: <a data-gh="TESTS.md" href="#tests">TESTS.md</a>.</p>
+    <figure class="wide">
+      <a href="diagrams/04-failure-tests.svg" target="_blank"><img src="diagrams/04-failure-tests.svg" alt="Where each test T1 to T10 hits the lab" loading="lazy" width="1200" height="560"></a>
+    </figure>
+
+    <div class="grid tests" style="margin-top:26px">
+      <article class="card test">
+        <header><span class="tid">T1</span><h3>Planned relocation</h3></header>
+        <dl><dt>Fault</dt><dd><code>agctl relocate goldengate oggsource --node ggrac2</code></dd>
+          <dt>Measured</dt><dd>RTO, does <code>gg_srcpdb</code> move along</dd></dl>
+        <div class="big">64.5 s <small>median, 54.3–65.4</small></div>
+        <p><span class="verdict pass">3 / 3 passed</span> GoldenGate and the service end on ggrac2, 0 rows lost. Max lag 60–69 s.</p>
+      </article>
+      <article class="card test">
+        <header><span class="tid">T2</span><h3>Power-off of the GoldenGate node</h3></header>
+        <dl><dt>Fault</dt><dd><code>VBoxManage controlvm ggrac1 poweroff</code></dd>
+          <dt>Measured</dt><dd>eviction, XAG failover, RTO</dd></dl>
+        <div class="big">131.4 s <small>median, 129.6–135.6</small></div>
+        <p><span class="verdict pass">3 / 3 passed</span> ggrac1 evicted after about 33 s, XAG starts the chain on ggrac2 without a human. 0 rows lost.</p>
+      </article>
+      <article class="card test">
+        <header><span class="tid">T3</span><h3>Power-off of the second node</h3></header>
+        <dl><dt>Fault</dt><dd><code>VBoxManage controlvm ggrac2 poweroff</code></dd>
+          <dt>Measured</dt><dd>lag jump while GoldenGate stays put</dd></dl>
+        <div class="big">40.4 s <small>median, 40.3–127.4</small></div>
+        <p><span class="verdict pass">3 / 3 passed</span> GoldenGate stays on ggrac1. The first ~32 s the cluster is frozen until ggrac2 is evicted. In one run Extract stalled about 60 s more; cause not found.</p>
+      </article>
+      <article class="card test">
+        <header><span class="tid">T4</span><h3>Instance crash</h3></header>
+        <dl><dt>Fault</dt><dd><code>kill -9</code> of PMON of <code>ggcdb1</code>, node stays up</dd>
+          <dt>Measured</dt><dd>does GoldenGate follow the service</dd></dl>
+        <div class="big">no recovery <small>in 900 s</small></div>
+        <p><span class="verdict fail">0 / 2 valid runs passed</span> The service moves to ggcdb2 in about 5 s; XAG stops GoldenGate on ggrac1 and does not start it on ggrac2.
+          Replication waits for a human. CRS restarts the instance locally at most twice an hour (default <code>RESTART_ATTEMPTS=2</code>).</p>
+      </article>
+      <article class="card test">
+        <header><span class="tid">T4b</span><h3>Instance crash + on-call move</h3></header>
+        <dl><dt>Fault</dt><dd>as T4; after 120 s GoldenGate moved to ggrac2 by hand</dd>
+          <dt>Measured</dt><dd>RTO including the human reaction</dd></dl>
+        <div class="big">178.6 s <small>median, 147.7–296.2</small></div>
+        <p><span class="verdict manual">3 / 3 with 1 manual step</span> GoldenGate, VIP and ACFS end on ggrac2 with the service. 0 rows lost.</p>
+      </article>
+      <article class="card test">
+        <header><span class="tid">T5</span><h3>Kill the Service Manager</h3></header>
+        <dl><dt>Fault</dt><dd><code>kill -9</code> of the ServiceManager process</dd>
+          <dt>Measured</dt><dd>restart in place or relocate</dd></dl>
+        <div class="big">53.0 s <small>median, 46.9–56.8</small></div>
+        <p><span class="verdict pass">3 / 3 passed</span> XAG restarts it on ggrac1 every time. Extract goes through ABENDED and runs again about 25–30 s after the Service Manager.</p>
+      </article>
+      <article class="card test">
+        <header><span class="tid">T6</span><h3>Kill a “critical” Extract</h3></header>
+        <dl><dt>Fault</dt><dd><code>kill -9</code> of EXT1 flagged <em>Critical to deployment health</em></dd>
+          <dt>Measured</dt><dd>does the flag get in XAG's way</dd></dl>
+        <div class="big">38.4 s <small>median, 37.3–42.3</small></div>
+        <p><span class="verdict pass">3 / 3 passed</span> Restart in place on ggrac1; the flag did not block it. The flag is set by hand in the web UI before the test.</p>
+      </article>
+      <article class="card test">
+        <header><span class="tid">T7</span><h3>Interconnect cut</h3></header>
+        <dl><dt>Fault</dt><dd><code>VBoxManage controlvm ggrac2 setlinkstate3 off</code></dd>
+          <dt>Measured</dt><dd>which node leaves, does replication return</dd></dl>
+        <div class="big">159.1 s <small>one run</small></div>
+        <p><span class="verdict pass">1 / 1 passed</span> For about 65 s the cluster shows no change; then ggrac2, the node with the cut link, is evicted. GoldenGate stays on ggrac1. Max lag 129 s. Back to base state took 641 s.</p>
+      </article>
+      <article class="card test">
+        <header><span class="tid">T8</span><h3>Lag under load</h3></header>
+        <dl><dt>Load</dt><dd>10 minutes, both instances, one commit per row</dd>
+          <dt>Measured</dt><dd>heartbeat lag, rows of both redo threads</dd></dl>
+        <div class="big">11 s <small>median lag, max 15 s</small></div>
+        <p><span class="verdict pass">passed</span> 6,552 rows from instance 1 and 6,516 from instance 2, identical on both sides.</p>
+      </article>
+      <article class="card test">
+        <header><span class="tid">T9</span><h3>Data comparison</h3></header>
+        <dl><dt>Check</dt><dd>row counts and <code>ORA_HASH</code> sums per table, <code>SEQ</code> per instance</dd>
+          <dt>Runs</dt><dd>after every test, and once on its own</dd></dl>
+        <div class="big">0 / 0 <small>missing / duplicate rows</small></div>
+        <p><span class="verdict pass">passed</span> The same check closes every failure test above.</p>
+      </article>
+      <article class="card test">
+        <header><span class="tid">T10</span><h3>DDL and 26ai data types</h3></header>
+        <dl><dt>Steps</dt><dd>row with <code>VECTOR</code>, <code>BOOLEAN</code>, <code>JSON</code>; <code>ALTER TABLE … ADD</code>; row with the new column</dd>
+          <dt>Measured</dt><dd>time until visible on the target</dd></dl>
+        <div class="big">4.6 · 8.9 · 4.5 s <small>row · DDL · row</small></div>
+        <p><span class="verdict pass">passed</span> Values equal on both sides; <code>DDL INCLUDE MAPPED</code> carries the column change.</p>
+      </article>
+    </div>
+    <p class="note" style="margin-top:18px">Not counted above: runs stopped by the automation itself (lab not in the base state, file lock, a wrong fault command).
+      They are listed with the reason in <a data-gh="docs/RESULTS.md" href="#results">docs/RESULTS.md</a>.</p>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="wrap">
+    <div class="kicker">One failover, second by second</div>
+    <h2>Where the 131 seconds of T2 go</h2>
+    <p class="intro">The median T2 run, drawn from its own event and lag files. Each bar is one cluster or GoldenGate resource; the
+      point marks the first sample in the new state.</p>
+    <figure class="wide">
+      <a href="diagrams/07-failover-timeline.svg" target="_blank"><img src="diagrams/07-failover-timeline.svg" alt="Timeline of a T2 run: eviction at 32.7 s, Service Manager on ggrac2 at 44.8 s, Extract running at 73.4 s, lag below 30 s at 131.4 s" loading="lazy" width="1200" height="800"></a>
+    </figure>
+    <div class="grid phases">
+      <div class="phase p1"><b>32.7 s</b><span>The cluster notices the missing node and evicts it. Nothing can move before that.</span></div>
+      <div class="phase p2"><b>12.1 s</b><span>Service, VIP and ACFS come up on ggrac2, then XAG starts the Service Manager.</span></div>
+      <div class="phase p3"><b>28.6 s</b><span>Extract comes up ABENDED; the MAA profile restarts it after its 30 s wait.</span></div>
+      <div class="phase p4"><b>58.0 s</b><span>Extract catches up; the lag drops below 30 s when the first new heartbeat arrives.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <div class="kicker">Charts</div>
+    <h2>Results at a glance</h2>
+    <p class="intro">Generated from the result files by <code>tools/make_charts.py</code>. Details and every run: <a data-gh="docs/RESULTS.md" href="#results">docs/RESULTS.md</a>.</p>
+    <figure class="wide">
+      <a href="img/results/rto_by_test.svg" target="_blank"><img src="img/results/rto_by_test.svg" alt="Recovery time per failure test, passed runs and median" loading="lazy" width="960" height="460"></a>
+    </figure>
+    <div class="grid g2">
+      <figure><a href="img/results/lag_T1.svg" target="_blank"><img src="img/results/lag_T1.svg" alt="T1: lag around the planned relocation" loading="lazy" width="960" height="440"></a><figcaption>T1 · planned relocation</figcaption></figure>
+      <figure><a href="img/results/lag_T2.svg" target="_blank"><img src="img/results/lag_T2.svg" alt="T2: lag around the power-off of the GoldenGate node" loading="lazy" width="960" height="440"></a><figcaption>T2 · GoldenGate node powered off</figcaption></figure>
+      <figure><a href="img/results/lag_T3.svg" target="_blank"><img src="img/results/lag_T3.svg" alt="T3: lag around the power-off of the second node" loading="lazy" width="960" height="440"></a><figcaption>T3 · second node powered off</figcaption></figure>
+      <figure><a href="img/results/lag_T5.svg" target="_blank"><img src="img/results/lag_T5.svg" alt="T5: lag around the Service Manager kill" loading="lazy" width="960" height="440"></a><figcaption>T5 · Service Manager killed</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="requirements">
+  <div class="wrap">
+    <div class="kicker">Requirements</div>
+    <h2>What you need</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3>Host</h3>
+        <ul>
+          <li>Windows 11, about <b>36 GB free RAM</b> for the VMs (a 64 GB machine is comfortable)</li>
+          <li><b>250–350 GB</b> free disk on any drive</li>
+          <li>VirtualBox 7.x, PowerShell 7, OpenSSH client with a key, Python 3, Git for Windows</li>
+          <li>Windows hypervisor features (Hyper-V, VBS) off: with them VirtualBox runs much slower</li>
+        </ul>
+        <p class="note">Details: <a data-gh="docs/ENVIRONMENT.md" href="#requirements">docs/ENVIRONMENT.md</a></p>
+      </div>
+      <div class="card">
+        <h3>Oracle software (not in the repository)</h3>
+        <p>From Oracle Software Delivery Cloud (eDelivery) and My Oracle Support; you need the right to use them.
+          <code>lab.cmd plan</code> checks the file names.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Component</th><th>File / patch</th></tr></thead>
+            <tbody>
+              <tr><td>Grid Infrastructure 23.26.1</td><td><code>V1054596-01</code></td></tr>
+              <tr><td>Database 23.26.1</td><td><code>V1054592-01</code></td></tr>
+              <tr><td>RU 23.26.4 GI / DB</td><td><code>p40002013</code> · <code>p40007731</code></td></tr>
+              <tr><td>OPatch for 23.x</td><td><code>p6880880</code></td></tr>
+              <tr><td>GoldenGate 23.26.4.0.2</td><td><code>p40225913</code></td></tr>
+              <tr><td>XAG 10.2</td><td><code>p31215432</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="film">
+  <div class="wrap film">
+    <div>
+      <div class="kicker">Film</div>
+      <h2>The tests on video</h2>
+      <p class="intro">A film walks through the build and the failure tests, with the measured times on screen.
+        The link appears here after the premiere.</p>
+    </div>
+    <div class="screen" role="img" aria-label="Video placeholder">
+      <div><div class="play" aria-hidden="true"></div><b>Coming soon</b>YouTube link after the premiere</div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div>
+      <p><b>© 2026 KCB Consulting.</b> Scripts and documentation under the <a data-gh="LICENSE" href="#top">MIT licence</a>.</p>
+      <p>This repository contains no Oracle software. Oracle AI Database, Grid Infrastructure, GoldenGate, XAG and Oracle Linux
+        are products of Oracle Corporation under Oracle's licence terms; you download them yourself.
+        Not affiliated with or endorsed by Oracle. See <a data-gh="NOTICE" href="#top">NOTICE</a>.</p>
+    </div>
+    <div>
+      <p><a data-gh="" href="#top">Repository</a> · <a data-gh="README.md" href="#top">README</a> · <a data-gh="TESTS.md" href="#top">Tests</a></p>
+      <p><a href="pl/" hreflang="pl" lang="pl" data-lang-switch>Ta strona po polsku</a></p>
+    </div>
+  </div>
+</footer>
+<script src="assets/site.js"></script>
+</body>
+</html>
+
+
+

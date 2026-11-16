@@ -1,0 +1,7 @@
+Interrupted run (written for the public copy from the run notes).
+The fault was injected (kill -9 of PMON ggcdb1; crsd.trc shows a local restart of ggcdb1 at that time). Until the
+interruption the state matched run T4-20261116-133519: service gg_srcpdb on ggrac2, the XAG resource OFFLINE,
+GoldenGate running nowhere. The run was stopped by hand during the recovery wait because in this configuration
+GoldenGate does not come back and waiting for the end of the 900 s window would add nothing.
+Therefore there is no events.csv, lag.csv, compare.json or final summary.json, only the summary written before the
+fault (phase expected_before_fault). Run 3 of that series was not started. The lab was put back with lab.cmd baseline.

@@ -1,0 +1,50 @@
+# ==============================================================================
+# Tytul:        oggca_source.rsp.tmpl
+# Opis:         Plik odpowiedzi oggca.sh dla zrodla (RAC): nowy Service Manager ggsm01 na ACFS
+#               zintegrowany z XAG (nie jako usluga systemd) i deployment oggsource obok niego
+#               (MAA: deployment poza katalogiem Service Managera), TNS_ADMIN na ACFS, etap A bez
+#               TLS (SECURITY_ENABLED=false). Haslo admina (@@OGG_ADMIN_PASS@@, z LAB_PASS) wstawia skrypt na VM.
+# Description [EN]: oggca.sh response file for the source (RAC): a new Service Manager ggsm01 on
+#               ACFS integrated with XAG (not a systemd service) and deployment oggsource next to it
+#               (MAA: deployment outside the Service Manager home), TNS_ADMIN on ACFS, stage A
+#               without TLS (SECURITY_ENABLED=false). Admin password filled on the VM.
+#
+# Autor:        KCB Kris
+# Data:         2026-11-15
+# Wersja:       1.1 (haslo admina wg polityki GoldenGate 23.26)
+# Konwencje:    <repo>/SETTINGS.md
+#
+# Wymagania [PL]:    - OGG_HOME zainstalowany, ACFS zamontowany na tym wezle, VIP oggvip ONLINE (87 vip)
+# Requirements [EN]: - OGG_HOME installed, ACFS mounted on this node, VIP oggvip ONLINE (87 vip)
+#
+# Uzycie [PL]:       automatycznie: lab.cmd xag (86_oggca_source.sh); klucze ⚠️ LAB wg wzorca z OGG_HOME
+# Usage [EN]:        automatic: lab.cmd xag (86_oggca_source.sh); keys to confirm against the OGG_HOME sample
+# ==============================================================================
+oracle.install.responseFileVersion=/oracle/install/rspfmt_oggca_response_schema_v23_1_0
+CONFIGURATION_OPTION=ADD
+DEPLOYMENT_NAME={{OGG_SRC_DEPLOY}}
+ADMINISTRATOR_USER={{OGG_ADMIN_USER}}
+ADMINISTRATOR_PASSWORD=@@OGG_ADMIN_PASS@@
+SERVICEMANAGER_DEPLOYMENT_HOME={{OGG_SM_HOME}}
+HOST_SERVICEMANAGER={{OGG_SM_HOST}}
+PORT_SERVICEMANAGER={{OGG_SM_PORT}}
+SECURITY_ENABLED=false
+STRONG_PWD_POLICY_ENABLED=true
+CREATE_NEW_SERVICEMANAGER=true
+REGISTER_SERVICEMANAGER_AS_A_SERVICE=false
+INTEGRATE_SERVICEMANAGER_WITH_XAG=true
+EXISTING_SERVICEMANAGER_IS_XAG_ENABLED=false
+OGG_SOFTWARE_HOME={{OGG_HOME}}
+OGG_DEPLOYMENT_HOME={{OGG_SRC_HOME}}
+ENV_LD_LIBRARY_PATH=${OGG_HOME}/lib/instantclient:${OGG_HOME}/lib
+ENV_TNS_ADMIN={{OGG_SRC_HOME}}/etc
+ENV_STREAMS_POOL_SIZE=
+ENV_USER_VARS=
+PORT_ADMINSRVR={{OGG_PORT_ADMIN}}
+PORT_DISTSRVR={{OGG_PORT_DIST}}
+PORT_RCVRSRVR={{OGG_PORT_RECV}}
+METRICS_SERVER_ENABLED=true
+PORT_PMSRVR={{OGG_PORT_PM}}
+UDP_PORT_PMSRVR=
+OGG_SCHEMA=ggadmin
+REMOVE_DEPLOYMENT_FROM_DISK=

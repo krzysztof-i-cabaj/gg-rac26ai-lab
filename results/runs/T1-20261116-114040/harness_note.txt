@@ -1,0 +1,4 @@
+Measurement error of the lag probe, not of the cluster (translated from the original Polish note).
+The refusal "lag is 93 s" came from the same probe.sh 1.1 bug (max() over the gg_lag rows; the old path through
+ggrac2 kept aging after GoldenGate came back to ggrac1). validate measured 4 s shortly before.
+No fault was injected. Fix: probe.sh 1.2, tgt/90_validate.sh 1.4.

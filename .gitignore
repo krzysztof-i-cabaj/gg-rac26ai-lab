@@ -1,0 +1,11 @@
+logs/
+results/*
+!results/sample/
+!results/runs/
+!results/README.md
+!results/README_PL.md
+__pycache__/
+kickstart/out/
+.superpowers/
+*.secret
+guest/out/

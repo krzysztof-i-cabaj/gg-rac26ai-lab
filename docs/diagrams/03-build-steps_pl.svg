@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-label="lab.cmd all: kroki budowy po kolei od iso do validate, z maszynami, na których działa każdy krok" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<title>lab.cmd all: kroki budowy po kolei od iso do validate, z maszynami, na których działa każdy krok</title>
+<defs><marker id="ar-grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7d8a98"/></marker><marker id="ar-navy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f3a5f"/></marker><marker id="ar-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c74634"/></marker><marker id="ar-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2f6db5"/></marker><marker id="ar-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#22756a"/></marker><marker id="ar-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#a8661a"/></marker></defs>
+<rect x="0" y="0" width="1200" height="420" fill="#ffffff"/>
+<rect x="20.0" y="40" width="134" height="90" rx="10" fill="#f5f7f9" stroke="#7d8a98" stroke-width="1.5"/>
+<text x="87.0" y="68" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">iso</text>
+<text x="87.0" y="92" font-size="13" fill="#1b2733" text-anchor="middle">host</text>
+<text x="87.0" y="112" font-size="13" fill="#5a6675" text-anchor="middle">Oracle Linux 9 ISO</text>
+<line x1="154.0" y1="85" x2="165.3" y2="85" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="166.3" y="40" width="134" height="90" rx="10" fill="#f5f7f9" stroke="#7d8a98" stroke-width="1.5"/>
+<text x="233.3" y="68" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">plan</text>
+<text x="233.3" y="92" font-size="13" fill="#1b2733" text-anchor="middle">host</text>
+<text x="233.3" y="112" font-size="13" fill="#5a6675" text-anchor="middle">READY?</text>
+<line x1="300.3" y1="85" x2="311.6" y2="85" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="312.6" y="40" width="134" height="90" rx="10" fill="#f5f7f9" stroke="#7d8a98" stroke-width="1.5"/>
+<text x="379.6" y="68" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">build</text>
+<text x="379.6" y="92" font-size="13" fill="#1b2733" text-anchor="middle">host → 4 VM</text>
+<text x="379.6" y="112" font-size="13" fill="#5a6675" text-anchor="middle">kickstart</text>
+<line x1="446.6" y1="85" x2="457.90000000000003" y2="85" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="458.90000000000003" y="40" width="134" height="90" rx="10" fill="#f5f7f9" stroke="#7d8a98" stroke-width="1.5"/>
+<text x="525.9000000000001" y="68" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">infra</text>
+<text x="525.9000000000001" y="92" font-size="13" fill="#1b2733" text-anchor="middle">gginfra</text>
+<text x="525.9000000000001" y="112" font-size="13" fill="#5a6675" text-anchor="middle">DNS, SCAN, NTP</text>
+<line x1="592.9000000000001" y1="85" x2="604.2" y2="85" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="605.2" y="40" width="134" height="90" rx="10" fill="#edf2f8" stroke="#1f3a5f" stroke-width="1.5"/>
+<text x="672.2" y="68" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">prereq</text>
+<text x="672.2" y="92" font-size="13" fill="#1b2733" text-anchor="middle">ggrac1, ggrac2</text>
+<text x="672.2" y="112" font-size="13" fill="#5a6675" text-anchor="middle">OS, blokada jądra</text>
+<line x1="739.2" y1="85" x2="750.5" y2="85" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="751.5" y="40" width="134" height="90" rx="10" fill="#edf2f8" stroke="#1f3a5f" stroke-width="1.5"/>
+<text x="818.5" y="68" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">shared</text>
+<text x="818.5" y="92" font-size="13" fill="#1b2733" text-anchor="middle">ggrac1, ggrac2</text>
+<text x="818.5" y="112" font-size="13" fill="#5a6675" text-anchor="middle">udev, klucze SSH</text>
+<line x1="885.5" y1="85" x2="896.8" y2="85" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="897.8000000000001" y="40" width="134" height="90" rx="10" fill="#edf2f8" stroke="#1f3a5f" stroke-width="1.5"/>
+<text x="964.8000000000001" y="68" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">grid</text>
+<text x="964.8000000000001" y="92" font-size="13" fill="#1b2733" text-anchor="middle">ggrac1, ggrac2</text>
+<text x="964.8000000000001" y="112" font-size="13" fill="#5a6675" text-anchor="middle">GI 23.26.1 + RU</text>
+<line x1="1031.8000000000002" y1="85" x2="1043.1000000000001" y2="85" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="1044.1000000000001" y="40" width="134" height="90" rx="10" fill="#edf2f8" stroke="#1f3a5f" stroke-width="1.5"/>
+<text x="1111.1000000000001" y="68" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">db</text>
+<text x="1111.1000000000001" y="92" font-size="13" fill="#1b2733" text-anchor="middle">ggrac1, ggrac2</text>
+<text x="1111.1000000000001" y="112" font-size="13" fill="#5a6675" text-anchor="middle">DB 23.26.1 + RU</text>
+<rect x="20.0" y="176" width="134" height="90" rx="10" fill="#edf2f8" stroke="#1f3a5f" stroke-width="1.5"/>
+<text x="87.0" y="204" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">dbca</text>
+<text x="87.0" y="228" font-size="13" fill="#1b2733" text-anchor="middle">ggrac1</text>
+<text x="87.0" y="248" font-size="13" fill="#5a6675" text-anchor="middle">ggcdb + SRCPDB</text>
+<line x1="154.0" y1="221" x2="165.3" y2="221" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="166.3" y="176" width="134" height="90" rx="10" fill="#edf2f8" stroke="#1f3a5f" stroke-width="1.5"/>
+<text x="233.3" y="204" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">services</text>
+<text x="233.3" y="228" font-size="13" fill="#1b2733" text-anchor="middle">ggrac1</text>
+<text x="233.3" y="248" font-size="13" fill="#5a6675" text-anchor="middle">gg_srcpdb, srv_load</text>
+<line x1="300.3" y1="221" x2="311.6" y2="221" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="312.6" y="176" width="134" height="90" rx="10" fill="#e9f5f2" stroke="#22756a" stroke-width="1.5"/>
+<text x="379.6" y="204" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">tgt</text>
+<text x="379.6" y="228" font-size="13" fill="#1b2733" text-anchor="middle">ggtgt</text>
+<text x="379.6" y="248" font-size="13" fill="#5a6675" text-anchor="middle">baza, tgtcdb, demo</text>
+<line x1="446.6" y1="221" x2="457.90000000000003" y2="221" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="458.90000000000003" y="176" width="134" height="90" rx="10" fill="#fcefed" stroke="#c74634" stroke-width="1.5"/>
+<text x="525.9000000000001" y="204" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">acfs</text>
+<text x="525.9000000000001" y="228" font-size="13" fill="#1b2733" text-anchor="middle">ggrac1, ggrac2</text>
+<text x="525.9000000000001" y="248" font-size="13" fill="#5a6675" text-anchor="middle">OGGVOL 20 GB</text>
+<line x1="592.9000000000001" y1="221" x2="604.2" y2="221" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="605.2" y="176" width="134" height="90" rx="10" fill="#fcefed" stroke="#c74634" stroke-width="1.5"/>
+<text x="672.2" y="204" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">ogg</text>
+<text x="672.2" y="228" font-size="13" fill="#1b2733" text-anchor="middle">RAC + ggtgt</text>
+<text x="672.2" y="248" font-size="13" fill="#5a6675" text-anchor="middle">GG 23.26.4</text>
+<line x1="739.2" y1="221" x2="750.5" y2="221" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="751.5" y="176" width="134" height="90" rx="10" fill="#fcefed" stroke="#c74634" stroke-width="1.5"/>
+<text x="818.5" y="204" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">xag</text>
+<text x="818.5" y="228" font-size="13" fill="#1b2733" text-anchor="middle">ggrac1</text>
+<text x="818.5" y="248" font-size="13" fill="#5a6675" text-anchor="middle">XAG, VIP, oggca</text>
+<line x1="885.5" y1="221" x2="896.8" y2="221" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="897.8000000000001" y="176" width="134" height="90" rx="10" fill="#eaf2fb" stroke="#2f6db5" stroke-width="1.5"/>
+<text x="964.8000000000001" y="204" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">oggconf</text>
+<text x="964.8000000000001" y="228" font-size="13" fill="#1b2733" text-anchor="middle">obie strony</text>
+<text x="964.8000000000001" y="248" font-size="13" fill="#5a6675" text-anchor="middle">EXT1 DP1 REP1</text>
+<line x1="1031.8000000000002" y1="221" x2="1043.1000000000001" y2="221" stroke="#7d8a98" stroke-width="1.6" marker-end="url(#ar-grey)"/>
+<rect x="1044.1000000000001" y="176" width="134" height="90" rx="10" fill="#f5f7f9" stroke="#7d8a98" stroke-width="1.5"/>
+<text x="1111.1000000000001" y="204" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">validate</text>
+<text x="1111.1000000000001" y="228" font-size="13" fill="#1b2733" text-anchor="middle">ggrac1, ggtgt</text>
+<text x="1111.1000000000001" y="248" font-size="13" fill="#5a6675" text-anchor="middle">kontrole, porównanie</text>
+<polyline points="1111.1000000000001,130 1111.1000000000001,153 87.0,153 87.0,175" fill="none" stroke="#7d8a98" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#ar-grey)"/>
+<line x1="818.5" y1="266" x2="818.5" y2="296" stroke="#7d8a98" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar-grey)"/>
+<rect x="751.5" y="298" width="134" height="76" rx="10" fill="#ffffff" stroke="#7d8a98" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="818.5" y="324" font-size="16" fill="#1b2733" font-weight="700" text-anchor="middle">maa</text>
+<text x="818.5" y="346" font-size="13" fill="#1b2733" text-anchor="middle">etap B</text>
+<text x="818.5" y="364" font-size="13" fill="#5a6675" text-anchor="middle">NGINX (MAA)</text>
+<text x="20" y="310" font-size="14" fill="#1b2733">lab.cmd all wykonuje kroki w tej kolejności; krok sprawdza, co już zrobione, i idzie dalej.</text>
+<text x="20" y="334" font-size="13.5" fill="#5a6675">Krok po kroku: lab.cmd &lt;krok&gt;. Każdy krok kończy się własną kontrolą (90_validate.sh).</text>
+<text x="20" y="356" font-size="13.5" fill="#5a6675">Długie kroki działają pod run_step.sh: przeżywają zerwanie SSH, ponowne wywołanie się do nich podłącza.</text>
+<rect x="920" y="284" width="16" height="16" rx="4" fill="#f5f7f9" stroke="#7d8a98" stroke-width="1.5"/>
+<text x="944" y="297" font-size="13" fill="#1b2733">host / wszystkie VM</text>
+<rect x="920" y="306" width="16" height="16" rx="4" fill="#edf2f8" stroke="#1f3a5f" stroke-width="1.5"/>
+<text x="944" y="319" font-size="13" fill="#1b2733">klaster RAC</text>
+<rect x="920" y="328" width="16" height="16" rx="4" fill="#e9f5f2" stroke="#22756a" stroke-width="1.5"/>
+<text x="944" y="341" font-size="13" fill="#1b2733">cel ggtgt</text>
+<rect x="920" y="350" width="16" height="16" rx="4" fill="#fcefed" stroke="#c74634" stroke-width="1.5"/>
+<text x="944" y="363" font-size="13" fill="#1b2733">HA GoldenGate</text>
+<rect x="920" y="372" width="16" height="16" rx="4" fill="#eaf2fb" stroke="#2f6db5" stroke-width="1.5"/>
+<text x="944" y="385" font-size="13" fill="#1b2733">replikacja</text>
+</svg>

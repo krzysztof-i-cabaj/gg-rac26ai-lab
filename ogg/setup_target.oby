@@ -1,0 +1,20 @@
+-- ==============================================================================
+-- Tytul:        setup_target.oby
+-- Opis:         Polecenia adminclient dla deploymentu oggtarget (blok 9 raportu), po CONNECT i aliasie
+--               ggtarget z potoku 88_oggconf_target.sh: heartbeat, tabela checkpoint, Parallel
+--               Replicat (bez opcji powstalby classic Replicat), profil MAA, start.
+-- Description [EN]: adminclient commands for deployment oggtarget (report block 9), after CONNECT and
+--               the ggtarget alias from the 88_oggconf_target.sh pipe: heartbeat, checkpoint table,
+--               Parallel Replicat (without the option a classic Replicat), MAA profile, start.
+-- Autor: KCB Kris | Data: 2026-11-15 | Wersja: 1.1 | Konwencje: <repo>/SETTINGS.md
+-- ==============================================================================
+DBLOGIN USERIDALIAS ggtarget DOMAIN OracleGoldenGate
+-- LAB: syntax not checked in the 26ai Reference. FREQUENCY 5: the default 60 s makes the lag curve a staircase (film L1)
+ADD HEARTBEATTABLE, FREQUENCY 5
+ADD CHECKPOINTTABLE ggadmin.ggs_checkpoint
+ADD REPLICAT rep1, PARALLEL, EXTTRAIL et, CHECKPOINTTABLE ggadmin.ggs_checkpoint
+-- MAA Task 11 managed process profile (LAB: adminclient syntax; else Web UI, see README)
+ADD PROFILE MAA AUTOSTART YES DELAY 60 AUTORESTART YES RETRIES 5 WAITSECONDS 30 RESETSECONDS 1800 DISABLEONFAILURE YES
+ALTER REPLICAT rep1, PROFILE MAA
+START REPLICAT rep1
+INFO REPLICAT rep1

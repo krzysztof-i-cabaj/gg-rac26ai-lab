@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="460" viewBox="0 0 960 460" role="img" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+<title>Czas powrotu (RTO) w testach awarii</title>
+<rect x="0.5" y="0.5" width="959" height="459" rx="10" fill="#fcfcfb" stroke="#c3c2b7"/>
+<text x="20.0" y="32.0" font-size="18" fill="#0b0b0b" text-anchor="start" font-weight="600">Czas powrotu (RTO) w testach awarii</text>
+<text x="20.0" y="54.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">Tylko zaliczone przebiegi; sekundy od awarii do ostatniego znacznika (tu: lag poniżej 30 s). Kreska = mediana.</text>
+<line x1="70" y1="390.0" x2="930" y2="390.0" stroke="#c3c2b7"/>
+<text x="62.0" y="394.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">0</text>
+<line x1="70" y1="340.0" x2="930" y2="340.0" stroke="#e1e0d9"/>
+<text x="62.0" y="344.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">50</text>
+<line x1="70" y1="290.0" x2="930" y2="290.0" stroke="#e1e0d9"/>
+<text x="62.0" y="294.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">100</text>
+<line x1="70" y1="240.0" x2="930" y2="240.0" stroke="#e1e0d9"/>
+<text x="62.0" y="244.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">150</text>
+<line x1="70" y1="190.0" x2="930" y2="190.0" stroke="#e1e0d9"/>
+<text x="62.0" y="194.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">200</text>
+<line x1="70" y1="140.0" x2="930" y2="140.0" stroke="#e1e0d9"/>
+<text x="62.0" y="144.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">250</text>
+<line x1="70" y1="90.0" x2="930" y2="90.0" stroke="#e1e0d9"/>
+<text x="62.0" y="94.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">300</text>
+<text transform="translate(18,240) rotate(-90)" font-size="11" fill="#898781" text-anchor="middle">sekundy od awarii</text>
+<text x="123.8" y="410.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">T1</text>
+<path d="M88.8,390.0 V339.7 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T1 przebieg 1: 54,3 s</title></path>
+<path d="M112.8,390.0 V329.5 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T1 przebieg 2: 64,5 s</title></path>
+<path d="M136.8,390.0 V328.6 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T1 przebieg 3: 65,4 s</title></path>
+<line x1="82.8" y1="325.5" x2="164.8" y2="325.5" stroke="#0b0b0b" stroke-width="2"/>
+<text x="123.8" y="316.6" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">mediana 64,5 s</text>
+<text x="231.2" y="410.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">T2</text>
+<path d="M196.2,390.0 V258.4 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T2 przebieg 1: 135,6 s</title></path>
+<path d="M220.2,390.0 V262.6 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T2 przebieg 2: 131,4 s</title></path>
+<path d="M244.2,390.0 V264.4 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T2 przebieg 3: 129,6 s</title></path>
+<line x1="190.2" y1="258.6" x2="272.2" y2="258.6" stroke="#0b0b0b" stroke-width="2"/>
+<text x="231.2" y="246.4" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">mediana 131,4 s</text>
+<text x="338.8" y="410.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">T3</text>
+<path d="M303.8,390.0 V353.7 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T3 przebieg 1: 40,3 s</title></path>
+<path d="M327.8,390.0 V353.6 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T3 przebieg 2: 40,4 s</title></path>
+<path d="M351.8,390.0 V266.6 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T3 przebieg 3: 127,4 s</title></path>
+<line x1="297.8" y1="349.6" x2="379.8" y2="349.6" stroke="#0b0b0b" stroke-width="2"/>
+<text x="338.8" y="254.6" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">mediana 40,4 s</text>
+<text x="446.2" y="410.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">T4</text>
+<rect x="402.5" y="100" width="87.5" height="290" rx="4" fill="none" stroke="#d03b3b" stroke-dasharray="4 3"/>
+<text x="446.2" y="234.0" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">brak samodzielnego powrotu</text>
+<text x="446.2" y="250.0" font-size="10" fill="#52514e" text-anchor="middle" font-weight="normal">(2/2 przebiegi, okno 900 s)</text>
+<text x="553.8" y="410.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">T4b</text>
+<text x="553.8" y="426.0" font-size="10" fill="#898781" text-anchor="middle" font-weight="normal">z ręcznym przeniesieniem</text>
+<path d="M518.8,390.0 V97.8 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T4b przebieg 1: 296,2 s</title></path>
+<path d="M542.8,390.0 V215.4 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T4b przebieg 2: 178,6 s</title></path>
+<path d="M566.8,390.0 V246.3 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T4b przebieg 3: 147,7 s</title></path>
+<line x1="512.8" y1="211.4" x2="594.8" y2="211.4" stroke="#0b0b0b" stroke-width="2"/>
+<text x="553.8" y="85.8" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">mediana 178,6 s</text>
+<text x="661.2" y="410.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">T5</text>
+<path d="M626.2,390.0 V347.1 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T5 przebieg 1: 46,9 s</title></path>
+<path d="M650.2,390.0 V341.0 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T5 przebieg 2: 53,0 s</title></path>
+<path d="M674.2,390.0 V337.2 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T5 przebieg 3: 56,8 s</title></path>
+<line x1="620.2" y1="337.0" x2="702.2" y2="337.0" stroke="#0b0b0b" stroke-width="2"/>
+<text x="661.2" y="325.2" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">mediana 53,0 s</text>
+<text x="768.8" y="410.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">T6</text>
+<path d="M733.8,390.0 V351.7 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T6 przebieg 1: 42,3 s</title></path>
+<path d="M757.8,390.0 V356.7 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T6 przebieg 2: 37,3 s</title></path>
+<path d="M781.8,390.0 V355.6 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T6 przebieg 3: 38,4 s</title></path>
+<line x1="727.8" y1="351.6" x2="809.8" y2="351.6" stroke="#0b0b0b" stroke-width="2"/>
+<text x="768.8" y="339.7" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">mediana 38,4 s</text>
+<text x="876.2" y="410.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">T7</text>
+<path d="M865.2,390.0 V234.9 q0,-4 4,-4 h14.0 q4,0 4,4 V390.0 Z" fill="#2a78d6"><title>T7 przebieg 1: 159,1 s</title></path>
+<line x1="859.2" y1="230.9" x2="893.2" y2="230.9" stroke="#0b0b0b" stroke-width="2"/>
+<text x="876.2" y="222.9" font-size="11" fill="#0b0b0b" text-anchor="middle" font-weight="normal">159,1 s</text>
+<text x="20.0" y="446.0" font-size="11" fill="#898781" text-anchor="start" font-weight="normal">Pomiar 16.11.2026 w VirtualBox (laptop), 3 vCPU na węzeł RAC, obciążenie 10 wierszy/s na instancję.</text>
+</svg>

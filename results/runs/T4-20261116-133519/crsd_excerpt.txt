@@ -1,0 +1,29 @@
+# crsd.trc (ggrac2, CRS PE master), 2026-11-16 local time, T4 run T4-20261116-133519
+# filter: lines naming xag.oggsource.goldengate or ora.ggcdb.gg_srcpdb.svc, 14:36:20-14:37:05
+I:2026-11-16 14:36:29.543809 :   CRSPE:140345811138112: [     INFO] {0:7:20} Will try to failover [ora.ggcdb.gg_srcpdb.svc 1 1]
+I:2026-11-16 14:36:29.543951 :   CRSPE:140345811138112: [     INFO] {0:7:20} Evaluating effort to start RI [ora.ggcdb.gg_srcpdb.svc 1 1] on [ggrac2] opts:230
+I:2026-11-16 14:36:29.546451 :   CRSPE:140345811138112: [     INFO] {0:7:20} Evaluating effort to start RI [ora.ggcdb.gg_srcpdb.svc 1 1] on [ggrac2] opts:231
+I:2026-11-16 14:36:29.547946 :   CRSPE:140345811138112: [     INFO] {0:7:20} Evaluating effort to start RI [xag.oggsource.goldengate 1 1] on [ggrac2] opts:99
+I:2026-11-16 14:36:29.548528 :   CRSPE:140345811138112: [     INFO] {0:7:20} Evaluating effort to start RI [xag.oggsource.goldengate 1 1] on [ggrac2] opts:99
+I:2026-11-16 14:36:29.549919 :   CRSPE:140345811138112: [     INFO] {0:7:20} Hard Stop dependency prevents a relocate of xag.oggsource.goldengate from ggrac1
+I:2026-11-16 14:36:29.549956 :   CRSPE:140345811138112: [     INFO] {0:7:20} Hard stop on ora.ggcdb.gg_srcpdb.svc prevents xag.oggsource.goldengate from starting/stopping. Error Stack: CRS-0222: Resource 'xag.oggsource.goldengate' has dependency error.
+I:2026-11-16 14:36:29.550597 :   CRSPE:140345811138112: [     INFO] {0:7:20} Evaluating effort to start RI [ora.ggcdb.gg_srcpdb.svc 1 1] on [ggrac2] opts:239
+I:2026-11-16 14:36:29.552477 :   CRSPE:140345811138112: [     INFO] {0:7:20} Evaluating effort to start RI [xag.oggsource.goldengate 1 1] on [ggrac2] opts:107
+I:2026-11-16 14:36:29.553099 :   CRSPE:140345811138112: [     INFO] {0:7:20} Evaluating effort to start RI [xag.oggsource.goldengate 1 1] on [ggrac2] opts:107
+I:2026-11-16 14:36:29.556048 :   CRSPE:140345811138112: [     INFO] {0:7:20} RI [ora.ggcdb.gg_srcpdb.svc 1 1] new internal state: [STARTING] old value: [STABLE]
+I:2026-11-16 14:36:29.560866 :   CRSPE:140345811138112: [     INFO] {0:7:20} CRS-2672: Attempting to start 'ora.ggcdb.gg_srcpdb.svc' on 'ggrac2'
+I:2026-11-16 14:36:29.772800 :   CRSPE:140345811138112: [     INFO] {0:7:20} RI [ora.ggcdb.gg_srcpdb.svc 1 1] new internal state: [STABLE] old value: [STARTING]
+I:2026-11-16 14:36:29.773973 :   CRSPE:140345811138112: [     INFO] {0:7:20} CRS-2676: Start of 'ora.ggcdb.gg_srcpdb.svc' on 'ggrac2' succeeded
+I:2026-11-16 14:36:29.806434 :   CRSPE:140345811138112: [     INFO] {0:7:20} RI [xag.oggsource.goldengate 1 1] new internal state: [STOPPING] old value: [STABLE]
+I:2026-11-16 14:36:29.806620 :   CRSPE:140345811138112: [     INFO] {0:7:20} CRS-2673: Attempting to stop 'xag.oggsource.goldengate' on 'ggrac1'
+I:2026-11-16 14:36:45.156517 :   CRSPE:140345811138112: [     INFO] {1:20467:4943} ICE has queued an operation. Details: Operation [Update Resource Op [ora.ggcdb.db : Op:0x7fa4e00ad1c0, Cmd:0x7fa5107b81e0, SeqId:258]] cannot run cause it needs W lock for: IWaitObject wrapper for:ora.ggcdb.db, locked by op [START of [ora.ggcdb.gg_srcpdb.svc 1 1] on [ggrac2] : Op:0x7fa5107ec9f0, Cmd:0x7fa5100ae2d0, 
+I:2026-11-16 14:36:54.610936 :   CRSPE:140345811138112: [     INFO] {0:7:20} RI [xag.oggsource.goldengate 1 1] new internal state: [STABLE] old value: [STOPPING]
+I:2026-11-16 14:36:54.611164 :   CRSPE:140345811138112: [     INFO] {0:7:20} CRS-2675: Stop of 'xag.oggsource.goldengate' on 'ggrac1' failed
+I:2026-11-16 14:36:54.611697 :   CRSPE:140345811138112: [     INFO] {0:7:20} RI [xag.oggsource.goldengate 1 1] new internal state: [CLEANING] old value: [STABLE]
+I:2026-11-16 14:36:54.611898 :   CRSPE:140345811138112: [     INFO] {0:7:20} CRS-2679: Attempting to clean 'xag.oggsource.goldengate' on 'ggrac1'
+I:2026-11-16 14:36:58.183360 :   CRSPE:140345811138112: [     INFO] {0:7:20} RI [xag.oggsource.goldengate 1 1] new internal state: [STABLE] old value: [CLEANING]
+I:2026-11-16 14:36:58.183628 :   CRSPE:140345811138112: [     INFO] {0:7:20} CRS-2681: Clean of 'xag.oggsource.goldengate' on 'ggrac1' succeeded
+# 14:37:05-14:56:59: 0 lines 'CRS-2672 Attempting to start' / 'Evaluating effort to start' for xag.oggsource.goldengate (no retry by CRS)
+# start only after lab.cmd baseline moved gg_srcpdb ggcdb2 -> ggcdb1:
+I:2026-11-16 14:57:05.007125 :   CRSPE:140345811138112: [     INFO] {1:20467:9723} CRS-2672: Attempting to start 'xag.oggsource.goldengate' on 'ggrac1'
+I:2026-11-16 14:57:12.746510 :   CRSPE:140345811138112: [     INFO] {1:20467:9723} CRS-2676: Start of 'xag.oggsource.goldengate' on 'ggrac1' succeeded

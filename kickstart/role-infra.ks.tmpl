@@ -1,0 +1,24 @@
+# ==============================================================================
+# Tytul:        role-infra.ks.tmpl
+# Opis:         Sekcje kickstartu roli infra (gginfra): DNS dnsmasq i NTP chrony. Konfiguracje
+#               uslug robia guest/infra/*.sh (krok lab.cmd infra).
+# Description [EN]: Kickstart sections for the infra role (gginfra): dnsmasq DNS and chrony NTP.
+#               The services are configured by guest/infra/*.sh (lab.cmd infra).
+#
+# Autor:        KCB Kris
+# Data:         2026-11-14
+# Wersja:       1.0
+# Konwencje:    <repo>/SETTINGS.md
+#
+# Wymagania [PL]:    - doklejany do base.ks.tmpl przez host/Kickstart.psm1
+# Requirements [EN]: - merged into base.ks.tmpl by host/Kickstart.psm1
+#
+# Uzycie [PL]:       sekcje po znacznikach #@@ PACKAGES i #@@ POST
+# Usage [EN]:        sections after the #@@ PACKAGES and #@@ POST markers
+# ==============================================================================
+#@@ PACKAGES
+dnsmasq
+#@@ POST
+# gginfra keeps the NAT resolver: dnsmasq forwards non-lab names upstream from resolv.conf.
+# DNS and NTP ports are opened by guest/infra scripts for the lab subnet only.
+systemctl enable chronyd

@@ -1,0 +1,94 @@
+{
+  "ts_utc": "2026-11-16T15:05:08.764Z",
+  "data_ok": false,
+  "reason": "tables differ: HR.DEPARTMENTS, HR.EMPLOYEES, SALES.CUSTOMERS, SALES.ORDERS, SALES.LOAD_EVENTS, SALES.TYPES26; no load rows on the source (loadgen did not write); SEQ check: inst 2: missing 0, extra 637, duplicates 0; inst 1: missing 0, extra 639, duplicates 0",
+  "tables": [
+    {
+      "Table": "HR.DEPARTMENTS",
+      "SourceRows": null,
+      "TargetRows": 4,
+      "Missing": null,
+      "SourceHash": null,
+      "TargetHash": "8684312551",
+      "Match": false
+    },
+    {
+      "Table": "HR.EMPLOYEES",
+      "SourceRows": null,
+      "TargetRows": 20,
+      "Missing": null,
+      "SourceHash": null,
+      "TargetHash": "44420337760",
+      "Match": false
+    },
+    {
+      "Table": "SALES.CUSTOMERS",
+      "SourceRows": null,
+      "TargetRows": 10,
+      "Missing": null,
+      "SourceHash": null,
+      "TargetHash": "21258183646",
+      "Match": false
+    },
+    {
+      "Table": "SALES.ORDERS",
+      "SourceRows": null,
+      "TargetRows": 50,
+      "Missing": null,
+      "SourceHash": null,
+      "TargetHash": "119269681483",
+      "Match": false
+    },
+    {
+      "Table": "SALES.LOAD_EVENTS",
+      "SourceRows": null,
+      "TargetRows": 1276,
+      "Missing": null,
+      "SourceHash": null,
+      "TargetHash": "2731498849715",
+      "Match": false
+    },
+    {
+      "Table": "SALES.TYPES26",
+      "SourceRows": null,
+      "TargetRows": 3,
+      "Missing": null,
+      "SourceHash": null,
+      "TargetHash": "4441312419",
+      "Match": false
+    }
+  ],
+  "seq_check": [
+    {
+      "inst": "2",
+      "source_rows": 0,
+      "target_rows": 637,
+      "missing": 0,
+      "extra_target": 637,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "source_min": 0,
+      "source_max": 0,
+      "target_min": 83574,
+      "target_max": 85210
+    },
+    {
+      "inst": "1",
+      "source_rows": 0,
+      "target_rows": 639,
+      "missing": 0,
+      "extra_target": 639,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "source_min": 0,
+      "source_max": 0,
+      "target_min": 84001,
+      "target_max": 84639
+    }
+  ],
+  "seq_source": [],
+  "seq_target": [
+    "SEQ 2 637 637 83574 85210",
+    "SEQ 1 639 639 84001 84639"
+  ]
+}

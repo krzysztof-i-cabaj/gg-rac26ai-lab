@@ -1,0 +1,246 @@
+{
+  "test_id": "T4b",
+  "run_no": 1,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": 3.959,
+    "t_service_online": 3.969,
+    "t_acfs_online": 273.591,
+    "t_vip_online": 270.855,
+    "t_sm_running": 282.856,
+    "t_ext_running": 284.222,
+    "t_dp_running": 278.919,
+    "t_rep_running": null,
+    "t_lag_ok": 296.248,
+    "t_intervention_ready": 122.937,
+    "t_intervention": 267.545
+  },
+  "segments": [
+    {
+      "name": "fault_to_detect",
+      "seconds": 3.959
+    },
+    {
+      "name": "detect_to_service",
+      "seconds": 0.01
+    },
+    {
+      "name": "service_to_acfs",
+      "seconds": 269.622
+    },
+    {
+      "name": "vip_to_sm",
+      "seconds": 12.001
+    },
+    {
+      "name": "sm_to_ext",
+      "seconds": 1.366
+    }
+  ],
+  "segments_out_of_order": [
+    "acfs_to_vip",
+    "ext_to_dp"
+  ],
+  "segments_measured": [
+    {
+      "name": "fault_to_crs_detect",
+      "from": "t_fault",
+      "to": "t_crs_detect",
+      "from_t_rel_s": 0.0,
+      "to_t_rel_s": 3.959,
+      "seconds": 3.959
+    },
+    {
+      "name": "crs_detect_to_service_online",
+      "from": "t_crs_detect",
+      "to": "t_service_online",
+      "from_t_rel_s": 3.959,
+      "to_t_rel_s": 3.969,
+      "seconds": 0.01
+    },
+    {
+      "name": "service_online_to_intervention_ready",
+      "from": "t_service_online",
+      "to": "t_intervention_ready",
+      "from_t_rel_s": 3.969,
+      "to_t_rel_s": 122.937,
+      "seconds": 118.968
+    },
+    {
+      "name": "intervention_ready_to_intervention",
+      "from": "t_intervention_ready",
+      "to": "t_intervention",
+      "from_t_rel_s": 122.937,
+      "to_t_rel_s": 267.545,
+      "seconds": 144.608
+    },
+    {
+      "name": "intervention_to_vip_online",
+      "from": "t_intervention",
+      "to": "t_vip_online",
+      "from_t_rel_s": 267.545,
+      "to_t_rel_s": 270.855,
+      "seconds": 3.31
+    },
+    {
+      "name": "vip_online_to_acfs_online",
+      "from": "t_vip_online",
+      "to": "t_acfs_online",
+      "from_t_rel_s": 270.855,
+      "to_t_rel_s": 273.591,
+      "seconds": 2.736
+    },
+    {
+      "name": "acfs_online_to_dp_running",
+      "from": "t_acfs_online",
+      "to": "t_dp_running",
+      "from_t_rel_s": 273.591,
+      "to_t_rel_s": 278.919,
+      "seconds": 5.328
+    },
+    {
+      "name": "dp_running_to_sm_running",
+      "from": "t_dp_running",
+      "to": "t_sm_running",
+      "from_t_rel_s": 278.919,
+      "to_t_rel_s": 282.856,
+      "seconds": 3.937
+    },
+    {
+      "name": "sm_running_to_ext_running",
+      "from": "t_sm_running",
+      "to": "t_ext_running",
+      "from_t_rel_s": 282.856,
+      "to_t_rel_s": 284.222,
+      "seconds": 1.366
+    },
+    {
+      "name": "ext_running_to_lag_ok",
+      "from": "t_ext_running",
+      "to": "t_lag_ok",
+      "from_t_rel_s": 284.222,
+      "to_t_rel_s": 296.248,
+      "seconds": 12.026
+    }
+  ],
+  "rto_s": 296.248,
+  "rto_basis": "lag_ok",
+  "lag_max_s": 581.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": true,
+  "fault_command": "p=$(pgrep -f '[o]ra_pmon_ggcdb1'); [ -n \"$p\" ] || { echo 'no pmon process'; exit 3; }; kill -9 $p",
+  "xag_restarts": 1,
+  "intervention_rc": 0,
+  "intervention_node": "ggrac2 root",
+  "title": "Instance abort + manual relocate",
+  "intervention_approved_by": "operator",
+  "attempt": 1,
+  "final_node": "ggrac2",
+  "invoked_by": "agent",
+  "disturbed": true,
+  "notes": [
+    "As T4, then after 120 s by hand: GoldenGate moved to ggrac2 (agctl relocate or start)."
+  ],
+  "clock_offsets_ms": {
+    "gginfra": 0.102,
+    "ggrac1": -0.024,
+    "ggrac2": -0.004,
+    "ggtgt": -0.009
+  },
+  "xag_action": "relocate",
+  "observe_s": 417.8,
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "measurement_error": null,
+  "approved_by": "operator",
+  "stage": "A",
+  "recovered": true,
+  "data_ok": true,
+  "fault_kind": "abort",
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {
+      "raw_crs": {
+        "samples": 381,
+        "median_s": 1.291,
+        "max_s": 2.033
+      },
+      "raw_gg_src": {
+        "samples": 198,
+        "median_s": 2.529,
+        "max_s": 3.817
+      },
+      "raw_gg_tgt": {
+        "samples": 202,
+        "median_s": 2.457,
+        "max_s": 3.125
+      },
+      "raw_lag": {
+        "samples": 452,
+        "median_s": 1.102,
+        "max_s": 1.671
+      }
+    }
+  },
+  "expected_gg_node": null,
+  "service_moved": true,
+  "config_rev": "maa-singleton-local-svc",
+  "synthetic": false,
+  "intervention_command": "agctl relocate|start goldengate oggsource --node ggrac2 (crsctl relocate resource oggvip -f if refused)",
+  "harness_error": false,
+  "refused": false,
+  "intervention_invoked_by": "agent",
+  "intervention_steps": [
+    "[ggrac2 root] if '/u01/app/xag/bin/agctl status goldengate oggsource' says 'is running on': /u01/app/xag/bin/agctl relocate goldengate oggsource --node ggrac2",
+    "[ggrac2 root] else: /u01/app/xag/bin/agctl start goldengate oggsource --node ggrac2",
+    "[ggrac2 root] if that start is refused: /u01/app/23.26/grid/bin/crsctl relocate resource oggvip -n ggrac2 -f, then /u01/app/xag/bin/agctl start goldengate oggsource --node ggrac2"
+  ],
+  "pass": true,
+  "test_variant": "manual-relocate",
+  "evicted_node": "",
+  "approval_wait_s": 144.6,
+  "data_checked": true,
+  "expected": {
+    "Recovers": "nie dotyczy",
+    "RtoS": "nie wiemy",
+    "FinalNode": "ggrac2",
+    "DataLoss": 0,
+    "Hypothesis": "After the relocate GoldenGate starts on ggrac2 with the service; VIP and ACFS move with it",
+    "Source": "T4-20261116-133519 (CRS-0222, no retry by CRS); agctl relocate as in T1"
+  },
+  "expected_written_utc": "2026-11-16T15:22:35.586Z",
+  "expected_match": true,
+  "expected_check": [
+    {
+      "field": "final_node",
+      "expected": "ggrac2",
+      "actual": "ggrac2",
+      "match": true
+    },
+    {
+      "field": "data_loss",
+      "expected": 0,
+      "actual": 0,
+      "match": true
+    }
+  ],
+  "back_to_base_s": 110.5,
+  "back_to_base_ok": true
+}

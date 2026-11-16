@@ -1,0 +1,15 @@
+-- ==============================================================================
+-- Tytul:        rep1.prm
+-- Opis:         Parametry Parallel Replicat rep1 (blok 9 raportu, tryb nonintegrated): logowanie
+--               aliasem, MAP_PARALLELISM 2, mapowanie HR i SALES 1:1.
+-- Description [EN]: Parameters of the Parallel Replicat rep1 (report block 9, nonintegrated mode):
+--               login by alias, MAP_PARALLELISM 2, HR and SALES mapped 1:1.
+-- Autor: KCB Kris | Data: 2026-11-14 | Wersja: 1.0 | Konwencje: <repo>/SETTINGS.md
+-- Uzycie / Usage: 88_oggconf_target.sh kopiuje do <deployment>/etc/conf/ogg/rep1.prm
+-- ==============================================================================
+REPLICAT rep1
+USERIDALIAS ggtarget DOMAIN OracleGoldenGate
+-- LAB: MAA gives a range of 2-5
+MAP_PARALLELISM 2
+MAP HR.*, TARGET HR.*;
+MAP SALES.*, TARGET SALES.*;

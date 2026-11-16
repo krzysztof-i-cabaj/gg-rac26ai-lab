@@ -1,0 +1,113 @@
+# ==============================================================================
+# Tytul:        base.ks.tmpl
+# Opis:         Wspolny szablon kickstartu OL9 dla wszystkich maszyn labu. host/Kickstart.psm1
+#               dokleja sekcje roli (role-<rola>.ks.tmpl), wstawia wartosci z lab.config.psd1
+#               i zapisuje kickstart/out/<wezel>.ks.
+# Description [EN]: Shared OL9 kickstart template for every lab VM. host/Kickstart.psm1 adds
+#               the role sections (role-<role>.ks.tmpl), fills in values from lab.config.psd1
+#               and writes kickstart/out/<node>.ks.
+#
+# Autor:        KCB Kris
+# Data:         2026-11-14
+# Wersja:       1.0
+# Konwencje:    <repo>/SETTINGS.md
+#
+# Wymagania [PL]:    - OL9 boot ISO, NAT z internetem (yum.oracle.com), serwer KS na hoscie
+# Requirements [EN]: - OL9 boot ISO, NAT with internet (yum.oracle.com), KS server on the host
+#
+# Uzycie [PL]:       automatycznie: lab.cmd build (podglad bez hasla: lab.cmd plan)
+# Usage [EN]:        automatic: lab.cmd build (password-free preview: lab.cmd plan)
+# ==============================================================================
+
+text
+lang en_US.UTF-8
+keyboard {{KEYBOARD}}
+timezone {{TIMEZONE}} --utc
+rootpw --plaintext '{{LAB_PASS}}'
+selinux --enforcing
+firewall --disabled
+services --enabled=sshd,chronyd,NetworkManager
+firstboot --disabled
+eula --agreed
+skipx
+
+# enp0s3 = host-only, fixed address, NO default route (a dead-end gateway would beat NAT).
+# enp0s8 = NAT, the only default route. enp0s9 = RAC interconnect (rac role only).
+{{NIC_LINES}}
+
+url --url={{OS_URL}}
+{{OS_REPOS}}
+
+# Only the OS disk exists for the installer's purposes; shared ASM disks stay untouched.
+ignoredisk --only-use=sda
+zerombr
+clearpart --all --initlabel --drives=sda
+bootloader --location=mbr --boot-drive=sda
+{{PART_LINES}}
+
+%packages
+@core
+openssh-server
+chrony
+firewalld
+bind-utils
+net-tools
+curl
+jq
+tar
+unzip
+rsync
+lsof
+vim-enhanced
+bash-completion
+policycoreutils-python-utils
+python3-dnf-plugin-versionlock
+{{KERNEL_PACKAGES}}
+{{ROLE_PACKAGES}}
+%end
+
+%post --interpreter=/bin/bash --log=/root/ks-post.log
+set -euo pipefail
+echo "=== [{{NODE}}] POST-INSTALL START ==="
+
+# Windows SSH key for root: the only way in, no password typing.
+mkdir -p /root/.ssh
+echo '{{SSH_PUBKEY}}' > /root/.ssh/authorized_keys
+chmod 700 /root/.ssh
+chmod 600 /root/.ssh/authorized_keys
+restorecon -R /root/.ssh || true
+
+# OpenSSH 9.8+ penalises a source that connects without logging in (port 22 probes from
+# the host). The file stays only if this sshd accepts the option.
+cat > /etc/ssh/sshd_config.d/10-lab.conf <<'EOF'
+PerSourcePenaltyExemptList {{HOST_IP}}/32
+EOF
+ssh-keygen -q -t ed25519 -N '' -f /tmp/lab-test-key
+/usr/sbin/sshd -t -h /tmp/lab-test-key 2>/dev/null || rm -f /etc/ssh/sshd_config.d/10-lab.conf
+rm -f /tmp/lab-test-key /tmp/lab-test-key.pub
+
+# A VM frozen by laptop sleep comes back hours off: step the clock on every large offset.
+sed -i 's/^makestep .*/makestep 1.0 -1/' /etc/chrony.conf
+grep -q '^makestep' /etc/chrony.conf || echo 'makestep 1.0 -1' >> /etc/chrony.conf
+
+# Lab password for scripts: 600 file, scripts read the variable, never an argument.
+echo "export LAB_PASS='{{LAB_PASS}}'" > /root/.lab_secrets
+chmod 600 /root/.lab_secrets
+mkdir -p /root/lab/done
+
+# Lab names. SCAN is deliberately absent: it resolves only via DNS on gginfra (3 addresses).
+cat >> /etc/hosts <<'EOF'
+{{HOSTS_BLOCK}}
+EOF
+
+{{RESOLVER_POST}}
+
+{{KERNEL_POST}}
+
+# ---- role: {{ROLE}} ----
+{{ROLE_POST}}
+
+echo "=== [{{NODE}}] POST-INSTALL DONE ==="
+%end
+
+reboot

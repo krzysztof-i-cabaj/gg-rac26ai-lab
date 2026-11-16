@@ -1,0 +1,189 @@
+{
+  "test_id": "T5",
+  "run_no": 2,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": 0.853,
+    "t_service_online": null,
+    "t_acfs_online": null,
+    "t_vip_online": null,
+    "t_sm_running": 21.851,
+    "t_ext_running": 49.088,
+    "t_dp_running": 17.952,
+    "t_rep_running": null,
+    "t_lag_ok": 52.973
+  },
+  "segments": [
+    {
+      "name": "fault_to_detect",
+      "seconds": 0.853
+    },
+    {
+      "name": "sm_to_ext",
+      "seconds": 27.237
+    }
+  ],
+  "segments_out_of_order": [
+    "ext_to_dp"
+  ],
+  "segments_measured": [
+    {
+      "name": "fault_to_crs_detect",
+      "from": "t_fault",
+      "to": "t_crs_detect",
+      "from_t_rel_s": 0.0,
+      "to_t_rel_s": 0.853,
+      "seconds": 0.853
+    },
+    {
+      "name": "crs_detect_to_dp_running",
+      "from": "t_crs_detect",
+      "to": "t_dp_running",
+      "from_t_rel_s": 0.853,
+      "to_t_rel_s": 17.952,
+      "seconds": 17.099
+    },
+    {
+      "name": "dp_running_to_sm_running",
+      "from": "t_dp_running",
+      "to": "t_sm_running",
+      "from_t_rel_s": 17.952,
+      "to_t_rel_s": 21.851,
+      "seconds": 3.899
+    },
+    {
+      "name": "sm_running_to_ext_running",
+      "from": "t_sm_running",
+      "to": "t_ext_running",
+      "from_t_rel_s": 21.851,
+      "to_t_rel_s": 49.088,
+      "seconds": 27.237
+    },
+    {
+      "name": "ext_running_to_lag_ok",
+      "from": "t_ext_running",
+      "to": "t_lag_ok",
+      "from_t_rel_s": 49.088,
+      "to_t_rel_s": 52.973,
+      "seconds": 3.885
+    }
+  ],
+  "rto_s": 52.973,
+  "rto_basis": "lag_ok",
+  "lag_max_s": 49.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": true,
+  "lag_relapses": 0,
+  "lag_relapse_first_s": null,
+  "test_variant": null,
+  "recovered": true,
+  "service_moved": false,
+  "stage": "A",
+  "intervention_rc": null,
+  "measurement_error": null,
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {
+      "raw_crs": {
+        "samples": 194,
+        "median_s": 1.269,
+        "max_s": 1.417
+      },
+      "raw_gg_src": {
+        "samples": 97,
+        "median_s": 2.548,
+        "max_s": 2.913
+      },
+      "raw_gg_tgt": {
+        "samples": 103,
+        "median_s": 2.417,
+        "max_s": 2.577
+      },
+      "raw_lag": {
+        "samples": 226,
+        "median_s": 1.092,
+        "max_s": 1.219
+      }
+    }
+  },
+  "attempt": 2,
+  "notes": [
+    "Record what XAG did: restart in place or relocate."
+  ],
+  "config_rev": "maa-singleton-local-svc",
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "intervention_invoked_by": null,
+  "final_node": "ggrac1",
+  "data_ok": true,
+  "data_checked": true,
+  "xag_action": "restart_in_place",
+  "intervention_steps": null,
+  "invoked_by": "agent",
+  "evicted_node": "",
+  "pass": true,
+  "clock_offsets_ms": {
+    "gginfra": 0.398,
+    "ggrac1": 0.08,
+    "ggrac2": -0.039,
+    "ggtgt": 0.15
+  },
+  "harness_error": false,
+  "expected_gg_node": null,
+  "intervention_command": null,
+  "intervention_node": null,
+  "approval_wait_s": null,
+  "intervention_approved_by": null,
+  "refused": false,
+  "fault_command": "p=$(pgrep -f '/u01/app/ogg/ogg26ai_ma/bin/[S]erviceManager'); [ -n \"$p\" ] || { echo 'no ServiceManager process'; exit 3; }; kill -9 $p",
+  "fault_kind": "kill-sm",
+  "observe_s": 174.8,
+  "xag_restarts": 1,
+  "title": "Kill the Service Manager",
+  "disturbed": true,
+  "synthetic": false,
+  "approved_by": "operator",
+  "expected": {
+    "Recovers": true,
+    "DataLoss": 0,
+    "RtoS": "nie wiemy",
+    "FinalNode": "nie wiemy",
+    "Source": "lab verification report; bug 37468391 needs more than one Service Manager (we have one)",
+    "Hypothesis": "XAG/CRS sees the missing process and restarts the deployment in place or moves it to the other node"
+  },
+  "expected_written_utc": "2026-11-16T16:52:21.407Z",
+  "expected_match": true,
+  "expected_check": [
+    {
+      "field": "recovers",
+      "expected": true,
+      "actual": true,
+      "match": true
+    },
+    {
+      "field": "data_loss",
+      "expected": 0,
+      "actual": 0,
+      "match": true
+    }
+  ],
+  "back_to_base_s": 52.2,
+  "back_to_base_ok": true
+}

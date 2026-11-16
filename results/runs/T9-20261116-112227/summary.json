@@ -1,0 +1,122 @@
+{
+  "test_id": "T9",
+  "run_no": 1,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": null,
+    "t_service_online": null,
+    "t_acfs_online": null,
+    "t_vip_online": null,
+    "t_sm_running": null,
+    "t_ext_running": null,
+    "t_dp_running": null,
+    "t_rep_running": null,
+    "t_lag_ok": null
+  },
+  "segments": [],
+  "rto_s": null,
+  "rto_basis": null,
+  "lag_max_s": 15.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": false,
+  "data_ok": true,
+  "harness_error": false,
+  "synthetic": false,
+  "attempt": 1,
+  "fault_kind": "none",
+  "expected_gg_node": null,
+  "recovered": true,
+  "data_checked": true,
+  "stage": "A",
+  "clock_offsets_ms": {
+    "gginfra": -1.045,
+    "ggrac1": -0.252,
+    "ggrac2": -0.251,
+    "ggtgt": -0.117
+  },
+  "title": "Data comparison",
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "evicted_node": "",
+  "pass": true,
+  "final_node": "ggrac1",
+  "service_moved": false,
+  "xag_action": "none",
+  "xag_restarts": 0,
+  "refused": false,
+  "notes": [
+    "Runs after every test; here on its own."
+  ],
+  "approved_by": "",
+  "fault_command": "(no fault)",
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {
+      "raw_crs": {
+        "samples": 37,
+        "median_s": 1.285,
+        "max_s": 1.931
+      },
+      "raw_gg_src": {
+        "samples": 18,
+        "median_s": 2.628,
+        "max_s": 3.687
+      },
+      "raw_gg_tgt": {
+        "samples": 20,
+        "median_s": 2.418,
+        "max_s": 3.325
+      },
+      "raw_lag": {
+        "samples": 43,
+        "median_s": 1.097,
+        "max_s": 1.24
+      }
+    }
+  },
+  "invoked_by": "agent",
+  "disturbed": true,
+  "expected": {
+    "Source": "lab verification report",
+    "Hypothesis": "equal counts and sums, no missing and no duplicate SEQ",
+    "Recovers": "nie dotyczy",
+    "DataLoss": 0,
+    "FinalNode": "ggrac1",
+    "RtoS": "nie dotyczy"
+  },
+  "expected_written_utc": "2026-11-16T11:22:33.589Z",
+  "expected_match": true,
+  "expected_check": [
+    {
+      "field": "final_node",
+      "expected": "ggrac1",
+      "actual": "ggrac1",
+      "match": true
+    },
+    {
+      "field": "data_loss",
+      "expected": 0,
+      "actual": 0,
+      "match": true
+    }
+  ],
+  "back_to_base_s": 54.7,
+  "back_to_base_ok": true
+}

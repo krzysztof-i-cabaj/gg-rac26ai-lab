@@ -1,0 +1,14 @@
+{
+  "test_id": "T4",
+  "run_no": 2,
+  "phase": "expected_before_fault",
+  "expected_written_utc": "2026-11-16T13:57:56.025Z",
+  "expected": {
+    "Source": "MAA 26ai (--use_local_services, Task 3 and 7), lab verification report",
+    "Hypothesis": "GoldenGate follows the service to ggrac2 although node 1 and its ACFS stay up (risk: XAG stays on ggrac1 without a database)",
+    "FinalNode": "ggrac2",
+    "Recovers": true,
+    "DataLoss": 0,
+    "RtoS": "nie wiemy"
+  }
+}

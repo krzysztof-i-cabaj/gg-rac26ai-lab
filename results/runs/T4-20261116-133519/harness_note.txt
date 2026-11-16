@@ -1,0 +1,8 @@
+Real result, different from the expectation (written for the public copy from the run notes).
+GoldenGate did not run anywhere for the whole 900 s window (final_node '-', no XAG restart). crsd_excerpt.txt shows
+why: "Hard Stop dependency prevents a relocate of xag.oggsource.goldengate from ggrac1" (CRS-0222), then XAG was
+stopped and cleaned on ggrac1 and CRS made no further start attempt.
+data_ok=false: at compare time the target had LOAD_EVENTS 1198 rows against 11260 on the source (SEQ inst 2: 10046
+missing, inst 1: 16 missing, 0 duplicates). These are rows not yet replicated because replication stood still for the
+whole window, not a proven permanent loss. Whether they arrived after lab.cmd baseline restarted GoldenGate was not
+checked (the next run starts with a data reset).

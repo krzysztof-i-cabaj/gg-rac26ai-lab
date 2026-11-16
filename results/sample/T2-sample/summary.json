@@ -1,0 +1,75 @@
+{
+  "test_id": "T2",
+  "run_no": 1,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": 31.5,
+    "t_service_online": 40.25,
+    "t_acfs_online": 46.0,
+    "t_vip_online": 48.5,
+    "t_sm_running": 65.0,
+    "t_ext_running": 80.0,
+    "t_dp_running": 84.0,
+    "t_rep_running": 90.0,
+    "t_lag_ok": 105.0
+  },
+  "segments": [
+    {
+      "name": "fault_to_detect",
+      "seconds": 31.5
+    },
+    {
+      "name": "detect_to_service",
+      "seconds": 8.75
+    },
+    {
+      "name": "service_to_acfs",
+      "seconds": 5.75
+    },
+    {
+      "name": "acfs_to_vip",
+      "seconds": 2.5
+    },
+    {
+      "name": "vip_to_sm",
+      "seconds": 16.5
+    },
+    {
+      "name": "sm_to_ext",
+      "seconds": 15.0
+    },
+    {
+      "name": "ext_to_dp",
+      "seconds": 4.0
+    },
+    {
+      "name": "dp_to_rep",
+      "seconds": 6.0
+    },
+    {
+      "name": "rep_to_lag_ok",
+      "seconds": 15.0
+    }
+  ],
+  "rto_s": 90.0,
+  "rto_basis": "rep_running",
+  "lag_max_s": 88.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": true,
+  "evicted_node": "ggrac1",
+  "stage": "A",
+  "synthetic": true,
+  "data_ok": true,
+  "final_node": "ggrac2",
+  "notes": [
+    "synthetic example, not a measurement"
+  ],
+  "fault_command": "VBoxManage controlvm ggrac1 poweroff",
+  "approved_by": "synthetic",
+  "pass": true,
+  "invoked_by": "synthetic",
+  "fault_kind": "poweroff"
+}

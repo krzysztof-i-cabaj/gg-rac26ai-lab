@@ -1,0 +1,97 @@
+{
+  "ts_utc": "2026-11-16T13:56:37.515Z",
+  "data_ok": false,
+  "reason": "tables differ: SALES.LOAD_EVENTS; SEQ check: inst 2: missing 10046, extra 0, duplicates 0; inst 1: missing 16, extra 0, duplicates 0",
+  "tables": [
+    {
+      "Table": "HR.DEPARTMENTS",
+      "SourceRows": 4,
+      "TargetRows": 4,
+      "Missing": 0,
+      "SourceHash": "8684312551",
+      "TargetHash": "8684312551",
+      "Match": true
+    },
+    {
+      "Table": "HR.EMPLOYEES",
+      "SourceRows": 20,
+      "TargetRows": 20,
+      "Missing": 0,
+      "SourceHash": "44420337760",
+      "TargetHash": "44420337760",
+      "Match": true
+    },
+    {
+      "Table": "SALES.CUSTOMERS",
+      "SourceRows": 10,
+      "TargetRows": 10,
+      "Missing": 0,
+      "SourceHash": "21258183646",
+      "TargetHash": "21258183646",
+      "Match": true
+    },
+    {
+      "Table": "SALES.ORDERS",
+      "SourceRows": 50,
+      "TargetRows": 50,
+      "Missing": 0,
+      "SourceHash": "119269681483",
+      "TargetHash": "119269681483",
+      "Match": true
+    },
+    {
+      "Table": "SALES.LOAD_EVENTS",
+      "SourceRows": 11260,
+      "TargetRows": 1198,
+      "Missing": 10062,
+      "SourceHash": "24238207340046",
+      "TargetHash": "2627068338440",
+      "Match": false
+    },
+    {
+      "Table": "SALES.TYPES26",
+      "SourceRows": 3,
+      "TargetRows": 3,
+      "Missing": 0,
+      "SourceHash": "4441312419",
+      "TargetHash": "4441312419",
+      "Match": true
+    }
+  ],
+  "seq_check": [
+    {
+      "inst": "2",
+      "source_rows": 10643,
+      "target_rows": 597,
+      "missing": 10046,
+      "extra_target": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "source_min": 64125,
+      "source_max": 75767,
+      "target_min": 64125,
+      "target_max": 64721
+    },
+    {
+      "inst": "1",
+      "source_rows": 617,
+      "target_rows": 601,
+      "missing": 16,
+      "extra_target": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "source_min": 63867,
+      "source_max": 65483,
+      "target_min": 63867,
+      "target_max": 65467
+    }
+  ],
+  "seq_source": [
+    "SEQ 2 10643 10643 64125 75767",
+    "SEQ 1 617 617 63867 65483"
+  ],
+  "seq_target": [
+    "SEQ 2 597 597 64125 64721",
+    "SEQ 1 601 601 63867 65467"
+  ]
+}

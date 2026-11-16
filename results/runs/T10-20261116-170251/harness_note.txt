@@ -1,0 +1,5 @@
+T10 attempt 1: pass without the DDL steps (translated from the original Polish note).
+The helper script for the manual DDL steps (v1) started only after the data comparison (its trigger was a file
+written at the end of the run), and its first insert failed with ORA-03405 (two statements on one line).
+The lab was not changed. measurement_error=ddl_not_run; the run proves quiet replication only. Repeated as attempt 2
+(T10-20261116-170741).

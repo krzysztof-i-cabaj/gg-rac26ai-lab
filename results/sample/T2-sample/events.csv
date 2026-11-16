@@ -1,0 +1,16 @@
+ts_utc,t_rel_s,test_id,run_no,resource,node,state_from,state_to,source,raw
+2026-11-20T10:00:00.000Z,0.000,T2,1,fault,ggrac1,,injected,host,VBoxManage controlvm ggrac1 poweroff
+2026-11-20T10:00:01.000Z,1.000,T2,1,inst:ggcdb1,ggrac1,ONLINE,UNKNOWN,crsctl,synthetic
+2026-11-20T10:00:31.500Z,31.500,T2,1,node:ggrac1,ggrac1,Active,Inactive,olsnodes,synthetic
+2026-11-20T10:00:32.000Z,32.000,T2,1,svc,ggrac1,ONLINE,OFFLINE,crsctl,synthetic
+2026-11-20T10:00:32.000Z,32.000,T2,1,acfs,ggrac1,ONLINE,OFFLINE,crsctl,synthetic
+2026-11-20T10:00:32.000Z,32.000,T2,1,vip,ggrac1,ONLINE,OFFLINE,crsctl,synthetic
+2026-11-20T10:00:32.000Z,32.000,T2,1,sm,ggrac1,ONLINE,OFFLINE,crsctl,synthetic
+2026-11-20T10:00:40.250Z,40.250,T2,1,svc,ggrac2,OFFLINE,ONLINE,crsctl,synthetic
+2026-11-20T10:00:46.000Z,46.000,T2,1,acfs,ggrac2,OFFLINE,ONLINE,crsctl,synthetic
+2026-11-20T10:00:48.500Z,48.500,T2,1,vip,ggrac2,OFFLINE,ONLINE,crsctl,synthetic
+2026-11-20T10:01:05.000Z,65.000,T2,1,sm,ggrac2,OFFLINE,ONLINE,crsctl,synthetic
+2026-11-20T10:01:20.000Z,80.000,T2,1,EXT1,ggrac2,STOPPED,RUNNING,adminclient,synthetic
+2026-11-20T10:01:24.000Z,84.000,T2,1,DP1,ggrac2,STOPPED,RUNNING,adminclient,synthetic
+2026-11-20T10:01:26.000Z,86.000,T2,1,REP1,ggtgt,RUNNING,STOPPED,adminclient,synthetic
+2026-11-20T10:01:30.000Z,90.000,T2,1,REP1,ggtgt,STOPPED,RUNNING,adminclient,synthetic

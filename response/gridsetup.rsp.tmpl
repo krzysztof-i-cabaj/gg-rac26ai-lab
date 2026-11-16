@@ -1,0 +1,52 @@
+# ==============================================================================
+# Tytul:        gridsetup.rsp.tmpl
+# Opis:         Plik odpowiedzi gridSetup.sh dla 2-wezlowego klastra GI 26ai (23.26): SCAN z DNS
+#               (gginfra, 3 adresy), siec publiczna enp0s3 i interconnect enp0s9, OCR/voting
+#               i baza na +DATA (EXTERNAL), dyski udev, bez AFD. {{...}} wstawia host z lab.env,
+#               haslo (@@LAB_PASS@@) wstawia dopiero 40_install_grid.sh na maszynie.
+# Description [EN]: gridSetup.sh response file for a 2-node GI 26ai (23.26) cluster: DNS SCAN
+#               (gginfra, 3 addresses), public enp0s3 and interconnect enp0s9, OCR/voting and the
+#               database on +DATA (EXTERNAL), udev disks, no AFD. {{...}} filled by the host from
+#               lab.env; the password (@@LAB_PASS@@) only by 40_install_grid.sh on the VM.
+#
+# Autor:        KCB Kris
+# Data:         2026-11-15
+# Wersja:       2.0 (klucze 26ai: installOption, scanName, diskList... / 26ai key names)
+# Konwencje:    <repo>/SETTINGS.md
+#
+# Wymagania [PL]:    - GI 23.26.x; klucze porownywane ze wzorcem $GRID_HOME/install/response/gridsetup.rsp
+# Requirements [EN]: - GI 23.26.x; keys compared with the sample $GRID_HOME/install/response/gridsetup.rsp
+#
+# Uzycie [PL]:       automatycznie: lab.cmd grid
+# Usage [EN]:        automatic: lab.cmd grid
+# ==============================================================================
+oracle.install.responseFileVersion=/oracle/install/rspfmt_crsinstall_response_schema_v23.0.0
+INVENTORY_LOCATION={{INVENTORY}}
+installOption=CRS_CONFIG
+ORACLE_BASE={{GRID_BASE}}
+clusterUsage=RAC
+OSDBA=asmdba
+OSOPER=asmoper
+OSASM=asmadmin
+scanType=LOCAL_SCAN
+scanName={{SCAN_NAME}}
+scanPort=1521
+configureAsExtendedCluster=false
+clusterName={{CLUSTER_NAME}}
+configureGNS=false
+configureDHCPAssignedVIPs=false
+clusterNodes={{CLUSTER_NODES}}
+networkInterfaceList={{NET_IF_LIST}}
+storageOption=FLEX_ASM_STORAGE
+useIPMI=false
+sysasmPassword=@@LAB_PASS@@
+diskGroupName=DATA
+redundancy=EXTERNAL
+auSize=4
+diskList={{DATA_DISKS}}
+diskString=/dev/oracleasm/*
+asmsnmpPassword=@@LAB_PASS@@
+ignoreDownNodes=false
+configureBackupDG=false
+managementOption=NONE
+executeRootScript=false

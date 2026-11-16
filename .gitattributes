@@ -1,0 +1,9 @@
+# Konce linii LF dla plikow uruchamianych na Linuksie / LF for files executed on Linux
+*.sh text eol=lf
+*.ks text eol=lf
+*.tmpl text eol=lf
+*.rsp text eol=lf
+*.sql text eol=lf
+*.prm text eol=lf
+*.oby text eol=lf
+*.conf text eol=lf

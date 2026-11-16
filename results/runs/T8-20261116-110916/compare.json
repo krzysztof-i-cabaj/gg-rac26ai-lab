@@ -1,0 +1,85 @@
+{
+  "ts_utc": "2026-11-16T11:20:38.925Z",
+  "data_ok": true,
+  "reason": "",
+  "tables": [
+    {
+      "Table": "HR.DEPARTMENTS",
+      "SourceRows": 4,
+      "TargetRows": 4,
+      "Missing": 0,
+      "Match": true
+    },
+    {
+      "Table": "HR.EMPLOYEES",
+      "SourceRows": 20,
+      "TargetRows": 20,
+      "Missing": 0,
+      "Match": true
+    },
+    {
+      "Table": "SALES.CUSTOMERS",
+      "SourceRows": 10,
+      "TargetRows": 10,
+      "Missing": 0,
+      "Match": true
+    },
+    {
+      "Table": "SALES.ORDERS",
+      "SourceRows": 50,
+      "TargetRows": 50,
+      "Missing": 0,
+      "Match": true
+    },
+    {
+      "Table": "SALES.LOAD_EVENTS",
+      "SourceRows": 13068,
+      "TargetRows": 13068,
+      "Missing": 0,
+      "Match": true
+    },
+    {
+      "Table": "SALES.TYPES26",
+      "SourceRows": 3,
+      "TargetRows": 3,
+      "Missing": 0,
+      "Match": true
+    }
+  ],
+  "seq_check": [
+    {
+      "inst": "1",
+      "source_rows": 6552,
+      "target_rows": 6552,
+      "missing": 0,
+      "extra_target": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "source_min": 3636,
+      "source_max": 18187,
+      "target_min": 3636,
+      "target_max": 18187
+    },
+    {
+      "inst": "2",
+      "source_rows": 6516,
+      "target_rows": 6516,
+      "missing": 0,
+      "extra_target": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "source_min": 5001,
+      "source_max": 17516,
+      "target_min": 5001,
+      "target_max": 17516
+    }
+  ],
+  "seq_source": [
+    "SEQ 1 6552 6552 3636 18187",
+    "SEQ 2 6516 6516 5001 17516"
+  ],
+  "seq_target": [
+    "SEQ 1 6552 6552 3636 18187",
+    "SEQ 2 6516 6516 5001 17516"
+  ]
+}

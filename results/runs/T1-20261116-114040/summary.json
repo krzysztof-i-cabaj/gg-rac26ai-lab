@@ -1,0 +1,82 @@
+{
+  "test_id": "T1",
+  "run_no": 2,
+  "markers": {
+    "t_fault": null
+  },
+  "segments": [],
+  "rto_s": null,
+  "rto_basis": null,
+  "lag_max_s": null,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": false,
+  "fault_command": "",
+  "refused": true,
+  "pass": false,
+  "xag_restarts": 0,
+  "attempt": 2,
+  "data_ok": false,
+  "invoked_by": "agent",
+  "expected_gg_node": null,
+  "evicted_node": "",
+  "clock_offsets_ms": {
+    "gginfra": -0.926,
+    "ggrac1": 0.0,
+    "ggrac2": -0.015,
+    "ggtgt": -0.011
+  },
+  "approved_by": "operator",
+  "final_node": "ggrac1",
+  "synthetic": false,
+  "disturbed": false,
+  "stage": "A",
+  "recovered": false,
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "harness_error": false,
+  "notes": [
+    "Check whether agctl relocate moved gg_srcpdb (notes).",
+    "run error: lab is not in the base state, the test does not start: lag is 93 s (threshold 30 s)",
+    "refused: the lab is not in the base state, no fault was injected"
+  ],
+  "service_moved": false,
+  "data_checked": false,
+  "title": "Planned relocation",
+  "fault_kind": "relocate",
+  "xag_action": "none",
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {}
+  },
+  "expected": {
+    "RtoS": "nie wiemy",
+    "Recovers": true,
+    "Source": "MAA 26ai (agctl relocate), lab verification report",
+    "DataLoss": 0,
+    "FinalNode": "ggrac2",
+    "Hypothesis": "XAG chain in order (SM stop, ACFS off node 1, mount on ggrac2, VIP, start, processes from checkpoints); does agctl relocate move gg_srcpdb?"
+  },
+  "expected_written_utc": "2026-11-16T11:25:31.420Z",
+  "expected_match": null,
+  "expected_check": [],
+  "back_to_base_s": 52.2,
+  "back_to_base_ok": true,
+  "measurement_error": "lag"
+}

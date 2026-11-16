@@ -1,0 +1,217 @@
+{
+  "test_id": "T2",
+  "run_no": 1,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": 32.873,
+    "t_service_online": 32.8,
+    "t_acfs_online": 36.737,
+    "t_vip_online": 32.785,
+    "t_sm_running": 45.88,
+    "t_ext_running": 73.007,
+    "t_dp_running": 42.414,
+    "t_rep_running": null,
+    "t_lag_ok": 135.571
+  },
+  "segments": [
+    {
+      "name": "fault_to_detect",
+      "seconds": 32.873
+    },
+    {
+      "name": "service_to_acfs",
+      "seconds": 3.937
+    },
+    {
+      "name": "vip_to_sm",
+      "seconds": 13.095
+    },
+    {
+      "name": "sm_to_ext",
+      "seconds": 27.127
+    }
+  ],
+  "segments_out_of_order": [
+    "detect_to_service",
+    "acfs_to_vip",
+    "ext_to_dp"
+  ],
+  "rto_s": 135.571,
+  "rto_basis": "lag_ok",
+  "lag_max_s": 163.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": true,
+  "invoked_by": "agent",
+  "attempt": 1,
+  "data_checked": true,
+  "refused": false,
+  "approved_by": "operator",
+  "disturbed": true,
+  "clock_offsets_ms": {
+    "gginfra": -0.664,
+    "ggrac1": 0.003,
+    "ggrac2": 0.001,
+    "ggtgt": 0.001
+  },
+  "xag_restarts": 1,
+  "recovered": true,
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {
+      "raw_crs": {
+        "samples": 291,
+        "median_s": 1.263,
+        "max_s": 10.087
+      },
+      "raw_gg_src": {
+        "samples": 147,
+        "median_s": 2.559,
+        "max_s": 10.024
+      },
+      "raw_gg_tgt": {
+        "samples": 165,
+        "median_s": 2.417,
+        "max_s": 3.947
+      },
+      "raw_lag": {
+        "samples": 364,
+        "median_s": 1.094,
+        "max_s": 1.858
+      }
+    }
+  },
+  "pass": true,
+  "final_node": "ggrac2",
+  "fault_command": "VBoxManage controlvm ggrac1 poweroff",
+  "title": "Hard power-off of the GoldenGate node",
+  "fault_kind": "poweroff",
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "stage": "A",
+  "harness_error": false,
+  "evicted_node": "ggrac1",
+  "synthetic": false,
+  "notes": [
+    "Start ggrac1 again before T2-back."
+  ],
+  "xag_action": "relocate",
+  "expected_gg_node": "ggrac2",
+  "measurement_error": null,
+  "data_ok": true,
+  "service_moved": true,
+  "expected": {
+    "DataLoss": 0,
+    "RtoS": "nie wiemy",
+    "Recovers": true,
+    "Hypothesis": "hands-off recovery: eviction, service to ggcdb2, ACFS, VIP, Service Manager, Extract reads the redo of thread 1",
+    "Source": "lab verification report, MAA 26ai (GG follows the singleton PDB service)",
+    "FinalNode": "ggrac2"
+  },
+  "expected_written_utc": "2026-11-16T12:29:59.128Z",
+  "expected_match": true,
+  "expected_check": [
+    {
+      "field": "final_node",
+      "expected": "ggrac2",
+      "actual": "ggrac2",
+      "match": true
+    },
+    {
+      "field": "recovers",
+      "expected": true,
+      "actual": true,
+      "match": true
+    },
+    {
+      "field": "data_loss",
+      "expected": 0,
+      "actual": 0,
+      "match": true
+    }
+  ],
+  "back_to_base_s": 257.3,
+  "back_to_base_ok": true,
+  "segments_measured": [
+    {
+      "name": "fault_to_vip_online",
+      "from": "t_fault",
+      "to": "t_vip_online",
+      "from_t_rel_s": 0.0,
+      "to_t_rel_s": 32.785,
+      "seconds": 32.785
+    },
+    {
+      "name": "vip_online_to_service_online",
+      "from": "t_vip_online",
+      "to": "t_service_online",
+      "from_t_rel_s": 32.785,
+      "to_t_rel_s": 32.8,
+      "seconds": 0.015
+    },
+    {
+      "name": "service_online_to_crs_detect",
+      "from": "t_service_online",
+      "to": "t_crs_detect",
+      "from_t_rel_s": 32.8,
+      "to_t_rel_s": 32.873,
+      "seconds": 0.073
+    },
+    {
+      "name": "crs_detect_to_acfs_online",
+      "from": "t_crs_detect",
+      "to": "t_acfs_online",
+      "from_t_rel_s": 32.873,
+      "to_t_rel_s": 36.737,
+      "seconds": 3.864
+    },
+    {
+      "name": "acfs_online_to_dp_running",
+      "from": "t_acfs_online",
+      "to": "t_dp_running",
+      "from_t_rel_s": 36.737,
+      "to_t_rel_s": 42.414,
+      "seconds": 5.677
+    },
+    {
+      "name": "dp_running_to_sm_running",
+      "from": "t_dp_running",
+      "to": "t_sm_running",
+      "from_t_rel_s": 42.414,
+      "to_t_rel_s": 45.88,
+      "seconds": 3.466
+    },
+    {
+      "name": "sm_running_to_ext_running",
+      "from": "t_sm_running",
+      "to": "t_ext_running",
+      "from_t_rel_s": 45.88,
+      "to_t_rel_s": 73.007,
+      "seconds": 27.127
+    },
+    {
+      "name": "ext_running_to_lag_ok",
+      "from": "t_ext_running",
+      "to": "t_lag_ok",
+      "from_t_rel_s": 73.007,
+      "to_t_rel_s": 135.571,
+      "seconds": 62.564
+    }
+  ]
+}

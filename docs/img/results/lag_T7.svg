@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440" role="img" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+<title>T7: replication lag around the fault</title>
+<rect x="0.5" y="0.5" width="959" height="439" rx="10" fill="#fcfcfb" stroke="#c3c2b7"/>
+<text x="20.0" y="32.0" font-size="18" fill="#0b0b0b" text-anchor="start" font-weight="600">T7: replication lag around the fault</text>
+<text x="20.0" y="54.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">Lag = incoming_lag + age of the last heartbeat (target view ggadmin.gg_lag), 1 s samples.</text>
+<line x1="64" y1="370.0" x2="930" y2="370.0" stroke="#c3c2b7"/>
+<text x="56.0" y="374.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">0</text>
+<line x1="64" y1="325.0" x2="930" y2="325.0" stroke="#e1e0d9"/>
+<text x="56.0" y="329.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">25</text>
+<line x1="64" y1="280.0" x2="930" y2="280.0" stroke="#e1e0d9"/>
+<text x="56.0" y="284.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">50</text>
+<line x1="64" y1="235.0" x2="930" y2="235.0" stroke="#e1e0d9"/>
+<text x="56.0" y="239.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">75</text>
+<line x1="64" y1="190.0" x2="930" y2="190.0" stroke="#e1e0d9"/>
+<text x="56.0" y="194.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">100</text>
+<line x1="64" y1="145.0" x2="930" y2="145.0" stroke="#e1e0d9"/>
+<text x="56.0" y="149.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">125</text>
+<line x1="64" y1="100.0" x2="930" y2="100.0" stroke="#e1e0d9"/>
+<text x="56.0" y="104.0" font-size="11" fill="#898781" text-anchor="end" font-weight="normal">150</text>
+<text x="64.0" y="388.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">-60</text>
+<line x1="64.0" y1="370" x2="64.0" y2="374" stroke="#c3c2b7"/>
+<text x="150.6" y="388.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">-30</text>
+<line x1="150.6" y1="370" x2="150.6" y2="374" stroke="#c3c2b7"/>
+<text x="237.2" y="388.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">0</text>
+<line x1="237.2" y1="370" x2="237.2" y2="374" stroke="#c3c2b7"/>
+<text x="323.8" y="388.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">30</text>
+<line x1="323.8" y1="370" x2="323.8" y2="374" stroke="#c3c2b7"/>
+<text x="410.4" y="388.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">60</text>
+<line x1="410.4" y1="370" x2="410.4" y2="374" stroke="#c3c2b7"/>
+<text x="497.0" y="388.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">90</text>
+<line x1="497.0" y1="370" x2="497.0" y2="374" stroke="#c3c2b7"/>
+<text x="583.6" y="388.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">120</text>
+<line x1="583.6" y1="370" x2="583.6" y2="374" stroke="#c3c2b7"/>
+<text x="670.2" y="388.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">150</text>
+<line x1="670.2" y1="370" x2="670.2" y2="374" stroke="#c3c2b7"/>
+<text x="756.8" y="388.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">180</text>
+<line x1="756.8" y1="370" x2="756.8" y2="374" stroke="#c3c2b7"/>
+<text x="843.4" y="388.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">210</text>
+<line x1="843.4" y1="370" x2="843.4" y2="374" stroke="#c3c2b7"/>
+<text x="930.0" y="388.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">240</text>
+<line x1="930.0" y1="370" x2="930.0" y2="374" stroke="#c3c2b7"/>
+<text x="497.0" y="410.0" font-size="11" fill="#898781" text-anchor="middle" font-weight="normal">seconds relative to the fault (t_fault = 0)</text>
+<text transform="translate(18,235) rotate(-90)" font-size="11" fill="#898781" text-anchor="middle">lag [s]</text>
+<line x1="64" y1="316.0" x2="930" y2="316.0" stroke="#52514e" stroke-dasharray="6 4"/>
+<text x="926.0" y="311.0" font-size="11" fill="#52514e" text-anchor="end" font-weight="normal">threshold 30 s</text>
+<line x1="237.2" y1="100" x2="237.2" y2="370" stroke="#0b0b0b" stroke-width="1.5"/>
+<text x="241.2" y="112.0" font-size="11" fill="#0b0b0b" text-anchor="start" font-weight="normal">fault</text>
+<line x1="20" y1="76" x2="38" y2="76" stroke="#2a78d6" stroke-width="3" stroke-linecap="round"/>
+<text x="44.0" y="80.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">run 1 · lag OK 159.1 s</text>
+<path d="M67.4,348.4 L70.6,346.6 L73.7,344.8 L76.9,352.0 L80.1,350.2 L83.4,348.4 L86.6,346.6 L89.8,352.0 L93.0,350.2 L96.1,348.4 L99.3,346.6 L102.4,353.8 L105.6,352.0 L108.8,350.2 L112.0,348.4 L115.1,346.6 L118.3,353.8 L121.4,352.0 L124.6,350.2 L127.7,346.6 L130.9,344.8 L134.1,352.0 L137.2,350.2 L140.5,348.4 L143.6,346.6 L148.7,352.0 L152.0,350.2 L157.4,346.6 L160.7,355.6 L163.9,352.0 L167.1,350.2 L170.4,348.4 L173.7,346.6 L176.9,352.0 L180.1,350.2 L183.3,348.4 L186.5,346.6 L189.7,353.8 L192.8,352.0 L196.0,350.2 L199.2,348.4 L202.3,346.6 L205.5,352.0 L208.7,350.2 L211.8,348.4 L215.0,346.6 L218.1,353.8 L221.3,352.0 L224.5,350.2 L227.7,348.4 L230.9,346.6 L234.1,352.0 L237.4,350.2 L240.6,348.4 L243.8,346.6 L246.9,353.8 L250.0,352.0 L253.3,350.2 L256.4,348.4 L259.6,346.6 L262.8,344.8 L265.9,341.2 L269.1,339.4 L272.2,337.6 L275.4,335.8 L278.5,334.0 L281.7,332.2 L284.8,330.4 L288.0,328.6 L291.2,326.8 L294.3,325.0 L297.5,323.2 L300.6,319.6 L303.7,317.8 L306.9,316.0 L310.0,314.2 L313.2,312.4 L316.3,310.6 L319.5,308.8 L322.7,307.0 L325.9,305.2 L329.0,303.4 L332.2,301.6 L335.3,298.0 L338.5,296.2 L341.6,294.4 L344.8,292.6 L347.9,290.8 L351.1,289.0 L354.2,287.2 L357.6,285.4 L360.7,283.6 L363.9,281.8 L367.1,278.2 L370.3,276.4 L373.4,274.6 L376.5,272.8 L379.7,271.0 L382.8,269.2 L385.9,267.4 L389.1,265.6 L392.3,263.8 L395.4,262.0 L398.6,260.2 L401.7,256.6 L404.9,254.8 L408.1,253.0 L411.8,251.2 L415.0,249.4 L418.3,247.6 L422.0,244.0 L426.0,242.2 L429.5,240.4 L432.7,238.6 L435.8,236.8 L439.0,235.0 L442.2,231.4 L445.3,229.6 L448.5,227.8 L451.9,226.0 L455.1,224.2 L458.3,222.4 L461.4,220.6 L464.6,218.8 L467.9,217.0 L471.1,213.4 L474.4,211.6 L477.6,209.8 L480.8,208.0 L484.0,206.2 L487.2,204.4 L490.4,202.6 L493.5,200.8 L496.6,199.0 L499.8,195.4 L503.0,193.6 L506.1,191.8 L509.3,190.0 L512.4,188.2 L515.6,186.4 L518.9,242.2 L522.2,240.4 L525.5,238.6 L528.6,235.0 L531.8,233.2 L535.0,231.4 L538.2,229.6 L541.4,227.8 L544.6,226.0 L547.7,224.2 L550.9,222.4 L554.1,220.6 L557.3,218.8 L560.4,215.2 L563.5,213.4 L566.7,211.6 L569.8,209.8 L573.0,208.0 L576.1,206.2 L579.4,204.4 L582.6,202.6 L585.7,200.8 L588.8,199.0 L592.0,195.4 L595.1,193.6 L598.2,191.8 L601.4,190.0 L604.5,188.2 L607.7,186.4 L610.9,184.6 L614.0,182.8 L617.2,181.0 L620.3,179.2 L623.4,177.4 L626.6,173.8 L629.7,172.0 L632.9,170.2 L636.1,168.4 L639.2,166.6 L642.4,164.8 L645.5,163.0 L648.7,161.2 L651.9,159.4 L655.2,157.6 L658.5,154.0 L661.6,152.2 L664.7,150.4 L667.9,148.6 L671.1,146.8 L674.3,145.0 L677.5,143.2 L680.6,141.4 L683.8,139.6 L687.0,137.8 L690.1,233.2 L693.3,231.4 L696.5,352.0 L699.7,350.2 L702.8,348.4 L706.0,359.2 L709.1,357.4 L712.3,355.6 L715.5,353.8 L718.6,359.2 L721.8,357.4 L724.9,355.6 L728.1,353.8 L731.2,352.0 L734.4,359.2 L737.5,357.4 L740.6,355.6 L743.8,353.8 L747.0,352.0 L750.1,357.4 L753.2,355.6 L756.4,353.8 L759.5,352.0 L762.7,359.2 L765.8,357.4 L769.0,355.6 L772.2,353.8 L775.3,352.0 L778.5,359.2 L781.6,357.4 L784.8,353.8 L787.9,352.0 L791.1,359.2 L794.2,357.4 L797.4,355.6 L800.6,353.8 L803.7,352.0 L806.9,359.2 L810.0,357.4 L813.2,355.6 L816.3,352.0 L819.5,361.0 L822.6,359.2 L825.8,355.6 L828.9,353.8 L832.1,352.0 L835.3,359.2 L838.4,357.4 L841.6,355.6 L844.7,353.8 L847.9,361.0 L851.0,359.2 L854.1,357.4 L857.3,355.6 L860.5,352.0 L863.6,359.2 L866.8,357.4 L870.0,355.6 L873.1,353.8 L876.2,352.0 L879.4,359.2 L882.6,355.6 L885.7,353.8 L888.8,352.0 L891.9,350.2 L895.1,357.4 L898.2,355.6 L901.4,353.8 L904.6,352.0 L907.7,359.2 L910.9,357.4 L914.0,355.6 L917.2,352.0 L920.3,350.2 L923.5,357.4 L926.6,353.8 L929.8,352.0" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round"><title>run 1</title></path>
+<line x1="696.5" y1="100" x2="696.5" y2="370" stroke="#2a78d6" stroke-width="1.5" stroke-dasharray="3 3"><title>lag OK 159.1 s</title></line>
+<circle cx="696.5" cy="317.8" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<text x="20.0" y="426.0" font-size="11" fill="#898781" text-anchor="start" font-weight="normal">Measured 16.11.2026 on VirtualBox (laptop), 3 vCPU per RAC node, load 10 rows/s per instance.</text>
+</svg>

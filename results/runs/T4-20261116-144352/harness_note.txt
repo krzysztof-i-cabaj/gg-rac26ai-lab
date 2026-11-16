@@ -1,0 +1,5 @@
+The data comparison of this run is invalid (translated from the original Polish note).
+compare.sh ran on ggrac1, where instance ggcdb1 did not come back after the PMON kill (ORA-01034 in the compare log).
+The source was never read, so "tables differ" and data_ok=false are a test-harness error, not a data loss.
+The GoldenGate result (no recovery within 900 s) is real.
+Fix: Get-Compare tries the next RAC node; no readable source = data_checked=false ("compare not run").

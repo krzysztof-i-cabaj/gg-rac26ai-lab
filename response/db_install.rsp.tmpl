@@ -1,0 +1,35 @@
+# ==============================================================================
+# Tytul:        db_install.rsp.tmpl
+# Opis:         Plik odpowiedzi runInstaller: samo oprogramowanie Oracle Database 26ai (23.26) EE.
+#               Na wezlach RAC z lista wezlow klastra (instalacja na obu przez SSH), na ggtgt
+#               single-instance (pusta lista). {{...}} wstawia host z lab.env, hasel tu nie ma.
+# Description [EN]: runInstaller response file: Oracle Database 26ai (23.26) EE software only.
+#               On RAC nodes with the cluster node list (installs on both over SSH), on ggtgt
+#               single-instance (empty list). {{...}} filled by the host from lab.env; no passwords.
+#
+# Autor:        KCB Kris
+# Data:         2026-11-15
+# Wersja:       2.0 (klucze 26ai: installOption, installEdition, OSDBA... / 26ai key names)
+# Konwencje:    <repo>/SETTINGS.md
+#
+# Wymagania [PL]:    - DB 23.26.x; klucze porownywane ze wzorcem $DB_HOME/install/response/db_install.rsp
+# Requirements [EN]: - DB 23.26.x; keys compared with the sample $DB_HOME/install/response/db_install.rsp
+#
+# Uzycie [PL]:       automatycznie: lab.cmd db (RAC), lab.cmd tgt (cel)
+# Usage [EN]:        automatic: lab.cmd db (RAC), lab.cmd tgt (target)
+# ==============================================================================
+oracle.install.responseFileVersion=/oracle/install/rspfmt_dbinstall_response_schema_v23.0.0
+installOption=INSTALL_DB_SWONLY
+UNIX_GROUP_NAME=oinstall
+INVENTORY_LOCATION={{INVENTORY}}
+ORACLE_HOME={{DB_HOME}}
+ORACLE_BASE={{DB_BASE}}
+installEdition=EE
+OSDBA=dba
+OSOPER=oper
+OSBACKUPDBA=backupdba
+OSDGDBA=dgdba
+OSKMDBA=kmdba
+OSRACDBA=racdba
+executeRootScript=false
+clusterNodes={{DB_CLUSTER_NODES}}

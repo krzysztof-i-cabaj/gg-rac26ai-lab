@@ -1,0 +1,50 @@
+# ==============================================================================
+# Tytul:        dbca_tgt.rsp.tmpl
+# Opis:         Plik odpowiedzi dbca dla celu: CDB single-instance tgtcdb z PDB TGTPDB na ggtgt,
+#               pliki w /u01/oradata, AL32UTF8, SGA z Oracle.TgtSgaMb na HugePages, listener
+#               LISTENER (tworzy go 60_create_db.sh). Hasla (@@LAB_PASS@@) wstawia skrypt na VM.
+# Description [EN]: dbca response file for the target: single-instance CDB tgtcdb with PDB TGTPDB
+#               on ggtgt, files in /u01/oradata, AL32UTF8, SGA from Oracle.TgtSgaMb on HugePages,
+#               listener LISTENER (created by 60_create_db.sh). Passwords filled on the VM.
+#
+# Autor:        KCB Kris
+# Data:         2026-11-14
+# Wersja:       1.0
+# Konwencje:    <repo>/SETTINGS.md
+#
+# Wymagania [PL]:    - DB 23.26.x w DB_HOME na ggtgt, listener LISTENER uruchomiony
+# Requirements [EN]: - DB 23.26.x in DB_HOME on ggtgt, listener LISTENER running
+#
+# Uzycie [PL]:       automatycznie: lab.cmd tgt
+# Usage [EN]:        automatic: lab.cmd tgt
+# ==============================================================================
+responseFileVersion=/oracle/assistants/rspfmt_dbca_response_schema_v23.0.0
+gdbName={{TGT_DB}}
+sid={{TGT_DB}}
+databaseConfigType=SI
+templateName={{DB_HOME}}/assistants/dbca/templates/General_Purpose.dbc
+sysPassword=@@LAB_PASS@@
+systemPassword=@@LAB_PASS@@
+emConfiguration=NONE
+runCVUChecks=false
+dvConfiguration=false
+olsConfiguration=false
+createAsContainerDatabase=true
+numberOfPDBs=1
+pdbName={{TGT_PDB}}
+useLocalUndoForPDBs=true
+pdbAdminPassword=@@LAB_PASS@@
+storageType=FS
+datafileDestination=/u01/oradata/{DB_UNIQUE_NAME}/
+recoveryAreaDestination=
+characterSet=AL32UTF8
+nationalCharacterSet=AL16UTF16
+registerWithDirService=false
+listeners=LISTENER
+variables=
+initParams=use_large_pages=TRUE,sga_target={{TGT_SGA_MB}}M,pga_aggregate_target=512M,processes=300
+sampleSchema=false
+memoryPercentage=
+databaseType=MULTIPURPOSE
+automaticMemoryManagement=false
+totalMemory=

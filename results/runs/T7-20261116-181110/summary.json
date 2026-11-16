@@ -1,0 +1,159 @@
+{
+  "test_id": "T7",
+  "run_no": 1,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": 65.714,
+    "t_service_online": null,
+    "t_acfs_online": null,
+    "t_vip_online": null,
+    "t_sm_running": null,
+    "t_ext_running": null,
+    "t_dp_running": null,
+    "t_rep_running": null,
+    "t_lag_ok": 159.103
+  },
+  "segments": [
+    {
+      "name": "fault_to_detect",
+      "seconds": 65.714
+    }
+  ],
+  "segments_out_of_order": [],
+  "segments_measured": [
+    {
+      "name": "fault_to_crs_detect",
+      "from": "t_fault",
+      "to": "t_crs_detect",
+      "from_t_rel_s": 0.0,
+      "to_t_rel_s": 65.714,
+      "seconds": 65.714
+    },
+    {
+      "name": "crs_detect_to_lag_ok",
+      "from": "t_crs_detect",
+      "to": "t_lag_ok",
+      "from_t_rel_s": 65.714,
+      "to_t_rel_s": 159.103,
+      "seconds": 93.389
+    }
+  ],
+  "rto_s": 159.103,
+  "rto_basis": "lag_ok",
+  "lag_max_s": 129.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": true,
+  "lag_relapses": 0,
+  "lag_relapse_first_s": null,
+  "stage": "A",
+  "refused": false,
+  "approved_by": "operator",
+  "data_ok": true,
+  "config_rev": "maa-singleton-local-svc",
+  "attempt": 1,
+  "expected_gg_node": null,
+  "clock_offsets_ms": {
+    "gginfra": 0.326,
+    "ggrac1": -0.0,
+    "ggrac2": -0.008,
+    "ggtgt": 0.0
+  },
+  "intervention_rc": null,
+  "final_node": "ggrac1",
+  "intervention_steps": null,
+  "intervention_invoked_by": null,
+  "disturbed": true,
+  "fault_command": "VBoxManage controlvm ggrac2 setlinkstate3 off",
+  "observe_s": 341.8,
+  "approval_wait_s": null,
+  "data_checked": true,
+  "service_moved": false,
+  "invoked_by": "agent",
+  "test_variant": null,
+  "intervention_command": null,
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "xag_action": "none",
+  "harness_error": false,
+  "intervention_approved_by": null,
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {
+      "raw_crs": {
+        "samples": 319,
+        "median_s": 1.269,
+        "max_s": 10.565
+      },
+      "raw_gg_src": {
+        "samples": 163,
+        "median_s": 2.555,
+        "max_s": 10.142
+      },
+      "raw_gg_tgt": {
+        "samples": 190,
+        "median_s": 2.419,
+        "max_s": 3.679
+      },
+      "raw_lag": {
+        "samples": 421,
+        "median_s": 1.094,
+        "max_s": 1.898
+      }
+    }
+  },
+  "measurement_error": null,
+  "notes": [
+    "setlinkstate3 on afterwards; record evicted_node."
+  ],
+  "intervention_node": null,
+  "xag_restarts": 0,
+  "recovered": true,
+  "evicted_node": "ggrac2",
+  "fault_kind": "link-down",
+  "synthetic": false,
+  "title": "Interconnect cut",
+  "pass": true,
+  "expected": {
+    "Hypothesis": "exactly one node leaves the cluster (which one: measured), GoldenGate ends on the node that stays, replication comes back",
+    "DataLoss": 0,
+    "Recovers": true,
+    "RtoS": "nie wiemy",
+    "Source": "lab verification report, lab plan",
+    "FinalNode": "nie wiemy"
+  },
+  "expected_written_utc": "2026-11-16T18:11:14.494Z",
+  "expected_match": true,
+  "expected_check": [
+    {
+      "field": "recovers",
+      "expected": true,
+      "actual": true,
+      "match": true
+    },
+    {
+      "field": "data_loss",
+      "expected": 0,
+      "actual": 0,
+      "match": true
+    }
+  ],
+  "back_to_base_s": 641.2,
+  "back_to_base_ok": true
+}

@@ -1,0 +1,56 @@
+# ==============================================================================
+# Tytul:        dbca_src.rsp.tmpl
+# Opis:         Plik odpowiedzi dbca dla zrodla: CDB RAC ggcdb (instancje ggcdb1, ggcdb2) z PDB
+#               SRCPDB, pliki na +DATA, FRA na +FRA, AL32UTF8, SGA z Oracle.SrcSgaMb na HugePages.
+#               Hasla (@@LAB_PASS@@) wstawia dopiero 60_create_db.sh na maszynie (plik 600).
+# Description [EN]: dbca response file for the source: RAC CDB ggcdb (instances ggcdb1, ggcdb2)
+#               with PDB SRCPDB, files on +DATA, FRA on +FRA, AL32UTF8, SGA from Oracle.SrcSgaMb
+#               on HugePages. Passwords (@@LAB_PASS@@) only by 60_create_db.sh on the VM (600 file).
+#
+# Autor:        KCB Kris
+# Data:         2026-11-14
+# Wersja:       1.0
+# Konwencje:    <repo>/SETTINGS.md
+#
+# Wymagania [PL]:    - DB 23.26.x w DB_HOME na obu wezlach, grupy +DATA i +FRA zamontowane
+# Requirements [EN]: - DB 23.26.x in DB_HOME on both nodes, +DATA and +FRA mounted
+#
+# Uzycie [PL]:       automatycznie: lab.cmd dbca
+# Usage [EN]:        automatic: lab.cmd dbca
+# ==============================================================================
+responseFileVersion=/oracle/assistants/rspfmt_dbca_response_schema_v23.0.0
+gdbName={{SRC_DB}}
+sid={{SRC_DB}}
+databaseConfigType=RAC
+RACOneNodeServiceName=
+policyManaged=false
+createServerPool=false
+nodelist={{RAC_NODE_LIST}}
+templateName={{DB_HOME}}/assistants/dbca/templates/General_Purpose.dbc
+sysPassword=@@LAB_PASS@@
+systemPassword=@@LAB_PASS@@
+emConfiguration=NONE
+runCVUChecks=false
+dvConfiguration=false
+olsConfiguration=false
+createAsContainerDatabase=true
+numberOfPDBs=1
+pdbName={{SRC_PDB}}
+useLocalUndoForPDBs=true
+pdbAdminPassword=@@LAB_PASS@@
+storageType=ASM
+diskGroupName=+DATA/{DB_UNIQUE_NAME}/
+datafileDestination=+DATA/{DB_UNIQUE_NAME}/
+recoveryGroupName=+FRA
+recoveryAreaDestination=+FRA
+characterSet=AL32UTF8
+nationalCharacterSet=AL16UTF16
+registerWithDirService=false
+listeners=
+variables=
+initParams=use_large_pages=TRUE,sga_target={{SRC_SGA_MB}}M,pga_aggregate_target=1024M,processes=400
+sampleSchema=false
+memoryPercentage=
+databaseType=MULTIPURPOSE
+automaticMemoryManagement=false
+totalMemory=

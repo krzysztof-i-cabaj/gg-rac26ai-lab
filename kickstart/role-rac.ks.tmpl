@@ -1,0 +1,84 @@
+# ==============================================================================
+# Tytul:        role-rac.ks.tmpl
+# Opis:         Sekcje kickstartu roli rac (ggrac1, ggrac2): preinstall 26ai, uzytkownik grid
+#               i grupy ASM, katalogi GI/DB/GoldenGate/XAG, limity, THP, HugePages, profile.
+# Description [EN]: Kickstart sections for the rac role: 26ai preinstall, grid user and ASM
+#               groups, GI/DB/GoldenGate/XAG directories, limits, THP, HugePages, profiles.
+#
+# Autor:        KCB Kris
+# Data:         2026-11-15
+# Wersja:       1.1 (bez firewalld / no firewalld)
+# Konwencje:    <repo>/SETTINGS.md
+#
+# Wymagania [PL]:    - doklejany do base.ks.tmpl przez host/Kickstart.psm1
+# Requirements [EN]: - merged into base.ks.tmpl by host/Kickstart.psm1
+#
+# Uzycie [PL]:       sekcje po znacznikach #@@ PACKAGES i #@@ POST
+# Usage [EN]:        sections after the #@@ PACKAGES and #@@ POST markers
+# ==============================================================================
+#@@ PACKAGES
+oracle-ai-database-preinstall-26ai
+nfs-utils
+#@@ POST
+# preinstall-26ai created oinstall, dba, oper, backupdba, dgdba, kmdba, racdba and oracle.
+getent group asmadmin >/dev/null || groupadd -g 54327 asmadmin
+getent group asmdba   >/dev/null || groupadd -g 54328 asmdba
+getent group asmoper  >/dev/null || groupadd -g 54329 asmoper
+id grid >/dev/null 2>&1 || useradd -u 54331 -g oinstall -G asmadmin,asmdba,asmoper,dba,racdba -m -s /bin/bash grid
+usermod -a -G asmdba,racdba oracle
+
+for u in grid oracle; do
+    h=$(getent passwd "$u" | cut -d: -f6)
+    echo "export LAB_PASS='{{LAB_PASS}}'" > "$h/.lab_secrets"
+    chown "$u": "$h/.lab_secrets"; chmod 600 "$h/.lab_secrets"
+done
+echo "grid:{{LAB_PASS}}"   | chpasswd
+echo "oracle:{{LAB_PASS}}" | chpasswd
+
+# OFA directories. The GoldenGate deployment root is an ACFS mount point (created in step acfs).
+mkdir -p /u01/app/grid {{GRID_HOME}} /u01/app/oraInventory {{STAGE_DIR}} {{XAG_HOME}}
+mkdir -p /u01/app/oracle {{DB_HOME}} {{OGG_HOME}}
+chown -R grid:oinstall /u01/app/grid "$(dirname {{GRID_HOME}})" /u01/app/oraInventory {{STAGE_DIR}} {{XAG_HOME}}
+chown -R oracle:oinstall /u01/app/oracle "$(dirname {{OGG_HOME}})"
+chmod -R 775 /u01
+
+# Limits for grid (preinstall covers oracle only), memlock for both.
+cat > /etc/security/limits.d/zz-grid.conf <<'EOF'
+grid   soft   nofile    1024
+grid   hard   nofile    65536
+grid   soft   nproc     16384
+grid   hard   nproc     16384
+grid   soft   stack     10240
+grid   hard   stack     32768
+grid   soft   memlock   unlimited
+grid   hard   memlock   unlimited
+oracle soft   memlock   unlimited
+oracle hard   memlock   unlimited
+EOF
+
+# No zeroconf: 169.254.0.0/16 clashes with HAIP on the interconnect.
+grep -q '^NOZEROCONF' /etc/sysconfig/network 2>/dev/null || echo 'NOZEROCONF=yes' >> /etc/sysconfig/network
+
+# No firewall in the lab (kickstart: firewall --disabled): a zone set offline here was lost at boot.
+
+{{ORACLE_TUNING}}
+
+cat >> /home/grid/.bash_profile <<'EOF'
+export ORACLE_BASE=/u01/app/grid
+export ORACLE_HOME={{GRID_HOME}}
+export ORACLE_SID=+ASM{{NODE_NUM}}
+export PATH={{XAG_HOME}}/bin:$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+umask 022
+EOF
+cat >> /home/oracle/.bash_profile <<'EOF'
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME={{DB_HOME}}
+export ORACLE_SID={{SRC_DB}}{{NODE_NUM}}
+export OGG_HOME={{OGG_HOME}}
+export PATH={{XAG_HOME}}/bin:$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$OGG_HOME/bin:$PATH
+umask 022
+EOF
+# root runs agctl and crsctl: XAG must come before the GI home (its own agctl is older).
+cat >> /root/.bash_profile <<'EOF'
+export PATH={{XAG_HOME}}/bin:{{GRID_HOME}}/bin:$PATH
+EOF

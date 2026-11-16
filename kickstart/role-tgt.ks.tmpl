@@ -1,0 +1,41 @@
+# ==============================================================================
+# Tytul:        role-tgt.ks.tmpl
+# Opis:         Sekcje kickstartu roli tgt (ggtgt): preinstall 26ai, katalogi DB i GoldenGate,
+#               THP, HugePages, profil oracle. Baza single-instance na systemie plikow.
+# Description [EN]: Kickstart sections for the tgt role (ggtgt): 26ai preinstall, DB and
+#               GoldenGate directories, THP, HugePages, oracle profile. File-system database.
+#
+# Autor:        KCB Kris
+# Data:         2026-11-15
+# Wersja:       1.1 (bez firewalld / no firewalld)
+# Konwencje:    <repo>/SETTINGS.md
+#
+# Wymagania [PL]:    - doklejany do base.ks.tmpl przez host/Kickstart.psm1
+# Requirements [EN]: - merged into base.ks.tmpl by host/Kickstart.psm1
+#
+# Uzycie [PL]:       sekcje po znacznikach #@@ PACKAGES i #@@ POST
+# Usage [EN]:        sections after the #@@ PACKAGES and #@@ POST markers
+# ==============================================================================
+#@@ PACKAGES
+oracle-ai-database-preinstall-26ai
+#@@ POST
+h=$(getent passwd oracle | cut -d: -f6)
+echo "export LAB_PASS='{{LAB_PASS}}'" > "$h/.lab_secrets"
+chown oracle: "$h/.lab_secrets"; chmod 600 "$h/.lab_secrets"
+echo "oracle:{{LAB_PASS}}" | chpasswd
+
+mkdir -p /u01/app/oracle {{DB_HOME}} /u01/app/oraInventory {{STAGE_DIR}} {{OGG_HOME}} /u01/oggdeploy /u01/oradata
+chown -R oracle:oinstall /u01
+chmod -R 775 /u01
+
+
+{{ORACLE_TUNING}}
+
+cat >> /home/oracle/.bash_profile <<'EOF'
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME={{DB_HOME}}
+export ORACLE_SID={{TGT_DB}}
+export OGG_HOME={{OGG_HOME}}
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$OGG_HOME/bin:$PATH
+umask 022
+EOF

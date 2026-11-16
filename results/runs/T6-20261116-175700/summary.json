@@ -1,0 +1,171 @@
+{
+  "test_id": "T6",
+  "run_no": 2,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": 2.599,
+    "t_service_online": null,
+    "t_acfs_online": null,
+    "t_vip_online": null,
+    "t_sm_running": 51.397,
+    "t_ext_running": 33.406,
+    "t_dp_running": null,
+    "t_rep_running": null,
+    "t_lag_ok": 38.407
+  },
+  "segments": [
+    {
+      "name": "fault_to_detect",
+      "seconds": 2.599
+    }
+  ],
+  "segments_out_of_order": [
+    "sm_to_ext"
+  ],
+  "segments_measured": [
+    {
+      "name": "fault_to_crs_detect",
+      "from": "t_fault",
+      "to": "t_crs_detect",
+      "from_t_rel_s": 0.0,
+      "to_t_rel_s": 2.599,
+      "seconds": 2.599
+    },
+    {
+      "name": "crs_detect_to_ext_running",
+      "from": "t_crs_detect",
+      "to": "t_ext_running",
+      "from_t_rel_s": 2.599,
+      "to_t_rel_s": 33.406,
+      "seconds": 30.807
+    },
+    {
+      "name": "ext_running_to_lag_ok",
+      "from": "t_ext_running",
+      "to": "t_lag_ok",
+      "from_t_rel_s": 33.406,
+      "to_t_rel_s": 38.407,
+      "seconds": 5.001
+    },
+    {
+      "name": "lag_ok_to_sm_running",
+      "from": "t_lag_ok",
+      "to": "t_sm_running",
+      "from_t_rel_s": 38.407,
+      "to_t_rel_s": 51.397,
+      "seconds": 12.99
+    }
+  ],
+  "rto_s": 38.407,
+  "rto_basis": "lag_ok",
+  "lag_max_s": 46.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": true,
+  "lag_relapses": 0,
+  "lag_relapse_first_s": null,
+  "evicted_node": "",
+  "clock_offsets_ms": {
+    "gginfra": 0.359,
+    "ggrac1": -0.019,
+    "ggrac2": -0.0,
+    "ggtgt": -0.035
+  },
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {
+      "raw_crs": {
+        "samples": 195,
+        "median_s": 1.282,
+        "max_s": 6.646
+      },
+      "raw_gg_src": {
+        "samples": 98,
+        "median_s": 2.589,
+        "max_s": 11.267
+      },
+      "raw_gg_tgt": {
+        "samples": 106,
+        "median_s": 2.437,
+        "max_s": 9.375
+      },
+      "raw_lag": {
+        "samples": 239,
+        "median_s": 1.1,
+        "max_s": 4.057
+      }
+    }
+  },
+  "synthetic": false,
+  "test_variant": null,
+  "config_rev": "maa-singleton-local-svc",
+  "intervention_rc": null,
+  "attempt": 3,
+  "service_moved": false,
+  "expected_gg_node": null,
+  "disturbed": true,
+  "invoked_by": "agent",
+  "measurement_error": null,
+  "fault_kind": "kill-ext",
+  "refused": false,
+  "recovered": true,
+  "observe_s": 219.7,
+  "xag_restarts": 1,
+  "xag_action": "restart_in_place",
+  "notes": [
+    "Manual step before: Critical to deployment health ON for EXT1 (Web UI); export the profile before and after."
+  ],
+  "intervention_invoked_by": null,
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "title": "Process marked as critical",
+  "approval_wait_s": null,
+  "harness_error": false,
+  "final_node": "ggrac1",
+  "fault_command": "p=$(pgrep -f '[e]xtract.*EXT1'); [ -n \"$p\" ] || { echo 'no extract process'; exit 3; }; kill -9 $p",
+  "intervention_node": null,
+  "stage": "A",
+  "data_ok": true,
+  "approved_by": "operator",
+  "data_checked": true,
+  "intervention_approved_by": null,
+  "pass": true,
+  "intervention_command": null,
+  "intervention_steps": null,
+  "expected": {
+    "Recovers": "nie wiemy",
+    "DataLoss": 0,
+    "Hypothesis": "a failure of a process marked as critical can interfere with XAG restarting the deployment (docs say can interfere, not blocks)",
+    "RtoS": "nie wiemy",
+    "FinalNode": "nie wiemy",
+    "Source": "MAA 26ai"
+  },
+  "expected_written_utc": "2026-11-16T17:57:03.621Z",
+  "expected_match": true,
+  "expected_check": [
+    {
+      "field": "data_loss",
+      "expected": 0,
+      "actual": 0,
+      "match": true
+    }
+  ],
+  "back_to_base_s": 111.2,
+  "back_to_base_ok": true
+}

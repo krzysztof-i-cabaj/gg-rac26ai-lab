@@ -1,0 +1,73 @@
+{
+  "test_id": "T8",
+  "run_no": 1,
+  "markers": {
+    "t_fault": null
+  },
+  "segments": [],
+  "rto_s": null,
+  "rto_basis": null,
+  "lag_max_s": null,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": false,
+  "service_moved": false,
+  "disturbed": false,
+  "expected_gg_node": null,
+  "xag_restarts": 0,
+  "synthetic": false,
+  "fault_command": "",
+  "title": "Lag through heartbeat",
+  "xag_action": "none",
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "invoked_by": "agent",
+  "recovered": false,
+  "pass": false,
+  "approved_by": "",
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {}
+  },
+  "clock_offsets_ms": {},
+  "final_node": null,
+  "stage": "A",
+  "data_ok": false,
+  "evicted_node": "",
+  "notes": [
+    "Baseline under load, 10 minutes.",
+    "run error: lab is not in the base state, the test does not start: GgNode is '', base state is ggrac1; ServiceNode is '', base state is ggrac1; AcfsNode is '', base state is ggrac1; VipNode is '', base state is ggrac1; EXT1 is missing; DP1 is missing; REP1 is missing; lag is  s (threshold 30 s)",
+    "refused: the lab is not in the base state, no fault was injected"
+  ],
+  "fault_kind": "none",
+  "refused": true,
+  "expected": {
+    "RtoS": "nie dotyczy",
+    "FinalNode": "ggrac1",
+    "Hypothesis": "lag under load a few seconds, always below 30 s; rows of INST 1 and 2 reach the target (Extract reads both threads)",
+    "Source": "lab verification report, film concept note; no THREADS option in ADD EXTRACT (GG 26 docs)",
+    "DataLoss": 0,
+    "Recovers": "nie dotyczy"
+  },
+  "expected_written_utc": null,
+  "expected_match": null,
+  "expected_check": [],
+  "back_to_base_s": 54.5,
+  "back_to_base_ok": true
+}

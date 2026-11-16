@@ -1,0 +1,217 @@
+{
+  "test_id": "T1",
+  "run_no": 3,
+  "markers": {
+    "t_fault": 0.0,
+    "t_crs_detect": 12.576,
+    "t_service_online": 1.846,
+    "t_acfs_online": 24.643,
+    "t_vip_online": 24.633,
+    "t_sm_running": 32.21,
+    "t_ext_running": 60.264,
+    "t_dp_running": 29.471,
+    "t_rep_running": null,
+    "t_lag_ok": 65.417
+  },
+  "segments": [
+    {
+      "name": "fault_to_detect",
+      "seconds": 12.576
+    },
+    {
+      "name": "service_to_acfs",
+      "seconds": 22.797
+    },
+    {
+      "name": "vip_to_sm",
+      "seconds": 7.577
+    },
+    {
+      "name": "sm_to_ext",
+      "seconds": 28.054
+    }
+  ],
+  "segments_out_of_order": [
+    "detect_to_service",
+    "acfs_to_vip",
+    "ext_to_dp"
+  ],
+  "rto_s": 65.417,
+  "rto_basis": "lag_ok",
+  "lag_max_s": 69.0,
+  "lag_ok": {
+    "seconds": 30.0,
+    "source": "target heartbeat view (ggadmin.gg_lag)"
+  },
+  "lag_jump": true,
+  "refused": false,
+  "service_moved": true,
+  "approved_by": "operator",
+  "xag_action": "relocate",
+  "sample_interval_s": {
+    "declared": {
+      "crs": 1,
+      "gg": 2,
+      "lag": 1
+    },
+    "measured": {
+      "raw_crs": {
+        "samples": 206,
+        "median_s": 1.257,
+        "max_s": 1.357
+      },
+      "raw_gg_src": {
+        "samples": 102,
+        "median_s": 2.551,
+        "max_s": 2.786
+      },
+      "raw_gg_tgt": {
+        "samples": 108,
+        "median_s": 2.403,
+        "max_s": 2.591
+      },
+      "raw_lag": {
+        "samples": 237,
+        "median_s": 1.089,
+        "max_s": 1.135
+      }
+    }
+  },
+  "evicted_node": "",
+  "harness_error": false,
+  "pass": true,
+  "invoked_by": "agent",
+  "xag_restarts": 1,
+  "stage": "A",
+  "notes": [
+    "Check whether agctl relocate moved gg_srcpdb (notes)."
+  ],
+  "disturbed": true,
+  "data_ok": true,
+  "attempt": 5,
+  "measurement_error": null,
+  "final_node": "ggrac2",
+  "expected_gg_node": "ggrac2",
+  "data_checked": true,
+  "fault_command": "/u01/app/xag/bin/agctl relocate goldengate oggsource --node ggrac2",
+  "recovered": true,
+  "versions": {
+    "binaries": [
+      "GI base=23.26.1.0.0",
+      "DB base=23.26.1.0.0",
+      "GI RU=40002013",
+      "DB RU=40007731",
+      "OPatch=12.2.0.1.55",
+      "GoldenGate=23.26.4.0.2",
+      "GG bundle=",
+      "XAG="
+    ]
+  },
+  "clock_offsets_ms": {
+    "gginfra": -0.783,
+    "ggrac1": -0.015,
+    "ggrac2": -0.01,
+    "ggtgt": 0.009
+  },
+  "synthetic": false,
+  "title": "Planned relocation",
+  "fault_kind": "relocate",
+  "expected": {
+    "FinalNode": "ggrac2",
+    "Hypothesis": "XAG chain in order (SM stop, ACFS off node 1, mount on ggrac2, VIP, start, processes from checkpoints); does agctl relocate move gg_srcpdb?",
+    "RtoS": "nie wiemy",
+    "Recovers": true,
+    "Source": "MAA 26ai (agctl relocate), lab verification report",
+    "DataLoss": 0
+  },
+  "expected_written_utc": "2026-11-16T12:17:40.596Z",
+  "expected_match": true,
+  "expected_check": [
+    {
+      "field": "final_node",
+      "expected": "ggrac2",
+      "actual": "ggrac2",
+      "match": true
+    },
+    {
+      "field": "recovers",
+      "expected": true,
+      "actual": true,
+      "match": true
+    },
+    {
+      "field": "data_loss",
+      "expected": 0,
+      "actual": 0,
+      "match": true
+    }
+  ],
+  "back_to_base_s": 106.2,
+  "back_to_base_ok": true,
+  "segments_measured": [
+    {
+      "name": "fault_to_service_online",
+      "from": "t_fault",
+      "to": "t_service_online",
+      "from_t_rel_s": 0.0,
+      "to_t_rel_s": 1.846,
+      "seconds": 1.846
+    },
+    {
+      "name": "service_online_to_crs_detect",
+      "from": "t_service_online",
+      "to": "t_crs_detect",
+      "from_t_rel_s": 1.846,
+      "to_t_rel_s": 12.576,
+      "seconds": 10.73
+    },
+    {
+      "name": "crs_detect_to_vip_online",
+      "from": "t_crs_detect",
+      "to": "t_vip_online",
+      "from_t_rel_s": 12.576,
+      "to_t_rel_s": 24.633,
+      "seconds": 12.057
+    },
+    {
+      "name": "vip_online_to_acfs_online",
+      "from": "t_vip_online",
+      "to": "t_acfs_online",
+      "from_t_rel_s": 24.633,
+      "to_t_rel_s": 24.643,
+      "seconds": 0.01
+    },
+    {
+      "name": "acfs_online_to_dp_running",
+      "from": "t_acfs_online",
+      "to": "t_dp_running",
+      "from_t_rel_s": 24.643,
+      "to_t_rel_s": 29.471,
+      "seconds": 4.828
+    },
+    {
+      "name": "dp_running_to_sm_running",
+      "from": "t_dp_running",
+      "to": "t_sm_running",
+      "from_t_rel_s": 29.471,
+      "to_t_rel_s": 32.21,
+      "seconds": 2.739
+    },
+    {
+      "name": "sm_running_to_ext_running",
+      "from": "t_sm_running",
+      "to": "t_ext_running",
+      "from_t_rel_s": 32.21,
+      "to_t_rel_s": 60.264,
+      "seconds": 28.054
+    },
+    {
+      "name": "ext_running_to_lag_ok",
+      "from": "t_ext_running",
+      "to": "t_lag_ok",
+      "from_t_rel_s": 60.264,
+      "to_t_rel_s": 65.417,
+      "seconds": 5.153
+    }
+  ]
+}

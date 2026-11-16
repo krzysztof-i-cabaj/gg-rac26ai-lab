@@ -1,0 +1,48 @@
+# ==============================================================================
+# Tytul:        oggca_target.rsp.tmpl
+# Opis:         Plik odpowiedzi oggca.sh dla celu (ggtgt): nowy Service Manager ggsm01 jako usluga
+#               systemd (bez XAG, bez klastra) i deployment oggtarget na dysku lokalnym, etap A bez
+#               TLS. Haslo admina (@@OGG_ADMIN_PASS@@, z LAB_PASS) wstawia 86_oggca_target.sh na maszynie.
+# Description [EN]: oggca.sh response file for the target (ggtgt): a new Service Manager ggsm01 as a
+#               systemd service (no XAG, no cluster) and deployment oggtarget on a local disk, stage A
+#               without TLS. Admin password filled by 86_oggca_target.sh on the VM.
+#
+# Autor:        KCB Kris
+# Data:         2026-11-15
+# Wersja:       1.1 (haslo admina wg polityki GoldenGate 23.26)
+# Konwencje:    <repo>/SETTINGS.md
+#
+# Wymagania [PL]:    - OGG_HOME zainstalowany na ggtgt (tgt/80_install_ogg.sh)
+# Requirements [EN]: - OGG_HOME installed on ggtgt (tgt/80_install_ogg.sh)
+#
+# Uzycie [PL]:       automatycznie: lab.cmd ogg (86_oggca_target.sh)
+# Usage [EN]:        automatic: lab.cmd ogg (86_oggca_target.sh)
+# ==============================================================================
+oracle.install.responseFileVersion=/oracle/install/rspfmt_oggca_response_schema_v23_1_0
+CONFIGURATION_OPTION=ADD
+DEPLOYMENT_NAME={{OGG_TGT_DEPLOY}}
+ADMINISTRATOR_USER={{OGG_ADMIN_USER}}
+ADMINISTRATOR_PASSWORD=@@OGG_ADMIN_PASS@@
+SERVICEMANAGER_DEPLOYMENT_HOME={{OGG_SM_HOME}}
+HOST_SERVICEMANAGER={{TGT_NAME}}.{{LAB_DOMAIN}}
+PORT_SERVICEMANAGER={{OGG_SM_PORT}}
+SECURITY_ENABLED=false
+STRONG_PWD_POLICY_ENABLED=true
+CREATE_NEW_SERVICEMANAGER=true
+REGISTER_SERVICEMANAGER_AS_A_SERVICE=true
+INTEGRATE_SERVICEMANAGER_WITH_XAG=false
+EXISTING_SERVICEMANAGER_IS_XAG_ENABLED=false
+OGG_SOFTWARE_HOME={{OGG_HOME}}
+OGG_DEPLOYMENT_HOME={{OGG_TGT_HOME}}
+ENV_LD_LIBRARY_PATH=${OGG_HOME}/lib/instantclient:${OGG_HOME}/lib
+ENV_TNS_ADMIN={{OGG_TGT_HOME}}/etc
+ENV_STREAMS_POOL_SIZE=
+ENV_USER_VARS=
+PORT_ADMINSRVR={{OGG_PORT_ADMIN}}
+PORT_DISTSRVR={{OGG_PORT_DIST}}
+PORT_RCVRSRVR={{OGG_PORT_RECV}}
+METRICS_SERVER_ENABLED=true
+PORT_PMSRVR={{OGG_PORT_PM}}
+UDP_PORT_PMSRVR=
+OGG_SCHEMA=ggadmin
+REMOVE_DEPLOYMENT_FROM_DISK=

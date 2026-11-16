@@ -1,0 +1,15 @@
+ts_utc,t_rel_s,test_id,run_no,resource,node,state_from,state_to,source,raw
+2026-11-16T16:15:01.512Z,-58.627,T3,1,vip,ggrac1,,ONLINE,crsctl,RES vip ggrac1 ONLINE
+2026-11-16T16:15:01.522Z,-58.617,T3,1,inst:ggcdb1,ggrac1,,ONLINE,crsctl,INST ggcdb1 ggrac1 ONLINE
+2026-11-16T16:15:01.531Z,-58.608,T3,1,inst:ggcdb2,ggrac2,,ONLINE,crsctl,INST ggcdb2 ggrac2 ONLINE
+2026-11-16T16:15:01.534Z,-58.605,T3,1,svc,ggrac1,,ONLINE,crsctl,RES svc ggrac1 ONLINE
+2026-11-16T16:15:01.536Z,-58.603,T3,1,sm,ggrac1,,ONLINE,crsctl,RES sm ggrac1 ONLINE
+2026-11-16T16:15:01.539Z,-58.600,T3,1,acfs,ggrac1,,ONLINE,crsctl,RES acfs ggrac1 ONLINE
+2026-11-16T16:15:01.623Z,-58.516,T3,1,node:ggrac1,ggrac1,,Active,olsnodes,NODE ggrac1 Active
+2026-11-16T16:15:01.628Z,-58.511,T3,1,node:ggrac2,ggrac2,,Active,olsnodes,NODE ggrac2 Active
+2026-11-16T16:15:02.279Z,-57.860,T3,1,REP1,ggtgt,,RUNNING,adminclient,PROC REP1 ggtgt RUNNING
+2026-11-16T16:15:02.649Z,-57.490,T3,1,EXT1,ggrac1,,RUNNING,adminclient,PROC EXT1 ggrac1 RUNNING
+2026-11-16T16:15:02.653Z,-57.486,T3,1,DP1,ggrac1,,RUNNING,adminclient,PROC DP1 ggrac1 RUNNING
+2026-11-16T16:16:00.139Z,0.000,T3,1,fault,ggrac2,,injected,host,VBoxManage controlvm ggrac2 poweroff
+2026-11-16T16:16:30.906Z,30.767,T3,1,node:ggrac2,ggrac2,Active,Inactive,olsnodes,NODE ggrac2 Inactive
+2026-11-16T16:16:33.418Z,33.279,T3,1,inst:ggcdb2,ggrac2,ONLINE,OFFLINE,crsctl,INST ggcdb2 ggrac2 OFFLINE
