@@ -13,7 +13,7 @@
 > docelową na pojedynczej instancji. Potem automat testów celowo psuje klaster: wyłącza węzeł, zabija instancję i procesy,
 > odcina interconnect. Przy tym mierzy, **ile naprawdę trwa przerwa w replikacji** i **czy giną dane**.
 >
-> 🌐 Strona: `https://<owner>.github.io/gg-rac26ai-lab/pl/` · 🎬 Film: link po premierze
+> 🌐 Strona: [krzysztof-i-cabaj.github.io/gg-rac26ai-lab/pl/](https://krzysztof-i-cabaj.github.io/gg-rac26ai-lab/pl/) · 🎬 Film: link po premierze
 
 ![Topologia labu](docs/diagrams/01-topology_pl.svg)
 

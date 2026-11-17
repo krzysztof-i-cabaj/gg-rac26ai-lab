@@ -4,7 +4,7 @@
 // for any other host (local preview, custom domain). Set it before publishing.
 (function () {
   "use strict";
-  var GH_OWNER = "OWNER";           // <-- set to the GitHub user or organisation
+  var GH_OWNER = "krzysztof-i-cabaj"; // GitHub user that owns the repository
   var GH_REPO = "gg-rac26ai-lab";
   var GH_BRANCH = "main";
 
