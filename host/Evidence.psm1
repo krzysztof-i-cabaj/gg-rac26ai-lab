@@ -11,7 +11,7 @@
 #
 # Autor:        KCB Kris
 # Data:         2026-11-16
-# Wersja:       1.7 (t_lag_ok = pierwszy trwaly powrot ponizej progu, lag_relapses; dziennik z T4b, "blad automatu"); 1.6 (znaczniki spoza lancucha, np. t_intervention, w segments_measured; nota T4b); 1.5 (segments_measured: odcinki w zmierzonej kolejnosci znacznikow); 1.4 (znaczniki przy zmianie wezla, odcinki w odwrotnej kolejnosci, uwagi PL w dzienniku, measurement_error; 1.3: bez bledow indeksu w Get-Markers, porownanie nie zrobione = nie porownywane; 1.2: A4 Get-ExpectedMatch, A6 Get-InterventionCount, dziennik Write-TestJournal)
+# Wersja:       1.8 (dziennik: polskie przyczyny krokow DDL T10); 1.7 (t_lag_ok = pierwszy trwaly powrot ponizej progu, lag_relapses; dziennik z T4b, "blad automatu"); 1.6 (znaczniki spoza lancucha, np. t_intervention, w segments_measured; nota T4b); 1.5 (segments_measured: odcinki w zmierzonej kolejnosci znacznikow); 1.4 (znaczniki przy zmianie wezla, odcinki w odwrotnej kolejnosci, uwagi PL w dzienniku, measurement_error; 1.3: bez bledow indeksu w Get-Markers, porownanie nie zrobione = nie porownywane; 1.2: A4 Get-ExpectedMatch, A6 Get-InterventionCount, dziennik Write-TestJournal)
 # Konwencje:    <repo>/SETTINGS.md
 #
 # Wymagania [PL]:    - PowerShell 7; uzywa go tests/run_test.ps1
@@ -243,6 +243,7 @@ $script:CaseNotesPl = @{
     'Baseline under load, 10 minutes.' = 'Obciążenie bazowe, 10 minut.'
     'Runs after every test; here on its own.' = 'Działa po każdym teście; tu osobno.'
     'DDL steps of TESTS.md T10 by hand during PostSec (LAB: automate after the first run).' = 'Kroki DDL z TESTS.md T10 ręcznie w czasie PostSec (LAB: zautomatyzować po pierwszym przebiegu).'
+    'DDL steps of TESTS.md T10 run by the test automation (t10_steps.log).' = 'Kroki DDL z TESTS.md T10 wykonuje automat testów (t10_steps.log).'
 }
 function ConvertTo-PolishNote([string]$Note) {
     if ($script:CaseNotesPl.ContainsKey($Note)) { return $script:CaseNotesPl[$Note] }
@@ -259,6 +260,10 @@ function ConvertTo-PolishNote([string]$Note) {
                 -replace 'no load rows on the source \(loadgen did not write\)', 'brak wierszy obciążenia na źródle (loadgen nie pisał)' `
                 -replace 'SEQ check: ', 'kontrola SEQ: ' -replace '\bmissing\b', 'brakuje' -replace '\bextra\b', 'nadmiarowe' -replace '\bduplicates\b', 'duplikaty'
     }
+    # T10 DDL steps (Get-T10Verdict, host/Tests.psm1)
+    $n = $n -replace '^DDL steps did not run: ', 'kroki DDL niewykonane: ' -replace '^DDL steps failed: ', 'kroki DDL nieudane: ' `
+            -replace '^DDL steps: values differ$', 'kroki DDL: różne wartości' -replace 'skipped after a failed step', 'pominięty po nieudanym kroku' `
+            -replace ' not seen within (\d+) s', ' niewidoczne w ciągu $1 s' -replace 'values differ: ', 'różne wartości: '
     $n
 }
 # Journal for Kris (results/DZIENNIK_TESTOW.md), rebuilt from every summary.json after each run; it carries the clock time

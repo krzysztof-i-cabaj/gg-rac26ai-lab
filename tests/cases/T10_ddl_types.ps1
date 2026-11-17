@@ -5,7 +5,7 @@
 #
 # Autor:        KCB Kris
 # Data:         2026-11-16
-# Wersja:       1.1 (Expected: oczekiwanie A4 / A4 expectation)
+# Wersja:       1.2 (Steps = ddl-types: kroki DDL w automacie testow / DDL steps in the test automation); 1.1 (Expected: oczekiwanie A4)
 # Konwencje:    <repo>/SETTINGS.md
 #
 # Wymagania [PL]:    - czyta ja tests/run_test.ps1
@@ -24,7 +24,10 @@
     PreSec      = 0             # load before the fault
     PostSec     = 120            # observation after t_lag_ok
     TimeoutSec  = 600            # give up waiting for recovery
-    Notes       = 'DDL steps of TESTS.md T10 by hand during PostSec (LAB: automate after the first run).'
+    # DDL steps run by the test automation at the start of the observation (guest/shared/t10_ddl_steps.sh);
+    # pass needs every step on the target and equal rows, no steps = measurement_error ddl_not_run
+    Steps       = 'ddl-types'
+    Notes       = 'DDL steps of TESTS.md T10 run by the test automation (t10_steps.log).'
     # A4 (video): written to expected.json and summary.json before the fault; 'nie wiemy' = no guess
     Expected    = @{
         Hypothesis = 'rows and DDL replicated, values equal on both sides (VECTOR, BOOLEAN, JSON)'

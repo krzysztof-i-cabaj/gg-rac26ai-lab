@@ -11,7 +11,7 @@
 #
 # Autor:        KCB Kris
 # Data:         2026-11-16
-# Wersja:       1.5 (Read-InterventionApproval, Steps galezi gg-move z wezlem i uzytkownikiem); 1.4 (gg-move: interwencja T4b, relocate albo start GG na wezle, VIP -f gdy start odmowiony); 1.3 (T4 abort = kill -9 PMON zamiast srvctl stop, CRS-2974); 1.2 (Read-RawLines czyta plik otwarty przez sampler, Invoke-LabSsh oddaje linie)
+# Wersja:       1.6 (kroki DDL testu T10: Get-T10StepPlan, Invoke-T10Steps, Get-T10Verdict); 1.5 (Read-InterventionApproval, Steps galezi gg-move z wezlem i uzytkownikiem); 1.4 (gg-move: interwencja T4b, relocate albo start GG na wezle, VIP -f gdy start odmowiony); 1.3 (T4 abort = kill -9 PMON zamiast srvctl stop, CRS-2974); 1.2 (Read-RawLines czyta plik otwarty przez sampler, Invoke-LabSsh oddaje linie)
 # Konwencje:    <repo>/SETTINGS.md
 #
 # Wymagania [PL]:    - PowerShell 7; host/Config.psm1, Guest.psm1, Evidence.psm1; OpenSSH z kluczem
@@ -282,6 +282,93 @@ function Read-InterventionApproval([string]$Path) {
     if ($m.Success) { $m.Groups[1].Value } else { 'unknown' }
 }
 
-Export-ModuleMember -Function Read-InterventionApproval, Get-FaultCommand, Test-BaselineState, Assert-Baseline, Read-RawLines, ConvertTo-StateSamples,
+# ------------------------------------------------------------------------------
+# T10 DDL steps (guest/shared/t10_ddl_steps.sh). 16.11 the steps ran from a separate hand-written script and the
+# first T10 run passed with no DDL at all; now the test automation runs them and T10 cannot pass without them.
+# ------------------------------------------------------------------------------
+# Plan: Src = action on the source, WaitTgt = target action polled until it prints 1, Compare = row read on both sides.
+# Cleanup = run even after a failed step, so the next run starts from the same table.
+function Get-T10StepPlan {
+    @(
+        [pscustomobject]@{ Name = 'insert101'; Src = 'insert101'; WaitTgt = 'has_row101'; Compare = $null; Cleanup = $false; Title = 'insert id 101 (VECTOR, BOOLEAN, JSON) + commit' }
+        [pscustomobject]@{ Name = 'row101'; Src = $null; WaitTgt = $null; Compare = 'row101'; Cleanup = $false; Title = 'row 101 equal on source and target' }
+        [pscustomobject]@{ Name = 'ddl_add'; Src = 'ddl_add'; WaitTgt = 'has_note'; Compare = $null; Cleanup = $false; Title = 'alter table sales.types26 add (note varchar2(30))' }
+        [pscustomobject]@{ Name = 'insert102'; Src = 'insert102'; WaitTgt = 'has_row102'; Compare = $null; Cleanup = $false; Title = 'insert id 102 with note + commit' }
+        [pscustomobject]@{ Name = 'row102'; Src = $null; WaitTgt = $null; Compare = 'row102'; Cleanup = $false; Title = 'row 102 (with note) equal on source and target' }
+        [pscustomobject]@{ Name = 'cleanup'; Src = 'cleanup'; WaitTgt = 'no_note'; Compare = $null; Cleanup = $true; Title = 'delete 101,102 + commit + alter table drop column note' }
+        [pscustomobject]@{ Name = 'cleanup_rows'; Src = $null; WaitTgt = 'no_rows'; Compare = $null; Cleanup = $true; Title = 'rows 101,102 gone on the target' }
+    )
+}
+# "T10 <action> <value>" -> Ok (no "error"), Value; no line for the action = not Ok (ssh failed, script missing)
+function ConvertFrom-T10Line {
+    param([AllowEmptyCollection()][object[]]$Lines = @(), [Parameter(Mandatory)][string]$Action)
+    $l = @($Lines | ForEach-Object { "$_" } | Where-Object { $_ -match "^\s*T10\s+$([regex]::Escape($Action))(\s|$)" } | Select-Object -Last 1)
+    if (-not $l.Count) { return [pscustomobject]@{ Ok = $false; Value = $null; Detail = "no 'T10 $Action' line: $((@($Lines) -join ' ').Trim())" } }
+    $v = ($l[0] -replace "^\s*T10\s+$([regex]::Escape($Action))\s*", '').Trim()
+    if ($v -match '^error\b') { return [pscustomobject]@{ Ok = $false; Value = $null; Detail = $v } }
+    [pscustomobject]@{ Ok = $true; Value = $v; Detail = '' }
+}
+# Runs the plan. Src / Tgt: scriptblocks { param($action) <output lines> }; Log: { param($message) }.
+# seconds_to_target = from the end of the last source command to the first target answer 1 (0.1 s).
+# Checked = the first source command really ran (an error there = the steps did not run).
+function Invoke-T10Steps {
+    param([Parameter(Mandatory)][object[]]$Plan, [Parameter(Mandatory)][scriptblock]$Src, [Parameter(Mandatory)][scriptblock]$Tgt,
+          [scriptblock]$Log = {}, [int]$WaitSec = 90, [double]$PollSec = 1)
+    $steps = [System.Collections.Generic.List[object]]::new()
+    $checked = $false; $failed = $false; $tRef = [datetime]::UtcNow; $valuesMatch = $true
+    foreach ($p in $Plan) {
+        if ($failed -and -not $p.Cleanup) {
+            $steps.Add([pscustomobject][ordered]@{ name = $p.Name; seconds_to_target = $null; ok = $false; detail = 'skipped after a failed step' }); continue
+        }
+        $ok = $true; $sec = $null; $detail = ''
+        if ($p.Src) {
+            & $Log "SRC $($p.Name): $($p.Title)"
+            $r = ConvertFrom-T10Line -Lines @(& $Src $p.Src) -Action $p.Src
+            $tRef = [datetime]::UtcNow
+            if ($r.Ok) { if ($steps.Count -eq 0) { $checked = $true }; & $Log "SRC $($p.Name) done ($($r.Value))" }
+            else { $ok = $false; $detail = "source: $($r.Detail)"; & $Log "SRC $($p.Name) FAILED: $($r.Detail)" }
+        }
+        if ($ok -and $p.WaitTgt) {
+            $seen = $false
+            do {
+                $r = ConvertFrom-T10Line -Lines @(& $Tgt $p.WaitTgt) -Action $p.WaitTgt
+                if ($r.Ok -and $r.Value -eq '1') { $seen = $true; break }
+                if ($PollSec -gt 0) { Start-Sleep -Milliseconds ([int]($PollSec * 1000)) }
+            } while (([datetime]::UtcNow - $tRef).TotalSeconds -lt $WaitSec)
+            if ($seen) { $sec = [math]::Round(([datetime]::UtcNow - $tRef).TotalSeconds, 1); & $Log "TGT $($p.Name): $($p.WaitTgt) after $sec s" }
+            else { $ok = $false; $detail = "target: $($p.WaitTgt) not seen within $WaitSec s"; & $Log "TGT $($p.Name): $($p.WaitTgt) NOT SEEN in $WaitSec s" }
+        }
+        if ($ok -and $p.Compare) {
+            $s = ConvertFrom-T10Line -Lines @(& $Src $p.Compare) -Action $p.Compare
+            $t = ConvertFrom-T10Line -Lines @(& $Tgt $p.Compare) -Action $p.Compare
+            & $Log "CMP $($p.Name) src: $($s.Value)"; & $Log "CMP $($p.Name) tgt: $($t.Value)"
+            if (-not ($s.Ok -and $t.Ok -and $s.Value -and $s.Value -ne 'none' -and $s.Value -ceq $t.Value)) {
+                $ok = $false; $valuesMatch = $false
+                $detail = if (-not ($s.Ok -and $t.Ok)) { "read failed: $($s.Detail) $($t.Detail)".Trim() } else { "values differ: source '$($s.Value)', target '$($t.Value)'" }
+                & $Log "CMP $($p.Name) DIFF"
+            } else { & $Log "CMP $($p.Name) MATCH" }
+        }
+        if (-not $ok -and -not $p.Cleanup) { $failed = $true }
+        $steps.Add([pscustomobject][ordered]@{ name = $p.Name; seconds_to_target = $sec; ok = $ok; detail = $detail })
+        if (-not $checked) { break }   # the first source command did not run: nothing else is meaningful
+    }
+    [pscustomobject]@{ Checked = $checked; Steps = $steps.ToArray(); ValuesMatch = ($checked -and $valuesMatch) }
+}
+# Pass rule for a test with Steps = 'ddl-types': no steps run = measurement error ddl_not_run (16.11 by hand);
+# steps ran but something did not arrive or differs = fail with the reason; everything arrived and equal = ok.
+function Get-T10Verdict {
+    param([object]$Result)
+    if (-not $Result -or -not $Result.Checked) {
+        $why = if ($Result -and @($Result.Steps).Count) { @($Result.Steps)[0].detail } else { 'steps not started' }
+        return [pscustomobject]@{ Ok = $false; MeasurementError = 'ddl_not_run'; Reason = "DDL steps did not run: $why" }
+    }
+    $bad = @($Result.Steps | Where-Object { -not $_.ok } | ForEach-Object { "$($_.name) ($($_.detail))" })
+    if ($bad.Count) { return [pscustomobject]@{ Ok = $false; MeasurementError = $null; Reason = "DDL steps failed: $($bad -join '; ')" } }
+    if (-not $Result.ValuesMatch) { return [pscustomobject]@{ Ok = $false; MeasurementError = $null; Reason = 'DDL steps: values differ' } }
+    [pscustomobject]@{ Ok = $true; MeasurementError = $null; Reason = '' }
+}
+
+Export-ModuleMember -Function Get-T10StepPlan, ConvertFrom-T10Line, Invoke-T10Steps, Get-T10Verdict,
+    Read-InterventionApproval, Get-FaultCommand, Test-BaselineState, Assert-Baseline, Read-RawLines, ConvertTo-StateSamples,
     ConvertTo-LagRows, ConvertTo-LoadRows, ConvertTo-BaselineState, Invoke-LabSsh, Get-RacNodeOfInstance,
     Test-Disturbed, Test-Recovered, Get-ExpectedGgNode, Get-BackPlan, Get-SeqCheck, Get-DataVerdict

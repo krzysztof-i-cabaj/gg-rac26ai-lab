@@ -1903,7 +1903,7 @@ touch "$STOP_MARK"; one_session srv_load1 | grep -c 'stopped (loadgen.sh stop)' 
     Assert-True ([IO.File]::ReadAllText((Join-Path $Repo 'sql\06_loadgen.sql')) -match "(?i)set_module\('LOADGEN'") 'LOADGEN sets its module'
     $rt = [IO.File]::ReadAllText((Join-Path $Repo 'tests\run_test.ps1'))
     Assert-True ($rt -match '(?s)function Stop-Load\b[^\r\n]*\{[^}]*loadgen\.sh stop.*?WaitForExit') 'Stop-Load stops the sessions on the guest and waits for the client'
-    Assert-True ($rt -match '(?s)Start-Sleep -Seconds \$case\.PostSec[^\r\n]*\r?\n(\s*\$tObserveEnd[^\r\n]*\r?\n)?\s*Stop-Load\b.*?\$cmp = Get-Compare') 'run_test stops the load before comparing'
+    Assert-True ($rt -match '(?s)Start-Sleep -Seconds [^\r\n]*\$case\.PostSec[^\r\n]*\r?\n(\s*\$tObserveEnd[^\r\n]*\r?\n)?\s*Stop-Load\b.*?\$cmp = Get-Compare') 'run_test stops the load before comparing'
 }
 # Important 11 (film S1): every command with ts_utc, t_rel_s to the fault and its output, masked
 function Test-CommandLog {
@@ -2284,6 +2284,115 @@ function Test-ShutdownVerb {
     Assert-True ($t -match "'shutdown' \{ Step-Shutdown \}") 'switch runs Step-Shutdown'
     Assert-True ($t -match "-notin 'plan', 'status', 'ssh', 'start', 'stop', 'shutdown', 'destroy'") 'logs\STOP does not block shutdown'
     Assert-True ($t -match '\[switch\]\$Force') '-Force parameter'
+}
+
+# ------------------------------------------------------------------------------
+# T10 DDL steps in the test automation (16.11: the first T10 run passed with no DDL, the steps ran by hand)
+# ------------------------------------------------------------------------------
+$script:T10Row = "ROW=`"select id || ' ' || from_vector(v) || ' ' || case when b then 'TRUE' else 'FALSE' end || ' ' || json_serialize(j)`""
+# Every action has SQL, one statement per line (26ai: ORA-03405 for "stmt; stmt;"), unknown action = no SQL
+function Test-T10GuestSql {
+    $acts = @('src ping', 'src insert101', 'src row101', 'src ddl_add', 'src insert102', 'src row102', 'src cleanup',
+              'tgt ping', 'tgt has_row101', 'tgt row101', 'tgt has_note', 'tgt has_row102', 'tgt row102', 'tgt no_note', 'tgt no_rows')
+    $calls = $script:T10Row + "`n" + (($acts | ForEach-Object { "echo '== $_'; t10_sql $_" }) -join "`n") + "`necho '== bad'; t10_sql tgt insert101; echo '== end'"
+    $out = @(Invoke-BashFunction 'guest\shared\t10_ddl_steps.sh' @('t10_sql') $calls)
+    foreach ($a in $acts) {
+        $i = [array]::IndexOf($out, "== $a"); Assert-True ($i -ge 0 -and $out[$i + 1] -and $out[$i + 1] -notlike '== *') "t10_sql $a gives SQL"
+    }
+    foreach ($l in $out | Where-Object { $_ -notlike '== *' -and $_ }) {
+        Assert-True (($l -split ';\s*').Where({ $_.Trim() }).Count -le 1) "one statement per line: $l"
+    }
+    $b = [array]::IndexOf($out, '== bad'); Assert-Equal '' "$($out[$b + 1])".Trim() 'insert on the target = unknown action'
+    $sql = $out -join "`n"
+    Assert-True ($sql -match '(?m)^alter table sales\.types26 add \(note varchar2\(30\)\);$') 'DDL add'
+    Assert-True ($sql -match '(?m)^alter table sales\.types26 drop column note;$') 'DDL drop in the clean-up'
+    Assert-True ($sql -match "to_vector\('\[1\.5,2\.5,3\.5\]', 3, FLOAT32\), TRUE, json\(") '26ai types VECTOR, BOOLEAN, JSON'
+}
+# main: one "T10 <action> <value>" line; dry run prints the SQL; an ORA- error = "error" and rc 1
+function Test-T10GuestMain {
+    $fns = @('t10_sql', 't10_value', 'main')
+    $calls = @($script:T10Row, 'SRC_PDB=SRCPDB; TGT_PDB=TGTPDB',
+        '(DRY_RUN=1; side=src; act=ddl_add; main); echo "rc=$?"',
+        'sysdba_query() { printf "\n"; }; (DRY_RUN=0; side=src; act=insert101; main); echo "rc=$?"',
+        'sysdba_query() { printf " 1 \n"; }; (DRY_RUN=0; side=tgt; act=has_note; main)',
+        'sysdba_query() { printf "101 [1.5,2.5,3.5] TRUE {\"t\":\"T10\",\"n\":101}\n"; }; (DRY_RUN=0; side=tgt; act=row101; main)',
+        'sysdba_query() { echo "ERROR at line 1:"; echo "ORA-00942: table or view does not exist"; return 1; }; (DRY_RUN=0; side=src; act=row101; main); echo "rc=$?"',
+        '(DRY_RUN=0; side=xx; act=row101; main); echo "rc=$?"') -join "`n"
+    $out = @(Invoke-BashFunction 'guest\shared\t10_ddl_steps.sh' $fns $calls)
+    Assert-True ($out -contains '  DRY  [oracle] SRCPDB: alter table sales.types26 add (note varchar2(30));') 'dry run prints the SQL with the PDB'
+    Assert-True ($out -contains 'T10 ddl_add dry') 'dry run result line'
+    Assert-True ($out -contains 'T10 insert101 done') 'DML prints nothing: done'
+    Assert-True ($out -contains 'T10 has_note 1') 'trimmed count'
+    Assert-True ($out -contains 'T10 row101 101 [1.5,2.5,3.5] TRUE {"t":"T10","n":101}') 'row as one line'
+    Assert-True ($out -contains 'T10 row101 error ORA-00942: table or view does not exist') 'ORA- error in the result line'
+    Assert-Equal 'rc=0 rc=0 rc=1 rc=1' (@($out | Where-Object { $_ -like 'rc=*' }) -join ' ') 'dry run and DML exit 0, ORA- error and bad side exit 1'
+    Assert-True ($out -contains 'T10 row101 error usage: t10_ddl_steps.sh src|tgt <action>') 'bad side: usage'
+}
+function Test-T10LineParse {
+    Import-HarnessModules
+    $r = ConvertFrom-T10Line -Lines @('noise', 'T10 has_row101 0', 'T10 has_row101 1') -Action 'has_row101'
+    Assert-True ($r.Ok -and $r.Value -eq '1') 'last line of the action wins'
+    $r = ConvertFrom-T10Line -Lines @('T10 row101 error ORA-00942: x') -Action 'row101'
+    Assert-True (-not $r.Ok -and $r.Detail -like 'error ORA-00942*') 'error line is not ok'
+    Assert-True (-not (ConvertFrom-T10Line -Lines @() -Action 'ping').Ok) 'no output (ssh failed) is not ok'
+    Assert-True (-not (ConvertFrom-T10Line -Lines @('T10 row1010 x') -Action 'row101').Ok) 'another action does not match'
+    Assert-Equal 'READ WRITE' (ConvertFrom-T10Line -Lines @('T10 ping READ WRITE') -Action 'ping').Value 'value with a space'
+}
+# Fake source and target: the target answers 1 after a number of polls; the row read gives a fixed value
+function New-T10Fakes([hashtable]$SrcOut, [hashtable]$TgtOut) {
+    $state = @{ Calls = [System.Collections.Generic.List[string]]::new() }
+    $src = { param($a) $state.Calls.Add("src $a"); if ($SrcOut.ContainsKey($a)) { $SrcOut[$a] } elseif ($a -like 'row*') { "T10 $a 101 x" } else { "T10 $a done" } }.GetNewClosure()
+    $tgt = { param($a) $state.Calls.Add("tgt $a"); if ($TgtOut.ContainsKey($a)) { $TgtOut[$a] } elseif ($a -like 'row*') { "T10 $a 101 x" } else { "T10 $a 1" } }.GetNewClosure()
+    @{ Src = $src; Tgt = $tgt; State = $state }
+}
+function Test-T10StepsAndVerdict {
+    Import-HarnessModules
+    $plan = Get-T10StepPlan
+    Assert-Equal 'insert101 row101 ddl_add insert102 row102 cleanup cleanup_rows' (($plan | ForEach-Object Name) -join ' ') 'step order'
+    # 1. everything arrives and is equal -> pass
+    $f = New-T10Fakes @{ row101 = 'T10 row101 101 x'; row102 = 'T10 row102 102 y note' } @{ row101 = 'T10 row101 101 x'; row102 = 'T10 row102 102 y note' }
+    $r = Invoke-T10Steps -Plan $plan -Src $f.Src -Tgt $f.Tgt -PollSec 0 -WaitSec 5
+    Assert-True ($r.Checked -and $r.ValuesMatch) 'all steps: checked, values match'
+    Assert-Equal 7 @($r.Steps | Where-Object ok).Count 'seven steps ok'
+    Assert-True ($null -ne @($r.Steps)[0].seconds_to_target) 'seconds to the target measured'
+    $v = Get-T10Verdict -Result $r
+    Assert-True ($v.Ok -and -not $v.MeasurementError) 'verdict ok'
+    # 2. the first source command fails (ssh / ORA-) -> not checked -> measurement_error ddl_not_run, no further calls
+    $f = New-T10Fakes @{ insert101 = 'T10 insert101 error ORA-01034: ORACLE not available' } @{}
+    $r = Invoke-T10Steps -Plan $plan -Src $f.Src -Tgt $f.Tgt -PollSec 0 -WaitSec 5
+    $v = Get-T10Verdict -Result $r
+    Assert-True (-not $r.Checked) 'first source command failed: not checked'
+    Assert-Equal 'ddl_not_run' $v.MeasurementError 'ddl_not_run'
+    Assert-True (-not $v.Ok -and $v.Reason -match 'ORA-01034') 'reason carries the error'
+    Assert-Equal 1 $f.State.Calls.Count 'nothing after the failed first command'
+    Assert-Equal 'ddl_not_run' (Get-T10Verdict -Result $null).MeasurementError 'no result at all (steps never started)'
+    Assert-Equal 'kroki DDL niewykonane: source: error ORA-01034: ORACLE not available' (ConvertTo-PolishNote $v.Reason) 'journal note in Polish'
+    # 3. the DDL never reaches the target -> fail, later steps skipped, clean-up still runs
+    $f = New-T10Fakes @{} @{ has_note = 'T10 has_note 0' }
+    $r = Invoke-T10Steps -Plan $plan -Src $f.Src -Tgt $f.Tgt -PollSec 0 -WaitSec 1
+    $v = Get-T10Verdict -Result $r
+    Assert-True ($r.Checked -and -not $v.Ok -and -not $v.MeasurementError) 'steps ran, DDL missing: fail, not a measurement error'
+    Assert-True ($v.Reason -match 'ddl_add \(target: has_note not seen') 'reason names the step'
+    Assert-Equal 'skipped after a failed step' (@($r.Steps) | Where-Object name -eq 'insert102').detail 'later steps skipped'
+    Assert-True ($f.State.Calls -contains 'src cleanup') 'clean-up still runs'
+    # 4. values differ -> fail
+    $f = New-T10Fakes @{ row101 = 'T10 row101 101 [1,2,3] TRUE' } @{ row101 = 'T10 row101 101 [1,2,3] FALSE' }
+    $r = Invoke-T10Steps -Plan $plan -Src $f.Src -Tgt $f.Tgt -PollSec 0 -WaitSec 5
+    $v = Get-T10Verdict -Result $r
+    Assert-True (-not $r.ValuesMatch -and -not $v.Ok) 'values differ: not pass'
+    Assert-True ($v.Reason -match "values differ: source '101 \[1,2,3\] TRUE', target '101 \[1,2,3\] FALSE'") 'reason shows both values'
+}
+function Test-T10Wired {
+    $case = & (Join-Path $Repo 'tests\cases\T10_ddl_types.ps1')
+    Assert-Equal 'ddl-types' $case.Steps 'T10 case asks for the DDL steps'
+    $t = [IO.File]::ReadAllText((Join-Path $Repo 'tests\run_test.ps1'))
+    foreach ($w in 'Get-T10Verdict -Result $ddl', 'ddl_checked =', 'ddl_steps =', 'ddl_values_match =', "'t10_steps.log'", 'MeasurementError') {
+        Assert-True ($t.Contains($w)) "run_test.ps1 lacks $w"
+    }
+    $out = & pwsh -NoProfile -File (Join-Path $Repo 'tests\run_test.ps1') -Test T10 -DryRun 2>&1 | Out-String
+    foreach ($w in 'DRYRUN T10 DDL steps', 'insert101:', 'ddl_add:', 'cleanup_rows:', 'measurement_error ddl_not_run') {
+        Assert-True ($out.Contains($w)) "T10 dry run lacks '$w'"
+    }
 }
 
 # ------------------------------------------------------------------------------

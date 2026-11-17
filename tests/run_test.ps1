@@ -19,7 +19,7 @@
 #
 # Autor:        KCB Kris
 # Data:         2026-11-16
-# Wersja:       1.6 (T4b: zgoda na zywo, INTERVENTION READY + plik approve_intervention, t_intervention_ready, approval_wait_s); 1.5 (T4b: interwencja Intervention z pliku przypadku, t_intervention, config_rev, harness_commit, test_variant, observe_s); 1.4 (harness_error, data_checked, attempt; 1.3: Sh oddaje linie, nie tablice; 1.2: video: A4 oczekiwanie, A5 sesja, A6 agent_notes, baseline po przebiegu, dziennik)
+# Wersja:       1.7 (T10: kroki DDL w automacie testow, ddl_checked / ddl_steps / ddl_values_match, bez krokow = measurement_error ddl_not_run); 1.6 (T4b: zgoda na zywo, INTERVENTION READY + plik approve_intervention, t_intervention_ready, approval_wait_s); 1.5 (T4b: interwencja Intervention z pliku przypadku, t_intervention, config_rev, harness_commit, test_variant, observe_s); 1.4 (harness_error, data_checked, attempt; 1.3: Sh oddaje linie, nie tablice; 1.2: video: A4 oczekiwanie, A5 sesja, A6 agent_notes, baseline po przebiegu, dziennik)
 # Konwencje:    <repo>/SETTINGS.md
 #
 # Wymagania [PL]:    - lab po lab.cmd validate; $env:LAB_PASS; PowerShell 7, VirtualBox, OpenSSH z kluczem
@@ -91,6 +91,9 @@ if ($case.Id -eq 'T6' -and -not $Back -and -not $DryRun -and -not $ManualStepDon
     exit 2
 }
 $pdbSrc = $cfg.Oracle.SrcPdb; $pdbTgt = $cfg.Oracle.TgtPdb
+# T10: DDL steps run by the test automation (16.11 the first T10 run passed with no DDL, the steps ran by hand)
+$ddlCase = (-not $Back -and $case.ContainsKey('Steps') -and $case.Steps -eq 'ddl-types')
+$t10 = 'bash /root/lab/shared/t10_ddl_steps.sh'
 $loadSec = $case.PreSec + $case.TimeoutSec + $case.PostSec
 if ($iv -and $iv.LiveApproval) { $loadSec += $iv.ApprovalTimeoutSec }   # the recovery wait may grow by the approval wait
 
@@ -111,6 +114,14 @@ if ($DryRun) {
         Write-Host "DRYRUN intervention at $($iv.AfterSec) s after the fault: $($iv.Display)   (t_intervention, ✋ in agent_notes.md)"
         if ($iv.LiveApproval) { Write-Host "DRYRUN   live approval: INTERVENTION READY, then waits up to $($iv.ApprovalTimeoutSec) s for <run dir>\approve_intervention (approved_by=<name>)" }
         foreach ($st in @($iv.PSObject.Properties['Steps'] | ForEach-Object Value)) { Write-Host "DRYRUN   $st" }
+    }
+    if ($ddlCase) {
+        Write-Host "DRYRUN T10 DDL steps at the start of the observation (source = first RAC node where '$t10 src ping' says READ WRITE, target $($tgt.Name)):"
+        foreach ($p in Get-T10StepPlan) {
+            $w = @(if ($p.Src) { "src $($p.Src)" }; if ($p.WaitTgt) { "wait tgt $($p.WaitTgt) = 1 (poll 1 s, up to 90 s)" }; if ($p.Compare) { "compare src/tgt $($p.Compare)" }) -join ', '
+            Write-Host "DRYRUN   $($p.Name): $($p.Title) -> $w"
+        }
+        Write-Host "DRYRUN   t10_steps.log + summary.json ddl_checked / ddl_steps / ddl_values_match; no steps = measurement_error ddl_not_run, not pass"
     }
     Write-Host "DRYRUN recovery wait up to $($case.TimeoutSec) s (disturbance seen, chain on one node, lag < $LagOkSec s), observe $($case.PostSec) s"
     Write-Host "DRYRUN stop load: [$($tgt.Name)] loadgen.sh stop (kill session for module LOADGEN)"
@@ -182,6 +193,7 @@ for ($run = 1; $run -le $Repeat; $run++) {
     $tFault = [datetime]::UtcNow; $recovered = $false; $dataOk = $false; $refused = $false; $disturbed = $false
     $dataChecked = $false; $harnessError = $false; $tIntervention = $null; $ivRc = $null; $tObserveEnd = $null
     $tIvReady = $null; $ivApprovedBy = $null; $ivDone = $false
+    $ddl = $null; $ddlVerdict = $null; $ddlLog = [System.Collections.Generic.List[string]]::new()
     $marks = [System.Collections.Generic.List[object]]::new(); $offsets = [ordered]@{}; $cmp = $null; $base = $null
     $verdict = $null; $seqCheck = @(); $faultSteps = @(); $expectGg = $null
     $script:CmdLog = [System.Collections.Generic.List[object]]::new()
@@ -304,7 +316,25 @@ for ($run = 1; $run -le $Repeat; $run++) {
         }
         if (-not $recovered) { $notes.Add("no recovery within $($case.TimeoutSec) s$(if (-not $disturbed) { ' (no disturbance seen after the fault)' })") }
         $marks.Add([pscustomobject]@{ ts_utc = Format-UtcMs ([datetime]::UtcNow); t_rel_s = Format-Rel ([datetime]::UtcNow - $tFault).TotalSeconds; mark = "recovered=$recovered" })
-        Start-Sleep -Seconds $case.PostSec
+        $tObs = [datetime]::UtcNow
+        if ($ddlCase) {
+            # Source: the first RAC node whose PDB is open READ WRITE (like Get-Compare: a node may answer with its instance down)
+            $srcNode = $null
+            foreach ($n in $rac) { if (@(Sh $n "$t10 src ping" -AllowFail) -match '^T10 ping READ WRITE') { $srcNode = $n; break } }
+            $logT10 = { param($m) $l = "$(Format-UtcMs ([datetime]::UtcNow)) $m"; $ddlLog.Add($l); Write-Host "   T10 $m" }
+            if ($srcNode) {
+                & $logT10 "source $($srcNode.Name), target $($tgt.Name)"
+                $ddl = Invoke-T10Steps -Plan (Get-T10StepPlan) -Src { param($a) Sh $srcNode "$t10 src $a" -AllowFail } -Tgt { param($a) Sh $tgt "$t10 tgt $a" -AllowFail -NoLog } -Log $logT10
+                foreach ($s in @($ddl.Steps | Where-Object { $null -ne $_.seconds_to_target })) {
+                    $marks.Add([pscustomobject]@{ ts_utc = Format-UtcMs ([datetime]::UtcNow); t_rel_s = Format-Rel ([datetime]::UtcNow - $tFault).TotalSeconds; mark = "t10: $($s.name) on the target after $($s.seconds_to_target) s" })
+                }
+            } else {
+                & $logT10 "no RAC node with $pdbSrc READ WRITE: DDL steps not run"
+                $ddl = [pscustomobject]@{ Checked = $false; Steps = @([pscustomobject][ordered]@{ name = 'ping'; seconds_to_target = $null; ok = $false; detail = "no RAC node with $pdbSrc READ WRITE" }); ValuesMatch = $false }
+            }
+            Write-LabText (Join-Path $dir 't10_steps.log') (($ddlLog -join "`n") + "`n")
+        }
+        Start-Sleep -Seconds ([math]::Max(0, [int]($case.PostSec - ([datetime]::UtcNow - $tObs).TotalSeconds)))
         $tObserveEnd = [datetime]::UtcNow   # observe_s: fault to the end of the observation (recovery wait + PostSec)
         Stop-Load $load
         # D1: replication catches up after the load stops; compare until equal or 180 s
@@ -368,6 +398,11 @@ for ($run = 1; $run -le $Repeat; $run++) {
     $evicted = @($events | Where-Object { $_.resource -like 'node:*' -and $_.state_to -ne 'Active' } | ForEach-Object node | Select-Object -Unique)
     $smUps = @($smEv | Where-Object { $_.state_to -eq 'ONLINE' -and $_.state_from })
     $pass = [bool]($recovered -and $dataOk -and -not $refused)
+    # T10: pass needs the DDL steps (Get-T10Verdict); a run that never reached them (refused, script error) keeps that cause
+    if ($ddlCase -and -not $refused -and -not $harnessError) {
+        $ddlVerdict = Get-T10Verdict -Result $ddl
+        if (-not $ddlVerdict.Ok) { $pass = $false; $notes.Add($ddlVerdict.Reason) }
+    }
     $extra = [ordered]@{
         stage = $cfg.Ogg.HaStage; synthetic = $false; title = $case.Title
         # video: which lab configuration and harness version, which variant, how long the run was watched
@@ -393,7 +428,10 @@ for ($run = 1; $run -le $Repeat; $run++) {
         clock_offsets_ms = $offsets
         refused = $refused; disturbed = $disturbed; recovered = $recovered; data_ok = $dataOk; data_checked = $dataChecked; pass = $pass
         harness_error = $harnessError; attempt = $attempt
-        measurement_error = $null   # set by hand afterwards when a probe measured wrong (T1 16.11: lag); the video skips the run
+        ddl_checked = if ($ddlCase) { [bool]($ddl -and $ddl.Checked) } else { $null }
+        ddl_steps = if ($ddlCase -and $ddl) { @($ddl.Steps) } else { $null }
+        ddl_values_match = if ($ddlCase -and $ddl) { [bool]$ddl.ValuesMatch } else { $null }
+        measurement_error = if ($ddlVerdict -and $ddlVerdict.MeasurementError) { $ddlVerdict.MeasurementError } else { $null }   # else set by hand afterwards when a probe measured wrong (T1 16.11: lag); the video skips the run
         invoked_by = $InvokedBy; approved_by = $ApprovedBy
         notes = @($notes | Where-Object { $_ })
     }

@@ -322,10 +322,11 @@ change. The question: do `VECTOR`, `BOOLEAN`, `JSON` and DDL go through Extract 
 and DDL replicated, values equal. Basis: GoldenGate 23ai/26ai Release Notes (these types are supported); `DDL INCLUDE
 MAPPED` in `ogg/ext1.prm`.
 
-- **Start:** base state. **Fault:** none. The harness provides a quiet 120 s window (`PostSec`); the DDL steps are run by
-  hand inside it.
-- **Steps (as `oracle`, `sqlplus / as sysdba`; one statement per line, 26ai rejects two statements on one line with
-  ORA-03405):**
+- **Start:** base state. **Fault:** none. The test runner runs the steps itself at the start of the observation
+  (`guest/shared/t10_ddl_steps.sh`, one call per action). Source = the first RAC node whose `SRCPDB` is `READ WRITE`;
+  the target is polled every 1 s, up to 90 s per step. The clean-up step runs even after a failed step.
+- **By hand (the same steps; as `oracle`, `sqlplus / as sysdba`; one statement per line, 26ai rejects two statements on
+  one line with ORA-03405):**
   ```sql
   -- source, SRCPDB
   insert into sales.types26 (id,v,b,j) values (101, to_vector('[1.5,2.5,3.5]',3,FLOAT32), TRUE, json('{"t":"T10","n":101}'));
@@ -344,9 +345,12 @@ MAPPED` in `ogg/ext1.prm`.
   commit;
   alter table sales.types26 drop column note;
   ```
-- **Measured:** time from commit / DDL on the source to visibility on the target, values on both sides, `compare.json`.
-- **Pass:** rows and DDL replicated, values equal.
-- **Run it:** `.\tests\run_test.ps1 -Test T10` (PreSec 0, PostSec 120), then the steps above within 120 s.
+- **Measured:** seconds from the source commit / DDL to the target per step (`ddl_steps[].seconds_to_target`, 0.1 s),
+  values of rows 101 and 102 on both sides (`ddl_values_match`), `t10_steps.log` with UTC timestamps, `compare.json`.
+- **Pass:** rows and DDL replicated, values equal (`ddl_checked` true, every step ok). No steps run = `measurement_error`
+  `ddl_not_run`, never a pass (the first T10 run passed without any DDL, which is why the runner now does the steps);
+  a step that does not arrive or a value that differs = fail, with the reason in `notes`.
+- **Run it:** `.\tests\run_test.ps1 -Test T10` (PreSec 0, PostSec 120); the steps run automatically.
 
 ## 🔗 See also
 

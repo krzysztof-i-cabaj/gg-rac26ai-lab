@@ -323,10 +323,11 @@ się zmieniają. Pytanie: czy `VECTOR`, `BOOLEAN`, `JSON` i DDL przechodzą prze
 wiersze i DDL zreplikowane, wartości równe. Podstawa: Release Notes GoldenGate 23ai/26ai (te typy są obsługiwane);
 `DDL INCLUDE MAPPED` w `ogg/ext1.prm`.
 
-- **Start:** stan bazowy. **Awaria:** brak. Automat daje spokojne okno 120 s (`PostSec`); kroki DDL wykonuje się
-  w nim ręcznie.
-- **Kroki (jako `oracle`, `sqlplus / as sysdba`; jedno polecenie w linii, 26ai odrzuca dwa polecenia w jednej linii
-  błędem ORA-03405):**
+- **Start:** stan bazowy. **Awaria:** brak. Kroki wykonuje sam automat testów na początku obserwacji
+  (`guest/shared/t10_ddl_steps.sh`, jedno wywołanie na akcję). Źródło = pierwszy węzeł RAC, na którym `SRCPDB` jest
+  `READ WRITE`; cel odpytywany co 1 s, do 90 s na krok. Sprzątanie wykonuje się także po nieudanym kroku.
+- **Ręcznie (te same kroki; jako `oracle`, `sqlplus / as sysdba`; jedno polecenie w linii, 26ai odrzuca dwa polecenia
+  w jednej linii błędem ORA-03405):**
   ```sql
   -- źródło, SRCPDB
   insert into sales.types26 (id,v,b,j) values (101, to_vector('[1.5,2.5,3.5]',3,FLOAT32), TRUE, json('{"t":"T10","n":101}'));
@@ -345,9 +346,12 @@ wiersze i DDL zreplikowane, wartości równe. Podstawa: Release Notes GoldenGate
   commit;
   alter table sales.types26 drop column note;
   ```
-- **Mierzymy:** czas od commita / DDL na źródle do widoczności na celu, wartości po obu stronach, `compare.json`.
-- **Zaliczenie:** wiersze i DDL zreplikowane, wartości równe.
-- **Uruchomienie:** `.\tests\run_test.ps1 -Test T10` (PreSec 0, PostSec 120), potem kroki wyżej w ciągu 120 s.
+- **Mierzymy:** sekundy od commita / DDL na źródle do celu w każdym kroku (`ddl_steps[].seconds_to_target`, 0,1 s),
+  wartości wierszy 101 i 102 po obu stronach (`ddl_values_match`), `t10_steps.log` ze znacznikami UTC, `compare.json`.
+- **Zaliczenie:** wiersze i DDL zreplikowane, wartości równe (`ddl_checked` prawda, każdy krok ok). Kroki niewykonane =
+  `measurement_error` `ddl_not_run`, nigdy zaliczenie (pierwszy przebieg T10 dał zaliczenie bez żadnego DDL, dlatego
+  kroki wykonuje teraz automat); krok, który nie dotarł, albo różne wartości = niezaliczony z przyczyną w `notes`.
+- **Uruchomienie:** `.\tests\run_test.ps1 -Test T10` (PreSec 0, PostSec 120); kroki wykonują się same.
 
 ## 🔗 Zobacz też
 
