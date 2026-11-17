@@ -2278,6 +2278,44 @@ function Test-ShutdownResultParse {
     Assert-Equal 'agctl rc=0' $r.Detail 'detail'
     Assert-Equal 'error' (ConvertFrom-ShutdownResult -Lines @()).Result 'no output = error'
 }
+# The real call: @(Invoke-Ssh ... -Capture) gives ONE element, the array of lines (return , $out). 17.11 the result
+# after "systemctl rc=0" was missed this way.
+function Test-ShutdownResultParseWrapped {
+    Import-Module (Join-Path $Repo 'host\Shutdown.psm1') -Force -DisableNameChecking
+    function Get-Wrapped { $out = @('systemctl rc=0', 'RESULT timeout GoldenGate processes still running: replicat'); return , $out }
+    $r = ConvertFrom-ShutdownResult -Lines @(Get-Wrapped)
+    Assert-Equal 'timeout' $r.Result 'result read from the wrapped lines'
+    Assert-Equal 'GoldenGate processes still running: replicat' $r.Detail 'detail from the wrapped lines'
+}
+# tgt_gg: the unit has KillMode=process, so the step stops Replicat first and sends SIGTERM to what is left
+function Test-ShutdownTargetGgStopsDeployment {
+    $c = (Get-TestShutdownSteps | Where-Object Id -eq 'tgt_gg' | Select-Object -First 1).Command
+    Assert-True ($c -match 'STOP REPLICAT \*') 'STOP REPLICAT * through adminclient'
+    Assert-True ($c -match 'adminclient_run "\$OGG_TGT_URL" "\$OGG_TGT_DEPLOY"') 'lib.sh adminclient_run (password in the pipe)'
+    Assert-True ($c.IndexOf('STOP REPLICAT') -lt $c.IndexOf('systemctl stop OracleGoldenGate')) 'Replicat before the unit'
+    Assert-True ($c -match 'pkill -TERM -f "\$P"') 'SIGTERM to the leftovers'
+    Assert-True ($c -notmatch 'PASSWORD') 'no password in the command'
+    Assert-True ($c.IndexOf('[S]erviceManager') -ge 0 -and $c.IndexOf('[S]erviceManager') -lt $c.IndexOf('adminclient_run')) 'adminclient only when the Service Manager runs'
+}
+# The tgt_gg command really runs in bash: fake systemctl/pgrep/pkill, Service Manager down -> no adminclient, SIGTERM
+function Test-ShutdownTargetGgNoServiceManager {
+    $bash = Get-BashExe
+    Import-Module (Join-Path $Repo 'host\Shutdown.psm1') -Force -DisableNameChecking
+    $c = (Get-TestShutdownSteps | Where-Object Id -eq 'tgt_gg' | Select-Object -First 1).Command
+    $prelude = 'W(){ local t=$1 s=$SECONDS; until ok; do (( SECONDS - s >= t )) && return 1; sleep 1; done; }; R(){ echo "RESULT $*"; }; '
+    # state file: "up" = Replicat and servers alive until pkill; ServiceManager never alive
+    $fake = 'd=$(mktemp -d); echo up > $d/st; ' +
+            'pgrep(){ local a=("$@"); local p=${a[-1]}; [ "$(cat $d/st)" = up ] || return 1; case "$p" in *erviceManager*) return 1;; esac; [ "${a[0]}" = -fa ] && echo "11 /u01/app/ogg/bin/replicat X"; return 0; }; ' +
+            'pkill(){ echo down > $d/st; }; systemctl(){ return 0; }; source(){ echo ADMINCLIENT_CALLED; }; '
+    $f = New-TemporaryFile
+    try {
+        [IO.File]::WriteAllText($f, $fake + $prelude + $c + "`n", [Text.UTF8Encoding]::new($false))
+        $out = & $bash $f.FullName 2>&1 | Out-String
+    } finally { Remove-Item $f -Force }
+    Assert-True ($out -match 'Service Manager not running') "message when the Service Manager is down: $out"
+    Assert-True ($out -notmatch 'ADMINCLIENT_CALLED') 'no adminclient without the Service Manager'
+    Assert-True ($out -match 'RESULT ok no GoldenGate processes') "processes gone after SIGTERM: $out"
+}
 function Test-ShutdownVerb {
     $t = Get-Content -Raw (Join-Path $Repo 'lab.ps1')
     Assert-True ($t -match "'stop', 'shutdown', 'destroy'") 'shutdown in ValidateSet'

@@ -10,8 +10,8 @@
 #               ends with a "RESULT ok|skip|timeout|error <detail>" line.
 #
 # Autor:        KCB Kris
-# Data:         2026-11-16
-# Wersja:       1.0
+# Data:         2026-11-17
+# Wersja:       1.2 (tgt_gg: bez Service Managera od razu SIGTERM); 1.1 (tgt_gg: STOP REPLICAT + SIGTERM, KillMode=process; wynik z linii opakowanych przez Invoke-Ssh)
 # Konwencje:    <repo>/SETTINGS.md
 #
 # Wymagania [PL]:    - PowerShell 7, konfiguracja z Get-GgConfig; polecenia uruchamia lab.ps1 przez ssh jako root
@@ -64,9 +64,22 @@ function Get-ShutdownSteps {
 
     # 2. Cel: GoldenGate (jednostka systemd z 86_oggca_target.sh), potem baza (oracle-db.service, zapas: shutdown immediate)
     #    Target: GoldenGate (systemd unit from 86_oggca_target.sh), then the database (oracle-db.service, fallback: shutdown immediate)
+    #    The unit has KillMode=process (lab 17.11): systemctl stop ends only the Service Manager, the deployment
+    #    servers and Replicat keep running. So: STOP REPLICAT * through adminclient (clean checkpoint, lib.sh keeps
+    #    the password in the pipe), then the unit, then SIGTERM to what is left of the deployment.
+    #    Service Manager already down (an earlier stopped run, 17.11: 120 s lost): adminclient cannot connect, so
+    #    Replicat goes straight to the SIGTERM below; it restarts from its checkpoint.
     foreach ($n in $tgt) {
-        Add 'tgt_gg' 'node' $n.Name 180 'systemctl stop OracleGoldenGate' (
-            "systemctl stop OracleGoldenGate.service; echo `"systemctl rc=`$?`"; " + (Get-GgProcsCommand 180))
+        Add 'tgt_gg' 'node' $n.Name 300 'STOP REPLICAT *, systemctl stop OracleGoldenGate, leftovers SIGTERM' (
+            'ok(){ ! pgrep -f ''(^|/)[r]eplicat( |$)'' >/dev/null; }; ' +
+            'if ! ok; then if pgrep -f ''(^|/)[S]erviceManager( |$)'' >/dev/null; then ' +
+            '( source /root/lab/lib.sh; adminclient_run "$OGG_TGT_URL" "$OGG_TGT_DEPLOY" <(printf ''STOP REPLICAT *\n'') ) >/dev/null 2>&1; ' +
+            'echo "adminclient STOP REPLICAT rc=$?"; W 120 && echo ''Replicat stopped'' || echo ''Replicat still running after 120 s''; ' +
+            'else echo ''Service Manager not running: no adminclient, Replicat gets SIGTERM''; fi; fi; ' +
+            'systemctl stop OracleGoldenGate.service; echo "systemctl rc=$?"; ' +
+            "P='$script:GgProcRegex'; " +
+            'if pgrep -f "$P" >/dev/null; then echo "SIGTERM to: $(pgrep -fa "$P" | awk ''{print $2}'' | xargs -rn1 basename | sort -u | xargs)"; pkill -TERM -f "$P"; fi; ' +
+            (Get-GgProcsCommand 300))
         $t = 600
         Add 'tgt_db' 'node' $n.Name $t "stop database $($o.TgtDb)" (
             "ok(){ ! pgrep -f '^ora_pmon_$($o.TgtDb)`$' >/dev/null; }; ok && { R ok '$($o.TgtDb) not running'; exit 0; }; " +
@@ -107,7 +120,9 @@ function Get-ShutdownSteps {
 # Ostatnia linia RESULT z wyjscia polecenia / the last RESULT line of a command's output
 function ConvertFrom-ShutdownResult {
     param([AllowEmptyCollection()][object[]]$Lines = @())
-    $last = @($Lines | ForEach-Object { "$_" } | Where-Object { $_ -match '^\s*RESULT (\w+)\s*(.*)$' } | Select-Object -Last 1)
+    # Invoke-Ssh -Capture returns the lines wrapped in one array (return , $out): unwrap first (17.11: the result line
+    # after "systemctl rc=0" was missed, the step showed "no RESULT line")
+    $last = @($Lines | ForEach-Object { $_ } | ForEach-Object { "$_" } | Where-Object { $_ -match '^\s*RESULT (\w+)\s*(.*)$' } | Select-Object -Last 1)
     if (-not $last.Count) { return [pscustomobject]@{ Result = 'error'; Detail = 'no RESULT line (ssh failed or the command broke)' } }
     $m = [regex]::Match($last[0], '^\s*RESULT (\w+)\s*(.*)$')
     [pscustomobject]@{ Result = $m.Groups[1].Value; Detail = $m.Groups[2].Value.Trim() }

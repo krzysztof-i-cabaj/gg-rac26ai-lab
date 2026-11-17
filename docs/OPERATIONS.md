@@ -103,7 +103,10 @@ its own stop. Stop the pieces in dependency order instead, so that nothing has a
 /u01/app/xag/bin/agctl stop goldengate oggsource
 agctl status goldengate oggsource                      # not running
 # 2. [root@ggtgt] target GoldenGate, then the target database
-systemctl stop OracleGoldenGate.service
+#    as oracle: adminclient, CONNECT http://ggtgt.gg.lab.test:9100 DEPLOYMENT oggtarget AS oggadmin, then:
+#    STOP REPLICAT *
+systemctl stop OracleGoldenGate.service                # stops ONLY the Service Manager (KillMode=process)
+pgrep -fa 'adminsrvr|distsrvr|pmsrvr|recvsrvr|replicat' # what is left: kill -TERM <pid> until the list is empty
 systemctl stop oracle-db.service
 # 3. [oracle@ggrac1] the RAC database
 srvctl stop database -db ggcdb
@@ -117,6 +120,18 @@ srvctl stop database -db ggcdb
 ```
 
 Check after step 4 on each node: no `ohasd` / `crsd` processes, `/u01/oggdeploy` no longer mounted. Avoid `crsctl stop crs -f` unless a normal stop hangs.
+
+**Target GoldenGate (step 2).** The `OracleGoldenGate.service` unit that the GoldenGate configuration assistant (`oggca`) registers has
+`KillMode=process`: `systemctl stop` ends only the Service Manager, while the deployment servers and Replicat keep
+running (a side effect: restarting the Service Manager does not interrupt replication). When shutting down,
+`lab.cmd shutdown` therefore does three things: `STOP REPLICAT *` through adminclient (Replicat writes a clean
+checkpoint), `systemctl stop`, then SIGTERM to the servers that are left. If the Service Manager is already down (for
+example after an earlier interrupted shutdown), adminclient has nothing to connect to, so the step sends SIGTERM right
+away; Replicat resumes from its checkpoint.
+
+**Measured (laptop lab, from the base state):** the whole `lab.cmd shutdown` takes 352 s. The longest parts are
+`crsctl stop crs` on the second node (about 205 s) and on the first (about 70 s); source GoldenGate about 24 s, target
+GoldenGate about 18 s, the databases 6–10 s each.
 
 ## 🩺 Quick health check
 

@@ -105,7 +105,10 @@ ma powodu się przenosić:
 /u01/app/xag/bin/agctl stop goldengate oggsource
 agctl status goldengate oggsource                      # not running
 # 2. [root@ggtgt] GoldenGate celu, potem baza celu
-systemctl stop OracleGoldenGate.service
+#    jako oracle: adminclient, CONNECT http://ggtgt.gg.lab.test:9100 DEPLOYMENT oggtarget AS oggadmin, potem:
+#    STOP REPLICAT *
+systemctl stop OracleGoldenGate.service                # zatrzymuje TYLKO Service Manager (KillMode=process)
+pgrep -fa 'adminsrvr|distsrvr|pmsrvr|recvsrvr|replicat' # to, co zostało: kill -TERM <pid>, aż lista będzie pusta
 systemctl stop oracle-db.service
 # 3. [oracle@ggrac1] baza RAC
 srvctl stop database -db ggcdb
@@ -119,6 +122,16 @@ srvctl stop database -db ggcdb
 ```
 
 Kontrola po kroku 4 na każdym węźle: brak procesów `ohasd` / `crsd`, `/u01/oggdeploy` już niezamontowany. Unikaj `crsctl stop crs -f`, chyba że zwykłe zatrzymanie wisi.
+
+**GoldenGate celu (krok 2).** Jednostka `OracleGoldenGate.service`, którą rejestruje asystent konfiguracji GoldenGate (`oggca`), ma
+`KillMode=process`: `systemctl stop` kończy tylko Service Manager, a serwery wdrożenia i Replicat działają dalej (skutek
+uboczny: restart Service Managera nie przerywa replikacji). Przy wyłączaniu `lab.cmd shutdown` robi więc trzy
+rzeczy: `STOP REPLICAT *` przez adminclient (Replicat zapisuje czysty punkt kontrolny), `systemctl stop`, a na koniec
+SIGTERM dla serwerów, które zostały. Gdy Service Manager już nie działa (np. po przerwanym wcześniej wyłączaniu),
+adminclient nie ma się z czym połączyć, więc krok od razu wysyła SIGTERM; Replicat wznowi się z punktu kontrolnego.
+
+**Zmierzone (lab na laptopie, od stanu bazowego):** cały `lab.cmd shutdown` 352 s. Najdłużej trwa `crsctl stop crs` na
+drugim węźle (ok. 205 s) i na pierwszym (ok. 70 s); GoldenGate źródła ok. 24 s, GoldenGate celu ok. 18 s, bazy po 6–10 s.
 
 ## 🩺 Szybka kontrola zdrowia
 
