@@ -13,7 +13,7 @@
 > target database. Then an automated test runner breaks the cluster on purpose (node power-off, instance crash, killed
 > processes, cut interconnect) and measures **how long replication really stops** and **whether any data is lost**.
 >
-> 🌐 Website: [krzysztof-i-cabaj.github.io/gg-rac26ai-lab](https://krzysztof-i-cabaj.github.io/gg-rac26ai-lab/) · 🎬 Video: link after the premiere
+> 🌐 Website: [krzysztof-i-cabaj.github.io/gg-rac26ai-lab](https://krzysztof-i-cabaj.github.io/gg-rac26ai-lab/) · 🎬 Video: [youtu.be/RjhHhHrTuio](https://youtu.be/RjhHhHrTuio) (in Polish)
 
 ![Lab topology](docs/diagrams/01-topology.svg)
 
@@ -130,7 +130,7 @@ docs/                               documentation, diagrams, charts, GitHub Page
 
 ## 🎬 Video
 
-A video walks through the lab and the failure tests: *link after the premiere*.
+A video walks through the lab and the failure tests (in Polish): **[youtu.be/RjhHhHrTuio](https://youtu.be/RjhHhHrTuio)**.
 
 ## 👤 Author and licence
 
