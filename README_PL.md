@@ -130,7 +130,7 @@ docs/                               dokumentacja, diagramy, wykresy, strona GitH
 
 ## 🎬 Film
 
-Film pokazuje lab i testy awarii: **[youtu.be/RjhHhHrTuio](https://youtu.be/RjhHhHrTuio)**.
+Film pokazuje lab i testy awarii (w odtwarzaczu YouTube jest też ścieżka dźwiękowa i napisy po angielsku): **[youtu.be/RjhHhHrTuio](https://youtu.be/RjhHhHrTuio)**.
 
 ## 👤 Autor i licencja
 
